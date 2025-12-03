@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { api } from '../../api'
 import './login-page.css'
 import { AuthContext } from '../../hooks/authContext'
+import Button from '../../components/UI/button/button'
 
 function LoginPage() { 
 
@@ -72,10 +73,11 @@ function LoginPage() {
             onChange={handleChange} placeholder="Введите пароль" required autoComplete="off" />
           </div>
           
-          <button 
-            type="submit" className="auth-button" disabled={loading} >
-            {loading ? 'Вход...' : 'Войти'}
-          </button>
+          <Button  
+            className="submit-btn" 
+            disabled={loading} 
+            text={loading ? 'Вход...' : 'Войти'}>
+          </Button>
         </form>
         
         <div className="auth-links">

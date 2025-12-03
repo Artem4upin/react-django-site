@@ -1,12 +1,6 @@
 import React from "react"
 import "./product-card.css"
-
-// заказы по пользователю, компоненты (разделить кнопки, инпуты и тд), гит (создать репу с веткой main и dev)
-//б-методология нейминг
-// поменял диаграмму - вот что забыл
-// продукт кард (исправить нейминг), перенести мэп в высший компонент 
-
-
+import Button from "../UI/button/button";
 
 function ProductCard({ product }) {
     return (
@@ -24,9 +18,8 @@ function ProductCard({ product }) {
                     ))}
                 </ul>
             </div>
-            
             <p className="description">{product.description}</p>
-            <button className="add-to-cart-btn">В корзину</button>
+            <Button className = 'btn' text = 'В корзину'></Button>
         </div>
     );
 }

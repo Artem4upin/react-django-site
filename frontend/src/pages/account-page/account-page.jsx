@@ -4,9 +4,7 @@ import { api } from "../../api"
 import './account-page.css'
 import { AuthContext } from "../../hooks/authContext";
 import ModalChangePassword from "../../components/modal/modal-change-password/modal-change-password";
-
-// useForm
-// модальное окно смены пароля
+import Button from "../../components/UI/button/button";
 
 function AccountPage() {
 
@@ -30,7 +28,6 @@ function AccountPage() {
 
     const get_user_data = async () => {
         const response = await api.get('/auth/get-user-data/')
-        console.log(response.data.user)
         setUsername(response.data.user.username)
         setEmail(response.data.user.email)
         setPhone(response.data.user.phone)
@@ -115,11 +112,11 @@ function AccountPage() {
                         onChange={(e) => setLastName(e.target.value)}  />
                     </div>
 
-                        <button className="submit-btn">Сохранить</button>
+                        <Button className = 'submit-btn' text='Сохранить'></Button>
                         </form>
                     <div className="form-buttons">
-                        <button onClick={() => setShowModal(true)} className="change-password-btn">Сменить пароль</button>
-                        <button onClick={handleLogout} className="logout-btn">Выйти из аккаунта</button>
+                        <Button onClick={() => setShowModal(true)} className="submit-btn" text={'Новыя смена'}></Button>
+                        <Button onClick={handleLogout} className="exit-btn" text='Выйти из аккаунта'></Button>
                     </div>
                 </div>
             </div>

@@ -17,7 +17,6 @@ function App() {
           const response = await api.get('auth/check-auth/')
           if (response.data.isAuthenticated) {
             setUser(response.data.user)
-            console.log('Данные пользователя:', response.data.user)
           } else {
             setUser(null)
           }
