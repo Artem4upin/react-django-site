@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { api } from '../../api'
-import './LoginPage.css'
+import './login-page.css'
 import { AuthContext } from '../../hooks/authContext'
 
 function LoginPage() { 

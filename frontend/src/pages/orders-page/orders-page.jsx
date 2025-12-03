@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../../api';
 import OrderList from '../../components/order-list/order-list';
-import './OrdersPage.css';
+import './orders-page.css';
 
 function OrdersPage() {
   const [orders, setOrders] = useState([])

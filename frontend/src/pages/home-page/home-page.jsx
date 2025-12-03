@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { api } from '../../api'
-import './HomePage.css'
+import './home-page.css'
 import ProductList from '../../components/product-list/product-list'
 // scss
 // context и кастомный хук для проверок

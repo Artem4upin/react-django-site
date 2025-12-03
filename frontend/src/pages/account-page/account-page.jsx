@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { api } from "../../api"
-import './AccountPage.css'
+import './account-page.css'
 import { AuthContext } from "../../hooks/authContext";
 import ModalChangePassword from "../../components/modal/modal-change-password/modal-change-password";
 
