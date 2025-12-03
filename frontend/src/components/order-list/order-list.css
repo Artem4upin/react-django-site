@@ -1,0 +1,9 @@
+.order-list h1 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.orders-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}

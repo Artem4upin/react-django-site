@@ -1,0 +1,29 @@
+.order-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    margin-right: 10px;    
+}
+
+.order-card h3 {
+    margin-top: 0;
+    color: #0b4177;
+}
+
+.order-items {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.order-item {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}

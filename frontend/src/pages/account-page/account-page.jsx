@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
-import { api } from "../../api";
+import { api } from "../../api"
 import './AccountPage.css'
 import { AuthContext } from "../../hooks/authContext";
-import ModalChangePassword from "../../components/modal/ModalChangePassword/ModalChangePassword";
+import ModalChangePassword from "../../components/modal/modal-change-password/modal-change-password";
 
 // useForm
 // модальное окно смены пароля
@@ -79,7 +79,7 @@ function AccountPage() {
 
     return (
 
-        <div className="AccountPage">
+        <div className="account-page">
             <div className='account-container'>
                 <div className="menu">
                     <Link to='/orders'>Заказы</Link>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { api } from '../../api'
-import ProductCard from '../../components/UI/ProductCard'
 import './HomePage.css'
+import ProductList from '../../components/product-list/product-list'
 // scss
 // context и кастомный хук для проверок
 // сделать компонент для загрузки
@@ -36,14 +36,14 @@ function HomePage() {
   }
 
   return (
-    <div className="HomePage">
+    <div className="home-page">
       <div className='content-container'>
         <div className='banner'>
           <h1>TechShop</h1>
           <h3>Магазин компютерных комплектующих</h3>
         </div>
         <span className='new-products'>Новинки</span>
-        <ProductCard products = {products} />
+        <ProductList products = {products} />
       </div>
     </div>
   )

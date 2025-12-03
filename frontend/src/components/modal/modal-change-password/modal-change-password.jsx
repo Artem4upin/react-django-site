@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { api } from '../../../api'
-import './ModalChangePassword.css'
-
-// caniuse, синтаксическая разметка, modal api html5
+import './modal-change-password.css'
 
 function ModalChangePassword ({showModal, setShowModal}) {
     
@@ -16,19 +14,19 @@ function ModalChangePassword ({showModal, setShowModal}) {
     } = useForm({
         defaultValues: {
             currentPassword: '',
-            newPassword1: '',
-            newPassword2: '',
+            newPassword: '',
+            newPasswordRepeat: '',
         }
     })
 
-    const newPassword1 = watch('newPassword1')
-    const newPassword2 = watch('newPassword2')
+    const newPassword = watch('newPassword')
+    const newPasswordRepeat = watch('newPasswordRepeat')
 
     const onSubmit = async (data) => {
         try{
             const response = await api.post('/auth/change-password/', {
                 current_password: data.currentPassword,
-                new_password: data.newPassword1
+                new_password: data.newPassword
             })
 
             if (response.data.success) {
@@ -47,7 +45,7 @@ function ModalChangePassword ({showModal, setShowModal}) {
             <div className="main-container">
                 <form className='change-password-form' onSubmit={handleSubmit(onSubmit)}>
                 <span>Смена пароля</span>
-                {newPassword1 !== newPassword2 && ( 
+                {newPassword !== newPasswordRepeat && ( 
                     <div className='error-message'>Пароли не совпадают</div>
                     )}
                 <div className="input-container">
@@ -68,28 +66,28 @@ function ModalChangePassword ({showModal, setShowModal}) {
                     <input 
                     id="new-password1" 
                     type="password" 
-                    {...register('newPassword1', {
+                    {...register('newPassword', {
                         required: 'Обязательное поле',
                         minLength: {value: 6, message: 'Минимум 6 символов'},
                         maxLength: {value: 50, message: 'Макисмум 50 символов'}
                     })} 
                     autoComplete='off' 
                     />
-                    {errors.newPassword1 && (
-                        <div className='error-message'>{errors.newPassword1.message}</div>
+                    {errors.newPassword && (
+                        <div className='error-message'>{errors.newPassword.message}</div>
                     )}
                     <label htmlFor="new-password2">Повторите новый пароль</label>
                     <input 
                     id="new-password2" 
                     type="password" 
-                    {...register('newPassword2', {
+                    {...register('newPasswordRepeat', {
                         required: 'Обязательное поле',
-                        validate: value => value === newPassword1 || 'Пароли не совпадают'
+                        validate: value => value === newPassword || 'Пароли не совпадают'
                     })} 
                     autoComplete='off'
                     />                
                 </div>
-                    <button className="submit-btn" type='submit' disabled={isSubmitting || newPassword1 !== newPassword2}>
+                    <button className="submit-btn" type='submit' disabled={isSubmitting || newPassword !== newPasswordRepeat}>
                         {isSubmitting ? 'Отправка' : 'Отправить'}
                     </button>
                 </form>
