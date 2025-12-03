@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { api } from '../../../api'
 import './ModalChangePassword.css'
 
+// caniuse, синтаксическая разметка, modal api html5
+
 function ModalChangePassword ({showModal, setShowModal}) {
     
     const {
@@ -38,7 +40,7 @@ function ModalChangePassword ({showModal, setShowModal}) {
             alert(error.response?.data?.error || 'Ошибка смены пароля')
         }
     }
-// caniuse, синтаксическая разметка, 
+
     if (showModal) {
     return (
         <div className="ModalChangePassword">

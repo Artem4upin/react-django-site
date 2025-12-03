@@ -13,18 +13,23 @@ function HomePage() {
 
   useEffect(() => {
         loadProducts()
+        check()
   }, []);
 
   const loadProducts = async () => {
     try {
       const response = await api.get('/products/')
       setProducts(response.data)
-      console.log(response.data)
       setLoading(false)
     } catch (error) {
       console.error('Ошибка:', error)
     }
   };
+
+  const check = async () => {
+    const response = await api.get('/orders/user-orders/');
+    console.log(response.data)
+  }
 
   if (loading) {
     return <div>Загрузка...</div>
