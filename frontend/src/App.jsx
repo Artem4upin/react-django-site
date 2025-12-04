@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage/HomePage'
 import LoginPage from './pages/LoginPage/LoginPage'
 import OrdersPage from './pages/OrdersPage/OrdersPage'
 import AccountPage from './pages/AccountPage/AccountPage'
+import CartPage from './pages/CartPage/CartPage'
 import {api} from './api/'
 import { AuthContext } from './hooks/authContext'
 import Header from './components/Header/Header'
@@ -44,7 +45,7 @@ function App() {
           <Route path='/account' element={<AccountPage />} />
           <Route path='/catalog' element={<p>Каталог</p>} />
           <Route path='/about' element={<p>О нас</p>} />
-          <Route path='/cart' element={<p>Корзина</p>} />
+          <Route path='/cart' element={<CartPage />} />
           <Route path='/orders' element={<OrdersPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

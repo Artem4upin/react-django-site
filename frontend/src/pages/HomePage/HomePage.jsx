@@ -37,7 +37,7 @@ function HomePage() {
           <h3>Магазин компютерных комплектующих</h3>
         </div>
         <span className='new-products'>Новинки</span>
-        <ProductList products = {products} />
+        <ProductList products = {products} isProducts={true} />
       </div>
     </div>
   )

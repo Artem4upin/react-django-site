@@ -1,3 +1,23 @@
-from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from .models import Cart_item
+from .serializers import CartItemSerializer
 
-# Create your views here.
+class CartItems(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        orders = Cart_item.objects.filter(user=request.user)
+        serializer = CartItemSerializer(orders, many=True)
+        return Response(serializer.data)
+    
+    # Добавление
+    def post(self, request):
+        serializer = CartItemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
