@@ -1,6 +1,6 @@
 import React from "react"
-import "./product-card.css"
-import Button from "../UI/button/button";
+import "./ProductCard.css"
+import Button from "../UI/Button/Button"
 
 function ProductCard({ product }) {
     return (
@@ -19,7 +19,7 @@ function ProductCard({ product }) {
                 </ul>
             </div>
             <p className="description">{product.description}</p>
-            <Button className = 'btn' text = 'В корзину'></Button>
+            <Button className = 'add-to-cart-btn' text = 'В корзину'></Button>
         </div>
     );
 }

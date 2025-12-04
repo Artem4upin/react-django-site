@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { api } from '../../../api'
-import './modal-change-password.css'
+import './ModalChangePassword.css'
 
 function ModalChangePassword ({showModal, setShowModal}) {
     

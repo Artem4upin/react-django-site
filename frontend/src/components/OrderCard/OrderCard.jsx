@@ -1,5 +1,5 @@
 import React from 'react';
-import './order-card.css';
+import './OrderCard.css';
 
 function OrderCard({ order }) {
     return (

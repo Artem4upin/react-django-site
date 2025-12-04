@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { api } from "../../api"
-import './account-page.css'
+import './AccountPage.css'
 import { AuthContext } from "../../hooks/authContext";
-import ModalChangePassword from "../../components/modal/modal-change-password/modal-change-password";
-import Button from "../../components/UI/button/button";
+import ModalChangePassword from "../../components/modal/ModalChangePassword/ModalChangePassword";
+import Button from "../../components/UI/Button/Button";
 
 function AccountPage() {
 
@@ -115,7 +115,7 @@ function AccountPage() {
                         <Button className = 'submit-btn' text='Сохранить'></Button>
                         </form>
                     <div className="form-buttons">
-                        <Button onClick={() => setShowModal(true)} className="submit-btn" text={'Новыя смена'}></Button>
+                        <Button onClick={() => setShowModal(true)} className="submit-btn" text={'Изменить пароль'}></Button>
                         <Button onClick={handleLogout} className="exit-btn" text='Выйти из аккаунта'></Button>
                     </div>
                 </div>

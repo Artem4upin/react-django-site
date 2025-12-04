@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { api } from '../../api'
-import './login-page.css'
+import './LoginPage.css'
 import { AuthContext } from '../../hooks/authContext'
-import Button from '../../components/UI/button/button'
+import Button from '../../components/UI/Button/Button'
 
 function LoginPage() { 
 

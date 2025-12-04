@@ -1,4 +1,4 @@
-import './button.css'
+import './Button.css'
 
 function Button ({className, text, onClick, disabled}) {
     return(

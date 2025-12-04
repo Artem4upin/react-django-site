@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import HomePage from './pages/home-page/home-page'
-import AccountPage from './pages/account-page/account-page'
-import LoginPage from './pages/login-page/login-page'
-import OrdersPage from './pages/orders-page/orders-page'
+import HomePage from './pages/HomePage/HomePage'
+import LoginPage from './pages/LoginPage/LoginPage'
+import OrdersPage from './pages/OrdersPage/OrdersPage'
+import AccountPage from './pages/AccountPage/AccountPage'
 import {api} from './api/'
 import { AuthContext } from './hooks/authContext'
-import Header from './components/header/header'
+import Header from './components/Header/Header'
 
 function App() {
   const [user, setUser] = useState(null)
