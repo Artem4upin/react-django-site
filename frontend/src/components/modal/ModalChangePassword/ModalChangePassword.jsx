@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { api } from '../../../api'
+import InputForm from '../../UI/Input/InputForm';
+import Button from '../../UI/Button/Button';
 import './ModalChangePassword.css'
 
 function ModalChangePassword ({showModal, setShowModal}) {
@@ -39,66 +41,81 @@ function ModalChangePassword ({showModal, setShowModal}) {
         }
     }
 
-    if (showModal) {
+    if (!showModal) return null;
+
     return (
         <div className="ModalChangePassword">
             <div className="main-container">
                 <form className='change-password-form' onSubmit={handleSubmit(onSubmit)}>
-                <span>Смена пароля</span>
-                {newPassword !== newPasswordRepeat && ( 
-                    <div className='error-message'>Пароли не совпадают</div>
+                    <span>Смена пароля</span>
+                    
+                    {newPassword !== newPasswordRepeat && ( 
+                        <div className='error-message'>Пароли не совпадают</div>
                     )}
-                <div className="input-container">
-                    <label htmlFor="password">Введите пароль</label>
-                    <input 
-                    id="password" 
-                    type="password" 
-                    {...register('currentPassword', {
-                        required: 'Обязательное поле', 
-                        maxLength: {value: 50, message: 'Максимум 50 символов'}
-                    })} 
-                    autoComplete='off'
+                    
+                    <InputForm
+                        id="password"
+                        name="currentPassword"
+                        label="Введите пароль"
+                        type="password"
+                        register={register}
+                        validation={{
+                            required: 'Обязательное поле',
+                            minLength: {value: 6, message: 'Минимум 6 символов'}, 
+                            maxLength: {value: 50, message: 'Максимум 50 символов'}
+                        }}
+                        error={errors.currentPassword}
+                        autoComplete="off"
                     />
-                    {errors.currentPassword && (
-                        <div className='error-message'>{errors.currentPassword.message}</div>
-                    )}
-                    <label htmlFor="new-password1">Введите новый пароль</label>
-                    <input 
-                    id="new-password1" 
-                    type="password" 
-                    {...register('newPassword', {
-                        required: 'Обязательное поле',
-                        minLength: {value: 6, message: 'Минимум 6 символов'},
-                        maxLength: {value: 50, message: 'Макисмум 50 символов'}
-                    })} 
-                    autoComplete='off' 
+                    
+                    <InputForm
+                        id="new-password"
+                        name="newPassword"
+                        label="Введите новый пароль"
+                        type="password"
+                        register={register}
+                        validation={{
+                            required: 'Обязательное поле',
+                            minLength: {value: 6, message: 'Минимум 6 символов'},
+                            maxLength: {value: 50, message: 'Макисмум 50 символов'}
+                        }}
+                        error={errors.newPassword}
+                        autoComplete="off"
                     />
-                    {errors.newPassword && (
-                        <div className='error-message'>{errors.newPassword.message}</div>
-                    )}
-                    <label htmlFor="new-password2">Повторите новый пароль</label>
-                    <input 
-                    id="new-password2" 
-                    type="password" 
-                    {...register('newPasswordRepeat', {
-                        required: 'Обязательное поле',
-                        validate: value => value === newPassword || 'Пароли не совпадают'
-                    })} 
-                    autoComplete='off'
-                    />                
-                </div>
-                    <button className="submit-btn" type='submit' disabled={isSubmitting || newPassword !== newPasswordRepeat}>
-                        {isSubmitting ? 'Отправка' : 'Отправить'}
-                    </button>
+                    
+                    <InputForm
+                        id="new-password-repeat"
+                        name="newPasswordRepeat"
+                        label="Повторите новый пароль"
+                        type="password"
+                        register={register}
+                        validation={{
+                            required: 'Обязательное поле',
+                            validate: value => value === newPassword || 'Пароли не совпадают'
+                        }}
+                        error={errors.newPasswordRepeat}
+                        autoComplete="off"
+                    />
+                    
+                    <Button 
+                        className="submit-btn" 
+                        type="submit" 
+                        disabled={isSubmitting || newPassword !== newPasswordRepeat}
+                        text={isSubmitting ? 'Отправка...' : 'Отправить'}
+                    />
                 </form>
-                <button className='exit-btn' onClick={() => {
-                    reset()
-                    setShowModal(false)
-                }}>Закрыть</button>
+                
+                <Button 
+                    className="exit-btn"
+                    onClick={() => {
+                        reset()
+                        setShowModal(false)
+                    }}
+                    text="Закрыть"
+                />
             </div>
         </div>
-        )   
-    }
+    );
 }
 
-export default ModalChangePassword
+export default ModalChangePassword;

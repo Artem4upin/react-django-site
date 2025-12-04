@@ -1,78 +1,84 @@
-.auth-container {
+.login-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; 
-  width: 100vw;    
-  position: fixed;   
-  top: 0;
-  left: 0;
-  margin: 0;
-  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+  background: #f5f5f5;
 }
 
-.auth-form {
+.auth-container {
   background: white;
   padding: 40px;
   border-radius: 8px;
-  box-shadow: 0 2px 20px rgba(0,0,0,0.2); 
-  width: 90%; 
-  max-width: 400px; 
-  margin: 20px; 
-}
-
-.auth-form button {
+  box-shadow: 0 2px 20px rgba(0,0,0,0.2);
   width: 100%;
+  max-width: 400px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.auth-form h2 {
+.auth-container h2 {
   text-align: center;
   margin-bottom: 30px;
   color: #333;
   font-size: 24px;
+  width: 100%;
 }
 
-.form-group {
+.auth-form {
+  width: 100%;
+}
+
+.form-input-group {
   margin-bottom: 20px;
+  width: 100%;
 }
 
-.form-group label {
+.form-input-group > div {
+  width: 100%;
+}
+
+.form-input-group label {
   display: block;
   margin-bottom: 8px;
   font-weight: bold;
   color: #555;
   font-size: 16px;
+  width: 100%;
 }
 
-.form-group input {
+.form-input-group input {
   width: 100%;
   padding: 15px;
   border: 2px solid #ddd;
   border-radius: 6px;
   font-size: 16px;
   transition: border-color 0.3s;
+  box-sizing: border-box;
 }
 
-.form-group input:focus {
+.form-input-group input:focus {
   outline: none;
   border-color: #2c5aa0;
   box-shadow: 0 0 5px rgba(44, 90, 160, 0.3);
 }
 
-.auth-button:hover:not(:disabled) {
-  background: #1e3d6f;
-}
-
-.auth-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
+.login-submit-btn {
+  background-color: #0b4177;
+  color: white;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .auth-links {
   text-align: center;
-  margin-bottom: 20px;
+  margin: 20px 0;
   color: #666;
   font-size: 16px;
+  width: 100%;
 }
 
 .registration-btn {
@@ -80,7 +86,6 @@
   border: none;
   color: #2c5aa0;
   cursor: pointer;
-  margin-left: 5px;
   font-size: 16px;
   text-decoration: underline;
 }
@@ -92,6 +97,7 @@
   text-decoration: none;
   margin-top: 20px;
   font-size: 16px;
+  width: 100%;
 }
 
 .back-link:hover {
@@ -107,4 +113,5 @@
   text-align: center;
   border: 1px solid #ffb3b3;
   font-size: 16px;
+  width: 100%;
 }

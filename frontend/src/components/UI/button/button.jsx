@@ -1,10 +1,17 @@
 import './Button.css'
 
-function Button ({className, text, onClick, disabled}) {
+function Button ({
+    className, 
+    type, 
+    text, 
+    onClick, 
+    disabled
+}) {
     return(
         <div className='button'>
             <button 
-            className={className} 
+            className={className}
+            type={type} 
             onClick={onClick}
             disabled={disabled}
             >
