@@ -14,7 +14,6 @@ function CartPage() {
     const loadCart = async () => {
         try {
         const response = await api.get('/cart/cart-items/')
-        console.log(response.data)
         setCartItems(response.data)
         } catch (error) {
         console.error('Ошибка', error)

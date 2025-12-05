@@ -11,7 +11,7 @@ function OrderList({ orders }) {
                     <p>Нет заказов</p>
                 ) : (
                     orders.map(order => (
-                        <OrderCard key={order.id} order={order} />  // ← передаем ОДИН заказ
+                        <OrderCard key={order.id} order={order} />
                     ))
                 )}
             </div>

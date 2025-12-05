@@ -22,8 +22,6 @@ function ProductCard({ product, isCart, onItemDelete}) {
         try {
             const response = await api.delete(`/cart/cart-items/${product.id}/`)
             console.log('Товар удален:', response.data)
-            alert(`Товар ${product.name} удален из корзины`)
-            
             if (onItemDelete) {
                 onItemDelete()
             }

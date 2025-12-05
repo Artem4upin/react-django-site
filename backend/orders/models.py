@@ -22,6 +22,7 @@ class Order(SoftDeleteModel):
         ('Sent', 'Отправлен'),
         ('Done', 'Готов к выдаче'),
         ('Completed', 'Завершен'),
+        ('Canceled', 'Отменен')
     ]
     
     status = models.CharField(choices=STATUS_CHOICES, default='Created')

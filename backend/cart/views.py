@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
@@ -9,12 +10,16 @@ class CartItems(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
-    def get(self, request):
-        orders = Cart_item.objects.filter(user=request.user)
-        serializer = CartItemSerializer(orders, many=True)
-        return Response(serializer.data)
+    def get(self, request, pk=None):
+        if pk is not None:
+            cart_item = get_object_or_404(Cart_item, id=pk, user=request.user)
+            serializer = CartItemSerializer(cart_item)
+            return Response(serializer.data)
+        else:
+            orders = Cart_item.objects.filter(user=request.user)
+            serializer = CartItemSerializer(orders, many=True)
+            return Response(serializer.data)
     
-    # Добавление
     def post(self, request):
         serializer = CartItemSerializer(data=request.data)
         if serializer.is_valid():

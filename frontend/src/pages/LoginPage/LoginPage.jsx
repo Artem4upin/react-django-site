@@ -77,6 +77,7 @@ function LoginPage() {
               value={formData.password}
               onChange={handleChange}
               placeholder="Введите пароль"
+              autoComplete='off'
               required
             />
           </div>

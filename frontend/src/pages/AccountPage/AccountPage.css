@@ -1,105 +1,260 @@
-.account-container {
-    display: flex;
-    margin-top: 20px;
-    min-height: 300px;
+/* ===== ОСНОВНЫЕ СТИЛИ СТРАНИЦЫ ===== */
+.account-page {
+    padding: 30px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Заголовок страницы */
+.account-header {
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.account-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.account-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
     gap: 30px;
-    padding-left: 35px;
 }
 
-.menu {
-    width: 300px;
-    background-color: aliceblue;
-    border: 2px solid #ddd;
-    border-radius: 5px;
+
+.account-sidebar {
+    border-radius: 8px;
     padding: 20px;
+    border: 2px solid gainsboro;
+    height: fit-content;
+
 }
 
-.menu a {
-    padding: 12px 15px;
-    margin-bottom: 5px;
-    color: rgb(56, 56, 56);
-    font-size: 18px;
-}
-
-.user-container {
-    flex: 1;               
-    margin-right: 80px;
+.account-nav {
     display: flex;
     flex-direction: column;
-    align-items: start;
 }
 
-.user-data-form {
-    background-color: aliceblue;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items:start;
-    gap: 10px;
-    padding: 20px;
-    margin-right: 80px;
-    width: 100%;
-}
-
-.user-data-form span {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 18px;
-    align-self: center;
-    margin-bottom: 50px;
-}
-
-.user-data-form .input-container {
-    display: flex;
-    align-items: center;
-    margin: 0;
+.nav-list {
+    list-style: none;
     padding: 0;
-    width: auto;
-}
-
-.user-data-form .input-label {
-    display: inline-block;
-    width: 120px;
-    text-align: right;     
-    margin-right: 10px;
-    font-weight: bold;
-    margin-bottom: 0;
-}
-
-.user-data-form .input-field {
-    height: 30px;
-    padding-left: 5px;
-    padding-right: 5px;
-    width: auto;
     margin: 0;
 }
 
-.row {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
-    width: 100%;
+.nav-item {
+    margin-bottom: 8px;
 }
 
-.row .input-container {
+.nav-link {
     display: flex;
     align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: #495057;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.nav-link:hover {
+    background-color: #e9ecef;
+    color: #007bff;
+    border-color: #dee2e6;
+}
+
+.nav-link:active {
+    background-color: #dee2e6;
+}
+
+.nav-text {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.account-main {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.account-section {
+    background: white;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 600;
+
+    margin: 0 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+/* ===== ФОРМА ПРОФИЛЯ ===== */
+.profile-form {
+    margin-top: 10px;
+}
+
+.form-section {
+    margin-bottom: 30px;
+}
+
+.form-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #495057;
+    margin: 0 0 20px 0;
+}
+
+/* Сетка для полей формы (Grid layout) */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Два столбца */
+    gap: 20px;
+}
+
+/* Группа поля ввода */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 2px;
+}
+
+/* Стили для кастомного Input компонента (если нужны) */
+.form-input {
+    width: 100%;
+    min-height: 40px; /* Универсальная высота */
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* Кнопки формы */
+.form-actions {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eaeaea;
+}
+
+.save-btn {
+    min-width: 180px; /* Фиксированная минимальная ширина */
+}
+
+/* ===== СЕКЦИИ БЕЗОПАСНОСТИ И СЕССИИ ===== */
+.security-actions,
+.session-actions {
+    margin-top: 10px;
+}
+
+.action-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #eaeaea;
+}
+
+.action-info {
     flex: 1;
 }
 
-.form-buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    margin-top: 30px;
-    margin-bottom: 50px;
-    width: 100%;
+.action-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 5px 0;
 }
 
-.form-buttons button {
-    width: 200px;
-    height: 50px;
-    margin-bottom: 10px;
+.action-description {
+    font-size: 14px;
+    color: #6c757d;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Кнопки в секциях */
+.change-password-btn,
+.logout-btn {
+    min-width: 150px;
+    margin-left: 20px;
+}
+
+/* ===== МОДАЛЬНОЕ ОКНО (если нужно стилизовать) ===== */
+.modal-overlay {
+    /* Стили для затемненного фона */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ ===== */
+
+/* Подсказки для обязательных полей */
+.form-label.required::after {
+    content: " *";
+    color: #dc3545;
+}
+
+/* Сообщения об ошибках (можно добавить в будущем) */
+.form-error {
+    font-size: 13px;
+    color: #dc3545;
+    margin-top: 4px;
+}
+
+/* Успешное сообщение (можно добавить при сохранении) */
+.form-success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* ===== АНИМАЦИИ ===== */
+.nav-link,
+.form-input,
+.account-section {
+    transition: all 0.2s ease;
+}
+
+/* Эффект при наведении на секции */
+.account-section:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

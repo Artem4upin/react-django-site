@@ -1,0 +1,96 @@
+.manager-page {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.manager-page h1 {
+    margin-bottom: 20px;
+}
+
+.manager-page__order-sum-container {
+    margin-bottom: 30px;
+}
+
+.manager-page__order-sum {
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.manager-page__order-sum p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.no-orders {
+    text-align: center;
+    padding: 40px;
+}
+
+.orders__card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: white;
+}
+
+.orders__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+}
+
+.orders__header span {
+  font-size: 14px;
+}
+
+.order__info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.order__info span {
+  font-size: 14px;
+}
+
+.order__info strong {
+  font-size: 16px;
+}
+
+.order__info select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
+}
+
+.order__items {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.order__items h4 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+}
+
+.order__items ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.order__items li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+
+.order__items span {
+  flex: 1;
+}

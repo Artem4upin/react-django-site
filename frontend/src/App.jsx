@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage/LoginPage'
 import OrdersPage from './pages/OrdersPage/OrdersPage'
 import AccountPage from './pages/AccountPage/AccountPage'
 import CartPage from './pages/CartPage/CartPage'
+import ManagerPage from './pages/ManagerPage/ManagerPage'
 import {api} from './api/'
 import { AuthContext } from './hooks/authContext'
 import Header from './components/Header/Header'
@@ -27,7 +28,7 @@ function App() {
             localStorage.removeItem('token')
             setUser(null)
           }
-        }
+        } 
       }
       checkAuth()
     }, [])
@@ -47,6 +48,7 @@ function App() {
           <Route path='/about' element={<p>О нас</p>} />
           <Route path='/cart' element={<CartPage />} />
           <Route path='/orders' element={<OrdersPage />} />
+          <Route path='/manager-page' element={<ManagerPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
