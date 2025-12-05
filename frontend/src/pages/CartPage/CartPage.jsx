@@ -21,15 +21,21 @@ function CartPage() {
         }
     }
 
-    const deleteFromCart = async () => {
-        console.log('Удаление')
+    const onItemDelete = () => {
+        loadCart()
     }
     
     return(
         <div className="cart-page">
             <span className="cart-page__label">Корзина</span>
+            {cartItems.length == 0? 
+            (<span className="cart-page__not-found">У вас еще нет товаров в корзине</span>
+            ) : (
+                <ProductList products = {cartItems} isCart={true} onItemDelete={onItemDelete} />
+            )
+        }
 
-            <ProductList products = {cartItems} deleteFromCart={deleteFromCart} isCart={true}/>
+            
         </div>
     )
 }

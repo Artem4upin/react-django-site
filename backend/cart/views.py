@@ -21,3 +21,11 @@ class CartItems(APIView):
             serializer.save(user=request.user)
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
+
+    def delete(self, request, pk=None):
+        try:
+            cart_item = Cart_item.objects.get(id=pk, user=request.user)
+            cart_item.delete()
+            return Response({'success': True, 'message': 'Товар удален из корзины'}, status=200)
+        except Cart_item.DoesNotExist:
+            return Response({'error': 'Товар не найден в корзине'}, status=404)

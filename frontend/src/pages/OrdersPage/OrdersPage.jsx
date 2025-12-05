@@ -3,9 +3,6 @@ import { api } from '../../api';
 import OrderList from '../../components/OrderList/OrderList';
 import './OrdersPage.css';
 
-// Выделить роль менеджера, смена статусов заказов - вывести всех пользователей и для них заказы
-// почитать манифест
-
 function OrdersPage() {
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)

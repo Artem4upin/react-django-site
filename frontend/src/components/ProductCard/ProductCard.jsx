@@ -3,7 +3,7 @@ import "./ProductCard.css"
 import Button from "../UI/Button/Button"
 import { api } from "../../api"
 
-function ProductCard({ product, isCart, deleteFromCart }) {
+function ProductCard({ product, isCart, onItemDelete}) {
 
     const addToCart = async () => {
         try {
@@ -18,18 +18,32 @@ function ProductCard({ product, isCart, deleteFromCart }) {
         }
     }
 
+    const deleteFromCart = async () => {
+        try {
+            const response = await api.delete(`/cart/cart-items/${product.id}/`)
+            console.log('Товар удален:', response.data)
+            alert(`Товар ${product.name} удален из корзины`)
+            
+            if (onItemDelete) {
+                onItemDelete()
+            }
+        } catch (error) {
+            console.error('Ошибка удаления из корзины:', error)
+            alert('Ошибка удаления товара')
+        }
+    }
+
     return (
         <div className="product-card">
             <h3 className="product-card__title">{product.name || product.product_name}</h3>
             <p className="product-card__price">{product.price || product.product_price} ₽</p> 
             <div className="product-card__parameters">
                 {isCart? (
-                <h4>Характеристики</h4>
-                ) : (
                     <div className="product-card__info">
                         <h4 className="product-card__quantity">{`Количество: ${product.quantity}`}</h4>
-                        <Button className='exit-btn' text='Удалить'  onClick={deleteFromCart} />
                     </div>
+                ) : (
+                <h4>Характеристики</h4>    
             )} 
                 <ul className="product-card__list">
                     {product.parameters?.map((param, index) => ( 
@@ -40,9 +54,12 @@ function ProductCard({ product, isCart, deleteFromCart }) {
                 </ul>
             </div>
             <p className="product-card__description">{product.description}</p>
-            {isCart && (
-            <Button className = 'add-to-cart-btn' text = 'В корзину' onClick={addToCart} />
-            )}
+            {isCart ? (
+                <Button className='exit-btn' text='Удалить' onClick={deleteFromCart} />
+            ) : (
+                <Button className = 'add-to-cart-btn' text = 'В корзину' onClick={addToCart} />
+            )
+        }
         </div>
     );
 }
