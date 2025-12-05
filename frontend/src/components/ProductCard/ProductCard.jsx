@@ -3,7 +3,7 @@ import "./ProductCard.css"
 import Button from "../UI/Button/Button"
 import { api } from "../../api"
 
-function ProductCard({ product, isProducts, deleteFromCart }) {
+function ProductCard({ product, isCart, deleteFromCart }) {
 
     const addToCart = async () => {
         try {
@@ -20,27 +20,27 @@ function ProductCard({ product, isProducts, deleteFromCart }) {
 
     return (
         <div className="product-card">
-            <h3>{product.name || product.product_name}</h3>
+            <h3 className="product-card__title">{product.name || product.product_name}</h3>
             <p className="product-card__price">{product.price || product.product_price} ₽</p> 
             <div className="product-card__parameters">
-                {isProducts? (
+                {isCart? (
                 <h4>Характеристики</h4>
                 ) : (
-                    <div className="product-info">
-                        <h4 className="product-info__quantity">{`Количество: ${product.quantity}`}</h4>
+                    <div className="product-card__info">
+                        <h4 className="product-card__quantity">{`Количество: ${product.quantity}`}</h4>
                         <Button className='exit-btn' text='Удалить'  onClick={deleteFromCart} />
                     </div>
             )} 
-                <ul className="parameters-list">
+                <ul className="product-card__list">
                     {product.parameters?.map((param, index) => ( 
-                        <li key={index} className="parameters-list__item">
-                            <span className="parameter">{`${param.name}: ${param.value}`}</span>
+                        <li key={index} className="product-card__item">
+                            <span className="product-card__parameter">{`${param.name}: ${param.value}`}</span>
                         </li>
                     ))}
                 </ul>
             </div>
             <p className="product-card__description">{product.description}</p>
-            {isProducts && (
+            {isCart && (
             <Button className = 'add-to-cart-btn' text = 'В корзину' onClick={addToCart} />
             )}
         </div>

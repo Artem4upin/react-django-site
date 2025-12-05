@@ -29,7 +29,7 @@ function CartPage() {
         <div className="cart-page">
             <span className="cart-page__label">Корзина</span>
 
-            <ProductList products = {cartItems} deleteFromCart={deleteFromCart}/>
+            <ProductList products = {cartItems} deleteFromCart={deleteFromCart} isCart={true}/>
         </div>
     )
 }

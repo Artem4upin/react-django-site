@@ -1,11 +1,11 @@
 import ProductCard from '../ProductCard/ProductCard';
 import './ProductList.css'
-
-function ProductList({ products, isProducts, deleteFromCart}) {
+// isProducts переименовать
+function ProductList({ products, deleteFromCart, isCart}) {
     return (
         <div className="products-list">
                 {products.map(product => (
-                    <ProductCard key={product.id} product={product} isProducts={isProducts} deleteFromCart={deleteFromCart} /> 
+                    <ProductCard key={product.id} product={product} isCart={isCart} deleteFromCart={deleteFromCart} /> 
                 ))}
         </div>
     );
