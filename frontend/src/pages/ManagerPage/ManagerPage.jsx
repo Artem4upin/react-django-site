@@ -29,6 +29,7 @@ function ManagerPage() {
       await api.patch(`/orders/manager-orders/${orderId}/`, {
         status: newStatus
       })
+      alert('Статус заказа изменен')
       setOrders(orders.map(order => 
         order.id === orderId ? { ...order, status: newStatus } : order
       ))
