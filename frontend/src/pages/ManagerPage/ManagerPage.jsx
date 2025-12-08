@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../api'
 import './ManagerPage.css'
-import Loading from '../../components/UI/Loading/loading';
+import Loading from '../../components/UI/Loading/Loading';
+
+// отклик для смены статуса
 
 function ManagerPage() {
   const [orders, setOrders] = useState([])
