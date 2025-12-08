@@ -46,7 +46,8 @@ def check_auth(request):
         'user': {
             'id': request.user.id,
             'username': request.user.username,
-            'email': request.user.email
+            'email': request.user.email,
+            'user_type': request.user.user_type
         }
 })
 

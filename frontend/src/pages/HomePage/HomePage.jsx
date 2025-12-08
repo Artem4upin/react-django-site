@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { api } from '../../api'
-import ProductCard from '../../components/UI/ProductCard'
 import './HomePage.css'
+import ProductList from '../../components/ProductList/ProductList'
 // scss
 // context и кастомный хук для проверок
 // сделать компонент для загрузки
@@ -19,7 +19,6 @@ function HomePage() {
     try {
       const response = await api.get('/products/')
       setProducts(response.data)
-      console.log(response.data)
       setLoading(false)
     } catch (error) {
       console.error('Ошибка:', error)
@@ -27,18 +26,18 @@ function HomePage() {
   };
 
   if (loading) {
-    return <div>Загрузка...</div>
+    return <div>Загрузка</div>
   }
 
   return (
-    <div className="HomePage">
+    <div className="home-page">
       <div className='content-container'>
         <div className='banner'>
           <h1>TechShop</h1>
           <h3>Магазин компютерных комплектующих</h3>
         </div>
         <span className='new-products'>Новинки</span>
-        <ProductCard products = {products} />
+        <ProductList products = {products} isProducts={true} />
       </div>
     </div>
   )

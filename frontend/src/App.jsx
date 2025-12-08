@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import LoginPage from './pages/LoginPage/LoginPage'
 import HomePage from './pages/HomePage/HomePage'
+import LoginPage from './pages/LoginPage/LoginPage'
+import OrdersPage from './pages/OrdersPage/OrdersPage'
 import AccountPage from './pages/AccountPage/AccountPage'
+import CartPage from './pages/CartPage/CartPage'
+import ManagerPage from './pages/ManagerPage/ManagerPage'
 import {api} from './api/'
 import { AuthContext } from './hooks/authContext'
-import Header from './components/header/header'
+import Header from './components/Header/Header'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -16,7 +19,6 @@ function App() {
           const response = await api.get('auth/check-auth/')
           if (response.data.isAuthenticated) {
             setUser(response.data.user)
-            console.log('Данные пользователя:', response.data.user)
           } else {
             setUser(null)
           }
@@ -26,7 +28,7 @@ function App() {
             localStorage.removeItem('token')
             setUser(null)
           }
-        }
+        } 
       }
       checkAuth()
     }, [])
@@ -40,12 +42,13 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<LoginPage />} />
+          <Route path='/registration' element={<p>Регистрация</p>} />
           <Route path='/account' element={<AccountPage />} />
           <Route path='/catalog' element={<p>Каталог</p>} />
           <Route path='/about' element={<p>О нас</p>} />
-          <Route path='/cart' element={<p>Корзина</p>} />
-          <Route path='/registration' element={<p>Регистрация</p>} />
-          <Route path='/orders' element={<p>Заказы</p>} />
+          <Route path='/cart' element={<CartPage />} />
+          <Route path='/orders' element={<OrdersPage />} />
+          <Route path='/manager-page' element={<ManagerPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>

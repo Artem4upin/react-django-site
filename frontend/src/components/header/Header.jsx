@@ -1,10 +1,8 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import './Header.css'
+import './header.css'
 import CartIcon from '../icons/CartIcon';
 import { AuthContext } from '../../hooks/authContext';
-
-// добавить поле поиска
 
 function Header(){
 

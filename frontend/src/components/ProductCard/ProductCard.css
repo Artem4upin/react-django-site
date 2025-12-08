@@ -1,0 +1,26 @@
+.product-card {
+  background-color:lightsteelblue;
+  border: 2px solid #ddd;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0px 2px 2px steelblue;
+}
+
+.product-card__price {
+  font-size: 22px;
+  font-weight: bold;
+  color: #2258a8;
+}
+
+.product-card h4 {
+  font-size: 18px;
+  color: #3f3f3f;
+}
+
+.product-card__list {
+  list-style: none; 
+}
+
+.product-card button {
+  margin-top: 10px;
+}
