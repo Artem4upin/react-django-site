@@ -1,6 +1,5 @@
 import ProductCard from '../ProductCard/ProductCard';
 import './ProductList.css'
-// isProducts переименовать
 function ProductList({ products, isCart, onItemDelete}) {
     return (
         <div className="products-list">
