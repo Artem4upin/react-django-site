@@ -1,0 +1,12 @@
+.catalog-page {
+    padding: 20px;
+}
+
+.catalog-page__title {
+    margin-bottom: 30px;
+}
+
+.catalog-page__product-sum {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

@@ -6,9 +6,12 @@ import OrdersPage from './pages/OrdersPage/OrdersPage'
 import AccountPage from './pages/AccountPage/AccountPage'
 import CartPage from './pages/CartPage/CartPage'
 import ManagerPage from './pages/ManagerPage/ManagerPage'
+import CatalogPage from './pages/CatalogPage/CatalogPage'
 import {api} from './api/'
 import { AuthContext } from './hooks/authContext'
 import Header from './components/Header/Header'
+import Footer from './components/Footer/Footer'
+import ProductPage from './pages/ProductPage/ProductPage'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -44,13 +47,15 @@ function App() {
           <Route path='/login' element={<LoginPage />} />
           <Route path='/registration' element={<p>Регистрация</p>} />
           <Route path='/account' element={<AccountPage />} />
-          <Route path='/catalog' element={<p>Каталог</p>} />
+          <Route path='/catalog' element={<CatalogPage />} />
+          <Route path='/product/:id' element={<ProductPage />} />
           <Route path='/about' element={<p>О нас</p>} />
           <Route path='/cart' element={<CartPage />} />
           <Route path='/orders' element={<OrdersPage />} />
           <Route path='/manager-page' element={<ManagerPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
+        <Footer />
       </Router>
     </AuthContext.Provider>
   );

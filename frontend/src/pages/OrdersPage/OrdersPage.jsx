@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { api } from '../../api';
 import OrderList from '../../components/OrderList/OrderList';
 import './OrdersPage.css';
+import Loading from '../../components/UI/Loading/Loading';
 
 function OrdersPage() {
   const [orders, setOrders] = useState([])
@@ -23,7 +24,7 @@ function OrdersPage() {
   };
 
 if (loading) {
-    return <div className="loading">Загрузка</div>;
+    return <Loading />
   }
   
   return (

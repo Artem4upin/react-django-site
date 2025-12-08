@@ -2,8 +2,11 @@ import React from "react"
 import "./ProductCard.css"
 import Button from "../UI/Button/Button"
 import { api } from "../../api"
+import { useNavigate } from 'react-router-dom';
 
 function ProductCard({ product, isCart, onItemDelete}) {
+
+    const navigate = useNavigate()
 
     const addToCart = async () => {
         try {
@@ -18,7 +21,7 @@ function ProductCard({ product, isCart, onItemDelete}) {
         }
     }
 
-    const deleteFromCart = async () => {
+    const deleteFromCart = async (e) => {
         try {
             const response = await api.delete(`/cart/cart-items/${product.id}/`)
             console.log('Товар удален:', response.data)
@@ -31,9 +34,13 @@ function ProductCard({ product, isCart, onItemDelete}) {
         }
     }
 
+     const goToProduct = () => {
+        navigate(`/product/${product.id}`);
+    };
+
     return (
-        <div className="product-card">
-            <h3 className="product-card__title">{product.name || product.product_name}</h3>
+        <div className="product-card" >
+            <h3 className="product-card__title" onClick={goToProduct}>{product.name || product.product_name}</h3>
             <p className="product-card__price">{product.price || product.product_price} ₽</p> 
             <div className="product-card__parameters">
                 {isCart? (

@@ -8,6 +8,11 @@
     cursor: pointer;
 }
 
+.btn:hover{
+    background-color: white;
+    color: black;
+}
+
 .submit-btn {
     padding: 12px;
     background-color: #0b4177;
@@ -16,6 +21,10 @@
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
+}
+
+.submit-btn:hover{
+    background: #0d3761;
 }
 
 .exit-btn {
@@ -28,12 +37,31 @@
     cursor: pointer;
 }
 
+.exit-btn:hover{
+    background: #cb2233;
+}
+
 .add-to-cart-btn {
     padding: 12px;
-    background-color: #dedede;
-    color: rgb(45, 45, 45);
+    background-color: #4688ea;
+    color: rgb(255, 255, 255);
     border: none;
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
+}
+
+.add-to-cart-btn:hover{
+    background: #2665c3;
+}
+
+
+.quantity-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

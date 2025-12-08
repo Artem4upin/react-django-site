@@ -1,7 +1,7 @@
 .header {
   width: 100%;
   padding: 10px 35px;
-  background-color: #0b4177;
+  background-color: #095bad;
   color: white;
   margin-bottom: 20px;
   position: sticky;
@@ -21,20 +21,19 @@
   gap: 30px;
 }
 
-.logo {
-  font-size: 30px;
-  font-weight:bold;
-}
-
-
 .navigation a {
   color: white;
   font-size: 18px;
   font-weight: bold;
 }
 
-.navigation a:hover {
-  text-decoration:dashed;
+.navigation a:hover{
+  color: rgb(138, 167, 255);
+}
+
+.logo {
+  font-size: 30px;
+  font-weight:bold;
 }
 
 .account {
@@ -49,6 +48,11 @@
   font-size: 16px;
   font-weight: bold;
 }
+
+.account a:hover{
+  color: rgb(138, 167, 255);
+}
+
 
 .cart-btn {
   display:flex;

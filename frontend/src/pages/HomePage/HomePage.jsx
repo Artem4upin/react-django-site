@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext } from 'react'
 import { api } from '../../api'
 import './HomePage.css'
 import ProductList from '../../components/ProductList/ProductList'
+import Loading from '../../components/UI/Loading/Loading'
+import Button from '../../components/UI/Button/Button'
+import { Link } from 'react-router-dom'
 // scss
 // context и кастомный хук для проверок
-// сделать компонент для загрузки
 
 function HomePage() {
   
@@ -26,18 +28,23 @@ function HomePage() {
   };
 
   if (loading) {
-    return <div>Загрузка</div>
+    return <Loading />
   }
 
   return (
     <div className="home-page">
-      <div className='content-container'>
-        <div className='banner'>
+      <div className='home-page__content'>
+        <div className='home-page__shop-banner'>
           <h1>TechShop</h1>
           <h3>Магазин компютерных комплектующих</h3>
         </div>
-        <span className='new-products'>Новинки</span>
-        <ProductList products = {products} isProducts={true} />
+         <Link to='/catalog' className="home-page__catalog-banner" >
+            <label className="catalog-banner__label">В каталог</label>
+        </Link>
+          <div className='home-page__new-products'>
+            <label className='new-products__label'>Новинки</label>
+            <ProductList products = {products} isCart={false} />
+        </div>
       </div>
     </div>
   )
