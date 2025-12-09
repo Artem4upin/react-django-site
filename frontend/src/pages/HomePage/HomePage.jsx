@@ -3,8 +3,7 @@ import { api } from '../../api'
 import './HomePage.css'
 import ProductList from '../../components/ProductList/ProductList'
 import Loading from '../../components/UI/Loading/Loading'
-import Button from '../../components/UI/Button/Button'
-import { Link } from 'react-router-dom'
+import Banner from '../../components/UI/Banner/Banner'
 // scss
 // context и кастомный хук для проверок
 
@@ -38,12 +37,10 @@ function HomePage() {
           <h1>TechShop</h1>
           <h3>Магазин компютерных комплектующих</h3>
         </div>
-         <Link to='/catalog' className="home-page__catalog-banner" >
-            <label className="catalog-banner__label">В каталог</label>
-        </Link>
-          <div className='home-page__new-products'>
-            <label className='new-products__label'>Новинки</label>
-            <ProductList products = {products} isCart={false} />
+        <Banner />
+        <div className='home-page__new-products'>
+          <label className='new-products__label'>Новинки</label>
+          <ProductList products = {products} isCart={false} />
         </div>
       </div>
     </div>

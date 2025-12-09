@@ -17,6 +17,8 @@
     display: flex;
     gap: 30px;
     margin-top: 20px;
+    padding: 20px;
+    border: 2px solid rgb(237, 237, 237);
 }
 
 .product-page__info {
