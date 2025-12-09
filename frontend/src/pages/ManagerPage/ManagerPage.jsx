@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../api'
 import './ManagerPage.css'
 import Loading from '../../components/UI/Loading/Loading';
+import ModalConfirm from '../../components/modal/ModalConfirm/ModalConfirm';
 
 function ManagerPage() {
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
+  const [showModal, setShowModal] = useState(false)
+  const [selectedOrderId, setSelectedOrderId] = useState(null)
+  const [selectedNewStatus, setSelectedNewStatus] = useState('')
 
   useEffect(() => {
     loadAllOrders()
@@ -34,6 +38,29 @@ function ManagerPage() {
     } catch (error) {
       alert('Ошибка при обновлении статуса')
     }
+  }
+
+  const handleStatusChangeClick = (orderId, newStatus) => {
+    setSelectedOrderId(orderId)
+    setSelectedNewStatus(newStatus)
+    setShowModal(true)
+}
+
+const confirmStatusChange = async () => {
+  try {
+    await api.patch(`/orders/manager-orders/${selectedOrderId}/`, {
+      status: selectedNewStatus
+    })
+    setOrders(orders.map(order => 
+      order.id === selectedOrderId ? { ...order, status: selectedNewStatus } : order
+    ))
+  } catch (error) {
+    alert('Ошибка обновления статуса')
+  }
+}
+
+  const cancelStatusChange = () => {
+
   }
 
   if (loading) {
@@ -68,10 +95,10 @@ function ManagerPage() {
               
               <div className="order__info">
                 <div>
-                  <span>Статус:</span>
+                  <span>Статус: </span>
                   <select 
                     value={order.status}
-                    onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+                    onChange={(e) => handleStatusChangeClick(order.id, e.target.value)}
                   >
                     <option value="Created">Создан</option>
                     <option value="Work">В работе</option>
@@ -116,6 +143,12 @@ function ManagerPage() {
           ))}
         </div>
       )}
+      <ModalConfirm 
+        showModal={showModal}
+        setShowModal={setShowModal}
+        onConfirm={confirmStatusChange}
+        onCancel={cancelStatusChange}
+      />
     </main>
   )
 }

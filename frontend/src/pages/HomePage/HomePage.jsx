@@ -24,7 +24,7 @@ function HomePage() {
     } catch (error) {
       console.error('Ошибка:', error)
     }
-  };
+  }
 
   if (loading) {
     return <Loading />

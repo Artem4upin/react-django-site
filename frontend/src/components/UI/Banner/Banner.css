@@ -17,6 +17,7 @@
     background: #218cff;
     color: white;
     font-size: 24px;
+    cursor: pointer;
 }
 
 .swiper-slide:hover {

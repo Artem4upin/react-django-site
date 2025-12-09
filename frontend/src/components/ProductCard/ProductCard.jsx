@@ -1,46 +1,28 @@
 import React from "react"
 import "./ProductCard.css"
 import Button from "../UI/Button/Button"
-import { api } from "../../api"
 import { useNavigate } from 'react-router-dom';
+import { addToCart, deleteFromCart, goToProduct } from "../../utils/functions";
 
 function ProductCard({ product, isCart, onItemDelete}) {
 
     const navigate = useNavigate()
 
-    const addToCart = async () => {
-        try {
-            const response = await api.post('cart/cart-items/', {
-                product: product.id,
-                quantity: 1
-            })
-            console.log(response.data)
-            alert(`Товар ${product.name} добавлен в корзину`)
-        } catch (error) {
-            console.error('Ошибка добавления в корзину')
-        }
+    const handleTitleClick = () => {
+        goToProduct(navigate, product.id);
     }
 
-    const deleteFromCart = async (e) => {
-        try {
-            const response = await api.delete(`/cart/cart-items/${product.id}/`)
-            console.log('Товар удален:', response.data)
-            if (onItemDelete) {
-                onItemDelete()
-            }
-        } catch (error) {
-            console.error('Ошибка удаления из корзины:', error)
-            alert('Ошибка удаления товара')
-        }
+    const handleAddToCartClick = () => {
+        addToCart(product.id, 1, product.name)
     }
 
-     const goToProduct = () => {
-        navigate(`/product/${product.id}`);
-    };
+    const handleDeleteFromCartClick = () => {
+        deleteFromCart(product.id, onItemDelete)
+    }
 
     return (
         <div className="product-card" >
-            <h3 className="product-card__title" onClick={goToProduct}>{product.name || product.product_name}</h3>
+            <h3 className="product-card__title" onClick={handleTitleClick}>{product.name || product.product_name}</h3>
             <p className="product-card__price">{product.price || product.product_price} ₽</p> 
             <div className="product-card__parameters">
                 {isCart? (
@@ -60,9 +42,9 @@ function ProductCard({ product, isCart, onItemDelete}) {
             </div>
             <p className="product-card__description">{product.description}</p>
             {isCart ? (
-                <Button className='exit-btn' text='Удалить' onClick={deleteFromCart} />
+                <Button className='exit-btn' text='Удалить' onClick={handleDeleteFromCartClick} />
             ) : (
-                <Button className = 'add-to-cart-btn' text = 'В корзину' onClick={addToCart} />
+                <Button className = 'add-to-cart-btn' text = 'В корзину' onClick={handleAddToCartClick} />
             )
         }
         </div>

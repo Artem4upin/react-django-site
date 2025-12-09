@@ -30,7 +30,7 @@ function Banner() {
                         <PCIcon />
                     </div>
                     <div className="banner__slide-content">
-                        <h3>Компьютерные комплектующие от поставщиков</h3>
+                        <h3>Компьютерные комплектующие от производителей</h3>
                     </div>
                 </SwiperSlide>
                 
@@ -54,7 +54,7 @@ function Banner() {
                         <ContactIcon />
                     </div>
                     <div className="banner__slide-content">
-                        <h3>Свяжитесь с нами для консультации</h3>
+                        <h3>Свяжитесь с нами для сотрудничества</h3>
                     </div>
                 </SwiperSlide>
             </Swiper>

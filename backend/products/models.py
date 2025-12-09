@@ -6,12 +6,20 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Subcategory(models.Model):
+    name = models.CharField(max_length=50)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.name} - {self.category.name}"
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=1)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True, blank=True)
+    subcategory = models.ForeignKey(Subcategory, on_delete=models.PROTECT, null=True, blank=True)
     description = models.TextField(blank=True)
     creation_date = models.DateField(auto_now_add=True)
     

@@ -41,12 +41,12 @@ function ModalChangePassword ({showModal, setShowModal}) {
         }
     }
 
-    if (!showModal) return null;
+    if (!showModal) return
 
     return (
-        <div className="ModalChangePassword">
-            <div className="main-container">
-                <form className='change-password-form' onSubmit={handleSubmit(onSubmit)}>
+        <div className="modal-change-password">
+            <div className="modal-change-password__main-container">
+                <form className='modal-change-password__change-password-form' onSubmit={handleSubmit(onSubmit)}>
                     <span>Смена пароля</span>
                     
                     {newPassword !== newPasswordRepeat && ( 

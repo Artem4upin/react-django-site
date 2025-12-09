@@ -4,6 +4,7 @@ import { api } from '../../api';
 import './ProductPage.css';
 import Button from '../../components/UI/Button/Button';
 import Loading from '../../components/UI/Loading/Loading';
+import { addToCart } from '../../utils/functions';
 
 function ProductPage() {
     const { id } = useParams()
@@ -28,16 +29,8 @@ function ProductPage() {
         }
     };
 
-    const addToCart = async () => {
-        try {
-            await api.post('cart/cart-items/', {
-                product: product.id,
-                quantity: quantity
-            })
-            alert(`Товар ${product.name} добавлен в корзину`)
-        } catch (error) {
-            console.error('Ошибка добавления в корзину')
-        }
+    const handleAddToCartClick = () => {
+        addToCart(product.id, quantity, product.name)
     }
 
     if (loading) {
@@ -81,7 +74,7 @@ function ProductPage() {
                     <div className="product-page__button-container">
                     <Button 
                         text="Добавить в корзину" 
-                        onClick={addToCart}
+                        onClick={handleAddToCartClick}
                         className="add-to-cart-btn"
                     />
                         <div className='product-page__quantity-container'>
