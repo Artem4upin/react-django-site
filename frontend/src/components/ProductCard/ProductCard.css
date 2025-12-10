@@ -29,6 +29,25 @@
   list-style: none; 
 }
 
-.product-card button {
-  margin-top: 10px;
+.product-card__cart-actions {
+  display: flex;
+  padding-top: 10px;
+}
+
+.cart-actions__checkbox {
+  display: flex;
+  flex-direction: row ;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.cart-actions__checkbox-title {
+  margin-bottom: 4px;
+  margin-right: 10px;
+}
+
+.cart-actions__checkbox-input {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }

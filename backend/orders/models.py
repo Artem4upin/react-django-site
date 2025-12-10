@@ -15,6 +15,7 @@ class SoftDeleteModel(models.Model):
 
     def hard_delete(self):
         super().delete()
+        
 class Order(SoftDeleteModel):
     STATUS_CHOICES = [
         ('Created', 'Создан'),
