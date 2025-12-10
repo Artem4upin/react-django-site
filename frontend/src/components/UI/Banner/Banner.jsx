@@ -13,6 +13,7 @@ function Banner() {
     
     const navigate = useNavigate()
 
+    
     return (
         <div className="banner">
             <Swiper
