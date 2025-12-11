@@ -3,8 +3,30 @@
     padding: 20px;
 }
 
+.catalog-page__title-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .catalog-page__title {
     margin-bottom: 30px;
+}
+
+.catalog-page__title-category {
+    display: flex;
+    gap: 6px;
+    font-weight: bold;
+}
+
+.catalog-page__content {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 15px;
+}
+
+.catalog-page .product-card {
+    margin-bottom: 10px;
 }
 
 .catalog-page__product-sum {

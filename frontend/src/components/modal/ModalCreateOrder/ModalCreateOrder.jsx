@@ -6,24 +6,24 @@ function ModalCreateOrder({
     showOrderModal, 
     setShowOrderModal, 
     createOrder, 
-    selectedCount,
+    selectedItemsCount,
     totalPrice 
 }) {
     const [address, setAddress] = useState('')
-    const [date, setDate] = useState('')
 
-    if (!showOrderModal) return
+    if (!showOrderModal) return null
 
     const handleSubmit = () => {
         if (!address) {
             alert('Введите адрес доставки')
             return
         }
-        if (!date) {
-            alert('Выберите дату доставки')
-            return
-        }
-        createOrder(address, date)
+        
+        const nextWeek = new Date()
+        nextWeek.setDate(nextWeek.getDate() + 7)
+        const deliveryDate = nextWeek.toISOString().split('T')[0]
+        
+        createOrder(address, deliveryDate)
     }
 
     const handleCancel = () => {
@@ -32,13 +32,14 @@ function ModalCreateOrder({
 
     return (
         <div className="modal-create-order">
-            <div className="modal-create-order__overlay"></div>
+            <div className="modal-create-order__overlay" onClick={handleCancel}></div>
             <div className="modal-create-order__content">
                 <h3>Оформление заказа</h3>
                 
                 <div className="modal-create-order__order-data">
-                    <p>Товаров к заказу: {selectedCount} шт.</p>
+                    <p>Товаров к заказу: {selectedItemsCount} шт.</p>
                     <p>Сумма заказа: {totalPrice} ₽</p>
+                    <p className="modal-create-order__delivery-info">Доставка - 7 дней</p>
                 </div>
                 
                 <div className="modal-create-order__field">
@@ -51,22 +52,13 @@ function ModalCreateOrder({
                         className="modal-create-order__input"
                     />
                 </div>
-                <div className="modal-create-order__field">
-                    <label>Дата доставки:</label>
-                    <input 
-                        type="date"
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                        className="modal-create-order__input"
-                    />
-                </div>
                 
                 <div className="modal-create-order__buttons">
                     <Button 
                         className="submit-btn"
                         text="Подтвердить заказ"
                         onClick={handleSubmit}
-                        disabled={!address || !date}
+                        disabled={!address}
                     />
                     <Button 
                         className="exit-btn"

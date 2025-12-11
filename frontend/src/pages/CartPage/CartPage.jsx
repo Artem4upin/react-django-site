@@ -4,6 +4,7 @@ import { api } from "../../api";
 import './CartPage.css'
 import Button from "../../components/UI/Button/Button";
 import ModalCreateOrder from "../../components/modal/ModalCreateOrder/ModalCreateOrder";
+import { calculateTotalPrice } from "../../utils/functions";
 
 
 function CartPage() {
@@ -11,10 +12,18 @@ function CartPage() {
     const [ cartItems, setCartItems ] = useState([])
     const [selectedCartItems, setSelectedCartItems] = useState([])
     const [showOrderModal, setShowOrderModal] = useState(false)
+    const [selectedItemsCount, setSelectedItemsCount] = useState(0)
+    const [selectedTotalPrice, setSelectedTotalPrice] = useState(0)
 
     useEffect(() => {
         loadCart()
     },[])
+
+    useEffect(() => {
+        const selected = getSelectedItems()
+        setSelectedItemsCount(selected.length)
+        setSelectedTotalPrice(calculateTotalPrice(selected))
+    }, [selectedCartItems, cartItems])
 
     const loadCart = async () => {
         try {
@@ -39,24 +48,15 @@ function CartPage() {
     }
 
     const handleOrderClick = () => {
-        const selected = getSelectedItems()
+        if (selectedItemsCount == 0) {
+            return
+        }
         setShowOrderModal(true)
     }
 
-    const onItemDelete = () => {
-        loadCart()
-    }
-
-    const calculateTotal = () => {
-        return cartItems.reduce((sum, item) => {
-            return sum + (parseFloat(item.price || item.product_price) * (item.quantity || 1))
-        }, 0).toFixed(2)
-    }
-
-    const calculateSelectedTotal = () => {
-        return getSelectedItems().reduce((sum, item) => {
-            return sum + (parseFloat(item.price || item.product_price) * (item.quantity || 1))
-        }, 0).toFixed(2)
+    const onItemDelete = (deletedItemId) => {
+        setCartItems(prev => prev.filter(item => item.id !== deletedItemId))
+        setSelectedCartItems(prev => prev.filter(id => id !== deletedItemId))
     }
 
     const createOrder = async (address, date) => {
@@ -67,8 +67,8 @@ function CartPage() {
                 cart_items: selectedCartItems
             })
             setShowOrderModal(false)
+            setCartItems(prev => prev.filter(item => !selectedCartItems.includes(item.id)))
             setSelectedCartItems([])
-            loadCart()
         } catch (error) {
             console.error('Ошибка:', error)
             alert(error.response?.data?.error || 'Не удалось создать заказ')
@@ -80,11 +80,6 @@ function CartPage() {
             <div className="cart-page__content">
                 <div className="cart-page__label-container">
                     <h1 className="cart-page__label">Корзина</h1>
-                    <Button 
-                    className='submit-btn' 
-                    text={`Заказать (${getSelectedItems().length})`} 
-                    onClick={handleOrderClick}
-                    disabled={getSelectedItems().length === 0}/>
                 </div>
                 {cartItems.length == 0? 
                 (<span className="cart-page__not-found">У вас еще нет товаров в корзине</span>
@@ -101,23 +96,30 @@ function CartPage() {
                         />
 
                          <div className="cart-total">
-                            <div className="cart-total__label">Всего в корзине: {calculateTotal()} ₽</div>
-                            {getSelectedItems().length > 0 && (
+                            <div className="cart-total__label">Всего в корзине: {calculateTotalPrice(cartItems)} ₽</div>
+                            {selectedItemsCount > 0 && (
                             <div className="cart-selected-total">
-                                <div className="cart-selected-total__label">В заказе будет ({getSelectedItems().length}) товаров:</div>
-                                <div className="cart-selected-total__sum">{calculateSelectedTotal()} ₽</div>
+                                <div className="cart-selected-total__label">В заказе будет ({selectedItemsCount}) товаров:</div>
+                                <div className="cart-selected-total__sum">{selectedTotalPrice} ₽</div>
                             </div>
                         )}
-                    </div>
+                            <div className="cart-total__button-container">
+                                <Button 
+                                className='submit-btn' 
+                                text={`Заказать (${selectedItemsCount})`} 
+                                onClick={handleOrderClick}
+                                disabled={selectedItemsCount === 0}/>
+                            </div>
                         </div>
+                    </div>
                         
                 )}
                 <ModalCreateOrder 
                     showOrderModal={showOrderModal}
                     setShowOrderModal={setShowOrderModal}
                     createOrder={createOrder}
-                    selectedCount={getSelectedItems().length}
-                    totalPrice={calculateSelectedTotal()}
+                    selectedItemsCount={selectedItemsCount}
+                    totalPrice={selectedTotalPrice} 
                 />
             </div>
         </div>

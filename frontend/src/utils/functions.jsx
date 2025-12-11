@@ -22,10 +22,16 @@ export const deleteFromCart = async (productId, onItemDelete) => {
             const response = await api.delete(`/cart/cart-items/${productId}/`)
             console.log('Товар удален:', response.data)
             if (onItemDelete) {
-                onItemDelete()
+                onItemDelete(productId)
             }
         } catch (error) {
             console.error('Ошибка удаления из корзины:', error)
             alert('Ошибка удаления товара')
         }
 }
+
+    export const calculateTotalPrice = (items) => {
+        return items.reduce((sum, item) => {
+            return sum + (parseFloat(item.price || item.product_price) * (item.quantity || 1))
+        }, 0).toFixed(2)
+    }
