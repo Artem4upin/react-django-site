@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate
 from .serializers import UpdateUserDataSerializer
-from django.contrib.auth.hashers import check_password
+from .models import User
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -126,3 +126,44 @@ def change_password(request):
             'message': 'Пароль изменен'
         }
     )
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def register_view(request):
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
+    
+    if not all([username, email, password]):
+        return Response({'error': 'Все поля обязательны'}, status=400)
+    
+    if User.objects.filter(username=username).exists():
+        return Response({'error': 'Логин уже занят'}, status=400)
+    
+    if User.objects.filter(email=email).exists():
+        return Response({'error': 'Email уже используется'}, status=400)
+    
+    try:
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+        
+        user.user_type = 'User'
+        user.save()
+
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'success': True,
+            'message': 'Регистрация успешна',
+            'token': token.key,
+            'user': {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'user_type': user.user_type
+            }
+        })
+    except Exception as e:
+        return Response({'error': str(e)}, status=400)

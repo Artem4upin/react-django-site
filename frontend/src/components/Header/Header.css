@@ -1,9 +1,10 @@
 .header {
   width: 100%;
+  height: 72px;
   padding: 10px 35px;
   background-color: #095bad;
   color: white;
-  margin-bottom: 20px;
+  padding-bottom: 20px;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -41,12 +42,14 @@
   font-size: 14px;
   align-items: center;
   gap: 30px;
+  cursor: pointer;
 }
 
 .account a{
   color:  white;
   font-size: 16px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .account a:hover{
@@ -59,4 +62,5 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  cursor: pointer;
 }

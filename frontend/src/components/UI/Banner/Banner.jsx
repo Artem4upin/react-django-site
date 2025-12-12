@@ -8,11 +8,13 @@ import PCIcon from "../../icons/PCIcon";
 import ContactIcon from "../../icons/ContactIcon";
 import CarIcon from "../../icons/CarIcon";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../hooks/authContext";
+import { useContext } from "react";
 
 function Banner() {
     
     const navigate = useNavigate()
-
+    const { user } = useContext(AuthContext)
     
     return (
         <div className="banner">
@@ -35,7 +37,7 @@ function Banner() {
                     </div>
                 </SwiperSlide>
                 
-                <SwiperSlide onClick={() => navigate('/orders')}>
+                <SwiperSlide onClick={user && (() => navigate('/orders'))}>
                     <div className="banner__slide-content">
                         <h1>Доставка</h1>
                     </div>

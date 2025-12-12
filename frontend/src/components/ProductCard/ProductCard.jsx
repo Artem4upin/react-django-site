@@ -1,8 +1,9 @@
-import React from "react"
+import React, { useContext } from "react"
 import "./ProductCard.css"
 import Button from "../UI/Button/Button"
 import { useNavigate } from 'react-router-dom';
 import { addToCart, deleteFromCart, goToProduct } from "../../utils/functions";
+import { AuthContext } from "../../hooks/authContext";
 
 function ProductCard({ 
     product, 
@@ -12,6 +13,8 @@ function ProductCard({
     onCheckboxChange 
 }) {
     const navigate = useNavigate()
+    
+    const { user } = useContext(AuthContext)
 
     const handleTitleClick = () => {
         if (isCart) {
@@ -72,9 +75,9 @@ function ProductCard({
                         />
                     </div>
                 </div>
-            ) : (
+            ) : ( user && (
                 <Button className='add-to-cart-btn' text='В корзину' onClick={handleAddToCartClick} />
-            )}
+            ))}
         </div>
     );
 }

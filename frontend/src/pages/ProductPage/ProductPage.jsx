@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../../api';
 import './ProductPage.css';
 import Button from '../../components/UI/Button/Button';
 import Loading from '../../components/UI/Loading/Loading';
 import { addToCart } from '../../utils/functions';
+import { AuthContext } from '../../hooks/authContext';
 
 function ProductPage() {
     const { id } = useParams()
     const navigate = useNavigate()
     
+    const { user } = useContext(AuthContext)
     const [product, setProduct] = useState(null)
     const [quantity, setQuantity] = useState(1)
     const [loading, setLoading] = useState(true)
@@ -71,12 +73,14 @@ function ProductPage() {
 
                     
                 </div>
+                    {user && (
                     <div className="product-page__button-container">
-                    <Button 
-                        text="Добавить в корзину" 
-                        onClick={handleAddToCartClick}
-                        className="add-to-cart-btn"
-                    />
+                        <Button 
+                            text="Добавить в корзину" 
+                            onClick={handleAddToCartClick}
+                            className="add-to-cart-btn"
+                        />
+                        
                         <div className='product-page__quantity-container'>
                             <Button className='quantity-btn'
                             onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -100,9 +104,9 @@ function ProductPage() {
                             </Button>
                         </div>
                     </div>
-                
+                    )}
+                </div>
             </div>
-        </div>
     )
 }
 

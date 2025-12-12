@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ProductList from "../../components/ProductList/ProductList";
 import { api } from "../../api";
 import './CartPage.css'
 import Button from "../../components/UI/Button/Button";
 import ModalCreateOrder from "../../components/modal/ModalCreateOrder/ModalCreateOrder";
 import { calculateTotalPrice } from "../../utils/functions";
+import { AuthContext } from "../../hooks/authContext";
 
 
 function CartPage() {
 
+    const { user } = useContext(AuthContext)
     const [ cartItems, setCartItems ] = useState([])
     const [selectedCartItems, setSelectedCartItems] = useState([])
     const [showOrderModal, setShowOrderModal] = useState(false)
@@ -81,8 +83,9 @@ function CartPage() {
                 <div className="cart-page__label-container">
                     <h1 className="cart-page__label">Корзина</h1>
                 </div>
+                
                 {cartItems.length == 0? 
-                (<span className="cart-page__not-found">У вас еще нет товаров в корзине</span>
+                (<span className="cart-page__not-found">У вас еще нет товаров в корзине{!user && (', чтобы воспользоваться корзиной войдите в аккаунт')} </span>
                 ) : (
                     <div>
                         <ProductList 

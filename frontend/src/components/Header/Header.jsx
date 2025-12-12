@@ -20,12 +20,12 @@ function Header(){
             </nav>
 
             <div className='account'>
-                
-                <Link to="/cart" className='cart-btn'>
-                <CartIcon />
-                <span>Корзина</span>
-                </Link>
-
+                <div className='account__cart-icon'>
+                    <Link to="/cart" className='cart-btn' >
+                    <CartIcon  />
+                    <span>Корзина</span>
+                    </Link>
+                </div>
                 <div className='account-btn'>
                     {user ? (<Link to='/account'>Личный кабинет</Link>) 
                     : (<Link to='/login'>Войти</Link>)

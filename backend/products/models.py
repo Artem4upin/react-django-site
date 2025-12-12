@@ -14,9 +14,16 @@ class Subcategory(models.Model):
     def __str__(self):
         return f"{self.name} - {self.category.name}"
 
+class Brand(models.Model):
+    name = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True, blank=True)
     subcategory = models.ForeignKey(Subcategory, on_delete=models.PROTECT, null=True, blank=True)
@@ -37,7 +44,7 @@ class Parameter(models.Model):
 class Product_parameters(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     parameter = models.ForeignKey(Parameter, on_delete=models.CASCADE, null=True)
-    value = models.CharField(max_length=100, default='')
+    value = models.CharField(max_length=50, default='')
 
 
     def __str__(self):

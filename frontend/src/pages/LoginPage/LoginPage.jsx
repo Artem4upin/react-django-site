@@ -1,96 +1,195 @@
 import React, { useContext, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { useForm } from 'react-hook-form' 
 import { api } from '../../api'
 import './LoginPage.css'
 import { AuthContext } from '../../hooks/authContext'
 import Button from '../../components/UI/Button/Button'
-import Input from '../../components/UI/Input/Input'
+import InputForm from '../../components/UI/Input/InputForm'
 
 function LoginPage() { 
-  const { setUser } = useContext(AuthContext) 
-  const [formData, setFormData] = useState({
-    username: '',
-    password: ''
-  })
+  const { setUser } = useContext(AuthContext)
+  const [isRegistration, setIsRegistration] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [APIError, setAPIError] = useState('')
   const navigate = useNavigate()
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value 
-    })
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    watch,
+  } = useForm({
+    defaultValues: {
+      username: '',
+      email: '',
+      password: '',
+      password_repeat: '',
+    }
+  })
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+  const password = watch('password')
+
+  const onSubmit = async (data) => {
+    setLoading(true)
+    setAPIError('')
 
     try {
-      const response = await api.post('/auth/login/', formData)
-      if (response.status === 200) {
-        console.log('Успешный вход:', response.data);
+      const loginURL = isRegistration ? '/auth/register/' : '/auth/login/'
+      const dataToSend = isRegistration 
+        ? data 
+        : { username: data.username, password: data.password }
+      
+      const response = await api.post(loginURL, dataToSend)
+      
+      if (response.status === 200 || response.data.success) {
         localStorage.setItem('token', response.data.token)
         setUser(response.data.user)
+        reset()
         navigate('/')
       }
     } catch (err) {
       if (err.response) {
-        setError(err.response.data.error || 'Ошибка входа')
+        setAPIError(err.response.data.error || `Ошибка ${isRegistration ? 'регистрации' : 'входа'}`)
       } else if (err.request) {
-        setError('Ошибка сети')
+        setAPIError('Ошибка сети')
       } else {
-        setError('Произошла ошибка')
+        setAPIError('Произошла ошибка')
       }
     } finally {
       setLoading(false)
     }
   }
 
+  const switchMode = () => {
+    setIsRegistration(!isRegistration)
+    setAPIError('')
+    reset({
+      username: '',
+      email: '',
+      password: '',
+      password_repeat: '',
+    })
+  }
+
   return (
     <div className="login-page">
       <div className="auth-container">
-        <h2>Вход</h2>
+        <h2>{isRegistration ? 'Регистрация' : 'Вход'}</h2>
         
-        {error && <div className="error-message">{error}</div>}
+        {APIError && <div className="error-message">{APIError}</div>}
         
-        <form className='auth-form' onSubmit={handleSubmit}>
+        <form className='auth-form' onSubmit={handleSubmit(onSubmit)}>
+          {isRegistration && (
+            <div>
+              <div className="form-input-group">
+                <InputForm
+                  id="email"
+                  name="email"
+                  label="Email"
+                  type="email"
+                  register={register}
+                  validation={{
+                    required: 'Email обязателен',
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: 'Некорректный email'
+                    }
+                  }}
+                  error={errors.email}
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+          )}
+          
           <div className="form-input-group">
-            <Input
+            <InputForm
               id="username"
               name="username"
+              label="Логин"
               type="text"
-              value={formData.username}
-              onChange={handleChange}
-              placeholder="Введите логин"
-              required
+              register={register}
+              validation={{
+                required: 'Логин обязателен',
+                minLength: {
+                  value: 5,
+                  message: 'Минимум 5 символа'
+                },
+                maxLength: {
+                  value: 50,
+                  message: 'Максимум 50 символов'
+                }
+              }}
+              error={errors.username}
+              autoComplete="off"
             />
           </div>
           
           <div className="form-input-group">
-            <Input
+            <InputForm
               id="password"
               name="password"
+              label="Пароль"
               type="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Введите пароль"
-              autoComplete='off'
-              required
+              register={register}
+              validation={{
+                required: 'Пароль обязателен',
+                minLength: {
+                  value: 6,
+                  message: 'Минимум 6 символов'
+                },
+                maxLength: {
+                  value: 50,
+                  message: 'Максимум 50 символов'
+                }
+              }}
+              error={errors.password}
+              autoComplete="off"
             />
           </div>
           
+          {isRegistration && (
+            <div className="form-input-group">
+              <InputForm
+                id="password_repeat"
+                name="password_repeat"
+                label="Повторите пароль"
+                type="password"
+                register={register}
+                validation={{
+                  required: 'Повтор пароля обязателен',
+                  validate: value => value === password || 'Пароли не совпадают'
+                }}
+                error={errors.password_repeat}
+                autoComplete="off"
+              />
+            </div>
+          )}
+          
           <Button  
+            type="submit"
             className="login-submit-btn" 
             disabled={loading} 
-            text={loading ? 'Вход...' : 'Войти'}
+            text={loading 
+              ? (isRegistration ? 'Регистрация...' : 'Вход...') 
+              : (isRegistration ? 'Зарегистрироваться' : 'Войти')
+            }
           />
         </form>
         
         <div className="auth-links">
-          <Link to='/registration' className="registration-btn">Зарегистрироваться</Link>
+          <button 
+            className="switch-mode-btn"
+            onClick={switchMode}
+            type="button"
+          >
+            {isRegistration 
+              ? 'Войти' 
+              : 'Зарегистрироваться'
+            }
+          </button>
         </div>
 
         <Link to="/" className="back-link">На главную</Link>
@@ -99,4 +198,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default LoginPage
