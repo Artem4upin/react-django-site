@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import './Category.css';
-import { api } from '../../../api';
-import Loading from '../Loading/Loading';
-import Button from '../Button/Button';
+import { api } from '../../api';
+import Loading from '../UI/Loading/Loading';
+import Button from '../UI/Button/Button';
 
 function Category({ onFilterChange}) {
     const [categories, setCategories] = useState([])

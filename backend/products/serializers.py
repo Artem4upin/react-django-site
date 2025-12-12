@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Product, Product_parameters, Subcategory
+from .models import *
 
 class ProductSerializer(serializers.ModelSerializer):
     parameters = serializers.SerializerMethodField()
@@ -7,7 +7,7 @@ class ProductSerializer(serializers.ModelSerializer):
     subcategory_id = serializers.IntegerField(source='subcategory.id', read_only=True)
     class Meta:
         model = Product
-        fields = ['id', 'name', 'price', 'description', 'creation_date', 'parameters', 'category_id', 'subcategory_id']
+        fields = ['id', 'name', 'price', 'quantity', 'brand', 'description', 'creation_date', 'parameters', 'category_id', 'subcategory_id']
 
 
     def get_parameters(self, product_obj):
@@ -17,6 +17,7 @@ class ProductSerializer(serializers.ModelSerializer):
         for i in product_params:
             if i.parameter:
                 result.append({
+                    'param_id': i.parameter.id,
                     'name': i.parameter.name,
                     'value': i.value
                 })
@@ -37,3 +38,8 @@ class CategorySerializer(serializers.ModelSerializer):
     def get_subcategories(self, obj):
         subcategories = obj.subcategory_set.all()
         return SubcategorySerializer(subcategories, many=True).data
+    
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ['id', 'name']
