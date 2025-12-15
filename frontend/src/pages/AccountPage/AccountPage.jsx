@@ -116,7 +116,7 @@ function AccountPage() {
                                             value={username}
                                             onChange={(e) => setUsername(e.target.value)}
                                             required
-                                            className="form-input"
+                                            className="account-page__form-input"
                                         />
                                     </div>
                                     
@@ -130,7 +130,7 @@ function AccountPage() {
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             required
-                                            className="form-input"
+                                            className="account-page__form-input"
                                         />
                                     </div>
                                     
@@ -142,7 +142,7 @@ function AccountPage() {
                                             id="first-name"
                                             value={first_name}
                                             onChange={(e) => setFirstName(e.target.value)}
-                                            className="form-input"
+                                            className="account-page__form-input"
                                         />
                                     </div>
                                     
@@ -154,7 +154,7 @@ function AccountPage() {
                                             id="last-name"
                                             value={last_name}
                                             onChange={(e) => setLastName(e.target.value)}
-                                            className="form-input"
+                                            className="account-page__form-input"
                                         />
                                     </div>
                                     
@@ -169,7 +169,7 @@ function AccountPage() {
                                             pattern="[78]{1}[0-9]{10}"
                                             value={phone}
                                             onChange={(e) => setPhone(e.target.value)}
-                                            className="form-input"
+                                            className="account-page__form-input"
                                         />
                                     </div>
                                 </div>

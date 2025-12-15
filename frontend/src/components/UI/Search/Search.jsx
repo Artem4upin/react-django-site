@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import './Search.css'
 import Input from '../Input/Input'
-import Button from "../Button/Button";
+import Button from "../button/button";
 import { api } from "../../../api";
 
 function Search ({searchResult, setSearchResult}) {

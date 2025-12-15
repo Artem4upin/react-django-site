@@ -6,7 +6,6 @@ import Loading from '../../components/UI/Loading/Loading';
 import Category from '../../components/Category/Category';
 import ProductFilter from '../../components/ProductFilter/ProductFilter';
 import Search from '../../components/UI/Search/Search';
-import Button from '../../components/UI/Button/Button';
 
 function CatalogPage() {
     const [products, setProducts] = useState([])

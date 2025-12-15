@@ -3,13 +3,20 @@ import { api } from '../../api'
 import './ManagerPage.css'
 import Loading from '../../components/UI/Loading/Loading';
 import ModalConfirm from '../../components/modal/ModalConfirm/ModalConfirm';
+import Input from '../../components/UI/Input/Input';
+import Button from '../../components/UI/button/button';
 
 function ManagerPage() {
   const [orders, setOrders] = useState([])
+  const [filteredOrders, setFilteredOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [selectedOrderId, setSelectedOrderId] = useState(null)
   const [selectedNewStatus, setSelectedNewStatus] = useState('')
+
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
     loadAllOrders()
@@ -18,7 +25,9 @@ function ManagerPage() {
   const loadAllOrders = async () => {
     try {
       const response = await api.get('/orders/manager-orders/')
-      setOrders(response.data)
+      const ordersData = response.data
+      setOrders(ordersData)
+      setFilteredOrders(ordersData)
     } catch (error) {
       console.error('Ошибка загрузки заказов:', error)
     } finally {
@@ -26,41 +35,75 @@ function ManagerPage() {
     }
   }
 
-  const updateOrderStatus = async (orderId, newStatus) => {
-    try {
-      await api.patch(`/orders/manager-orders/${orderId}/`, {
-        status: newStatus
-      })
-      alert('Статус заказа изменен')
-      setOrders(orders.map(order => 
-        order.id === orderId ? { ...order, status: newStatus } : order
-      ))
-    } catch (error) {
-      alert('Ошибка при обновлении статуса')
+  const applyFilter = () => {
+    if (!startDate && !endDate) {
+      setFilteredOrders(orders)
+      setIsFiltered(false)
+      return
     }
+
+    const filtered = orders.filter(order => {
+      const orderDate = new Date(order.created_at)
+      orderDate.setHours(0, 0, 0, 0)
+      
+      let startState = true
+      let endState = true
+      
+      if (startDate) {
+        const start = new Date(startDate)
+        startState = orderDate >= start
+      }
+      
+      if (endDate) {
+        const end = new Date(endDate)
+        endState = orderDate <= end
+      }
+      
+      return startState && endState
+    })
+
+    setFilteredOrders(filtered)
+    setIsFiltered(true)
+  }
+
+  const resetFilter = () => {
+    setStartDate('')
+    setEndDate('')
+    setFilteredOrders(orders)
+    setIsFiltered(false)
   }
 
   const handleStatusChangeClick = (orderId, newStatus) => {
     setSelectedOrderId(orderId)
     setSelectedNewStatus(newStatus)
     setShowModal(true)
-}
-
-const confirmStatusChange = async () => {
-  try {
-    await api.patch(`/orders/manager-orders/${selectedOrderId}/`, {
-      status: selectedNewStatus
-    })
-    setOrders(orders.map(order => 
-      order.id === selectedOrderId ? { ...order, status: selectedNewStatus } : order
-    ))
-  } catch (error) {
-    alert('Ошибка обновления статуса')
   }
-}
+
+  const confirmStatusChange = async () => {
+    try {
+      await api.patch(`/orders/manager-orders/${selectedOrderId}/`, {
+        status: selectedNewStatus
+      })
+      const updatedOrders = orders.map(order => 
+        order.id === selectedOrderId ? { ...order, status: selectedNewStatus } : order
+      )
+      
+      const updatedFilteredOrders = filteredOrders.map(order => 
+        order.id === selectedOrderId ? { ...order, status: selectedNewStatus } : order
+      )
+      
+      setOrders(updatedOrders)
+      setFilteredOrders(updatedFilteredOrders)
+      
+      setShowModal(false)
+    } catch (error) {
+      alert('Ошибка обновления статуса')
+      setShowModal(false)
+    }
+  }
 
   const cancelStatusChange = () => {
-
+    setShowModal(false)
   }
 
   if (loading) {
@@ -68,22 +111,58 @@ const confirmStatusChange = async () => {
   }
 
   return (
-
     <main className="manager-page">
       <h1>Панель управления</h1>
       
       <div className="manager-page__order-sum-container">
         <div className="manager-page__order-sum">
-          <h3>Всего заказов</h3>
-          <p>{orders.length}</p>
+          <h3>Количество заказов</h3>
+          <p>{isFiltered ? filteredOrders.length : orders.length}</p>
+        </div>
+      </div>
+      
+      <div className='manager-page__filter-container'>
+        <h4>Фильтр за период</h4>
+
+        <p>От</p>
+        <Input 
+          type='date'
+          className='input'
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+
+        />
+        
+        <p>До</p>
+        <Input
+          type='date'
+          className='input'
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+
+        />
+        
+        <div className='filter-container__buttons'>
+          <Button 
+            text={'Применить'}
+            className={'submit-btn'}
+            onClick={applyFilter}
+          />
+
+          <Button 
+            text={'Отмена'}
+            className={'btn'}
+            onClick={resetFilter}
+            disabled={!isFiltered && !startDate && !endDate}
+          />
         </div>
       </div>
 
-      {orders.length == 0 ? (
-        <p className="no-orders">Заказов нет</p>
+        {filteredOrders.length === 0 ? (
+        <p className="manager-page__no-orders">Заказы не найдены</p>
       ) : (
         <div className="orders">
-          {orders.map(order => (
+          {filteredOrders.map(order => (
             <div key={order.id} className="orders__card">
               <header className="order__header">
                 <div>
@@ -111,7 +190,7 @@ const confirmStatusChange = async () => {
                 
                 <div>
                   <span>Сумма: </span>
-                  <strong>{parseFloat(order.price_sum).toFixed(2)} ₽</strong>
+                  <p>{parseFloat(order.price_sum).toFixed(2)} ₽</p>
                 </div>
                 
                 <div>
@@ -143,6 +222,7 @@ const confirmStatusChange = async () => {
           ))}
         </div>
       )}
+      
       <ModalConfirm 
         showModal={showModal}
         setShowModal={setShowModal}

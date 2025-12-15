@@ -1,15 +1,5 @@
-.order-list h1 {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
 .order-list__orders-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
-.order-list__not-found{
-    justify-self: center;
-    margin-top: 120px;
-    margin-bottom: 300px;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 30px;
 }

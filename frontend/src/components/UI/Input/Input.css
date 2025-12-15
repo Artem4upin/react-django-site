@@ -6,12 +6,26 @@
     padding-right: 6px; 
 }
 
-.form-input {
+.account-page__form-input {
     width: 100%;
     min-height: 40px; 
     padding: 8px 12px;
     border: 1px solid #ced4da;
     border-radius: 4px;
     font-size: 14px;
-    transition: border-color 0.2s;
+}
+
+.input-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.input-form__label {
+    flex-shrink: 0;
+    margin-right: 15px;
+    text-align: left;
+    min-width: 180px;
 }

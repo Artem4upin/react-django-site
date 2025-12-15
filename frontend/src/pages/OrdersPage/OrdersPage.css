@@ -1,5 +1,16 @@
 .orders-page {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.orders-page h1 {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  justify-self: center;
+}
+
+.orders-page__not-found {
+  padding-top: 200px;
+  padding-bottom: 500px;
 }
