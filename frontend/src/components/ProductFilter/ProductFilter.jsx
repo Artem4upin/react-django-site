@@ -5,30 +5,30 @@ import Loading from '../UI/Loading/Loading';
 import Button from '../UI/Button/Button';
 
 function ProductFilter({ onFilterChange, onResetProductFilters, selectedCategory }) {
-    const [brands, setBrands] = useState([]);
-    const [parameters, setParameters] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [brands, setBrands] = useState([])
+    const [parameters, setParameters] = useState([])
+    const [loading, setLoading] = useState(true)
     
-    const minPriceRef = useRef(null);
-    const maxPriceRef = useRef(null);
-    const brandSelectRef = useRef(null);
-    const paramSelectRef = useRef(null);
-    const paramValueSelectRef = useRef(null);
-    const inStockCheckboxRef = useRef(null);
+    const minPriceRef = useRef()
+    const maxPriceRef = useRef()
+    const brandSelectRef = useRef()
+    const paramSelectRef = useRef()
+    const paramValueSelectRef = useRef()
+    const inStockCheckboxRef = useRef()
 
     useEffect(() => {
-        loadData();
-    }, [selectedCategory]);
+        loadData()
+    }, [selectedCategory])
 
     const loadData = async () => {
         try {
-            setLoading(true);
+            setLoading(true)
             
-            const brandsResponse = await api.get('/brands/');
-            setBrands(brandsResponse.data);
+            const brandsResponse = await api.get('/brands/')
+            setBrands(brandsResponse.data)
             
-            const paramsResponse = await api.get('/parameters/');
-            let filteredParams = paramsResponse.data;
+            const paramsResponse = await api.get('/parameters/')
+            let filteredParams = paramsResponse.data
             
             if (selectedCategory) {
                 filteredParams = filteredParams.filter(
@@ -36,50 +36,50 @@ function ProductFilter({ onFilterChange, onResetProductFilters, selectedCategory
                 );
             }
             
-            setParameters(filteredParams);
+            setParameters(filteredParams)
             
         } catch (error) {
-            console.error('Ошибка загрузки данных:', error);
+            console.error('Ошибка загрузки данных:', error)
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
     };
 
     const handleParamChange = (e) => {
-        const paramId = e.target.value;
-        onFilterChange('paramId', paramId);
-        onFilterChange('paramValue', '');
+        const paramId = e.target.value
+        onFilterChange('paramId', paramId)
+        onFilterChange('paramValue', '')
     };
 
     const handleParamValueChange = (e) => {
-        const value = e.target.value;
-        onFilterChange('paramValue', value);
+        const value = e.target.value
+        onFilterChange('paramValue', value)
     };
 
     const handleReset = () => {
-        if (minPriceRef.current) minPriceRef.current.value = '';
-        if (maxPriceRef.current) maxPriceRef.current.value = '';
-        if (brandSelectRef.current) brandSelectRef.current.value = '';
-        if (paramSelectRef.current) paramSelectRef.current.value = '';
-        if (paramValueSelectRef.current) paramValueSelectRef.current.value = '';
-        if (inStockCheckboxRef.current) inStockCheckboxRef.current.checked = true;
+        if (minPriceRef.current) minPriceRef.current.value = ''
+        if (maxPriceRef.current) maxPriceRef.current.value = ''
+        if (brandSelectRef.current) brandSelectRef.current.value = ''
+        if (paramSelectRef.current) paramSelectRef.current.value = ''
+        if (paramValueSelectRef.current) paramValueSelectRef.current.value = ''
+        if (inStockCheckboxRef.current) inStockCheckboxRef.current.checked = true
         
         if (onResetProductFilters) {
-            onResetProductFilters();
+            onResetProductFilters()
         }
     };
 
     const getParamValues = () => {
-        const paramSelect = paramSelectRef.current;
-        if (!paramSelect) return [];
+        const paramSelect = paramSelectRef.current
+        if (!paramSelect) return []
         
-        const selectedParamId = paramSelect.value;
-        const parameter = parameters.find(param => param.id == selectedParamId);
-        return parameter ? parameter.values : [];
+        const selectedParamId = paramSelect.value
+        const parameter = parameters.find(param => param.id == selectedParamId)
+        return parameter ? parameter.values : []
     };
 
     if (loading) {
-        return <Loading />;
+        return <Loading />
     }
 
     return (
@@ -180,7 +180,7 @@ function ProductFilter({ onFilterChange, onResetProductFilters, selectedCategory
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default ProductFilter;
+export default ProductFilter

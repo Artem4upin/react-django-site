@@ -12,6 +12,7 @@ import { AuthContext } from './hooks/authContext'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 import ProductPage from './pages/ProductPage/ProductPage'
+import AboutPage from './pages/AboutPage/AboutPage'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -45,11 +46,10 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<LoginPage />} />
-          <Route path='/registration' element={<p>Регистрация</p>} />
           <Route path='/account' element={<AccountPage />} />
           <Route path='/catalog' element={<CatalogPage />} />
           <Route path='/product/:id' element={<ProductPage />} />
-          <Route path='/about' element={<p>О нас</p>} />
+          <Route path='/about' element={<AboutPage />} />
           <Route path='/cart' element={<CartPage />} />
           <Route path='/orders' element={<OrdersPage />} />
           <Route path='/manager-page' element={<ManagerPage />} />

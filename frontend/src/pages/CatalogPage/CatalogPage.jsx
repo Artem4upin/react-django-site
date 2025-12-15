@@ -5,6 +5,8 @@ import './CatalogPage.css'
 import Loading from '../../components/UI/Loading/Loading';
 import Category from '../../components/Category/Category';
 import ProductFilter from '../../components/ProductFilter/ProductFilter';
+import Search from '../../components/UI/Search/Search';
+import Button from '../../components/UI/Button/Button';
 
 function CatalogPage() {
     const [products, setProducts] = useState([])
@@ -12,6 +14,7 @@ function CatalogPage() {
     const [filteredProducts, setFilteredProducts] = useState([])
     const [selectedCategoryName, setSelectedCategoryName] = useState(null)
     const [selectedSubcategoryName, setSelectedSubcategoryName] = useState(null)
+    const [searchResult, setSearchResult] = useState([])
     
     const [currentFilters, setCurrentFilters] = useState({
         category: null,
@@ -30,7 +33,7 @@ function CatalogPage() {
 
     useEffect(() => {
         applyFilters()
-    }, [products, currentFilters])
+    }, [products, searchResult, currentFilters])
 
     const loadProducts = async () => {
         try {
@@ -100,7 +103,7 @@ function CatalogPage() {
     }
 
     const applyFilters = () => {
-        let filtered = [...products]
+        let filtered = [...(searchResult.length > 0? searchResult : products)]
         
         if (currentFilters.category && !currentFilters.subcategory) {
             filtered = filtered.filter(product => 
@@ -154,9 +157,16 @@ function CatalogPage() {
 
     return (
     <div className="catalog-page">
+        <div className='catalog-page__search'>
+            <Search 
+            searchResult={searchResult}
+            setSearchResult={setSearchResult}
+            />
+        </div>
         <div className='catalog-page__title-content'>
             <h1 className='catalog-page__title'>Товары</h1>
             <div className='catalog-page__title-category'>
+                
                 <p>{selectedCategoryName && (selectedCategoryName)}</p>
                 {selectedSubcategoryName && (<p>-</p>)}
                 <p>{selectedSubcategoryName && (selectedSubcategoryName)}</p>
@@ -174,17 +184,16 @@ function CatalogPage() {
                 />
             </div>
             <main className='catalog-page__main-container'>
-                {filteredProducts.length > 0 ? (
+            {filteredProducts.length > 0 ? (
                 <div className="catalog-page__product-list">
                     <ProductList
                         className='product-list_one-column' 
                         products={filteredProducts}
                     />
                 </div>
-                ) : (
-                    <h2 className='catalog-page__products-not-found'>Нет результатов</h2>
-                )}
-
+            ) : (
+                <h2 className='catalog-page__products-not-found'>Нет результатов</h2>
+            )}
             </main>
         </div>
     </div>

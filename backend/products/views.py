@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response  
 from .models import Category, Product
 from .serializers import *
+from django.contrib.postgres.search import SearchVector
 
 class ProductList(APIView):
 
@@ -10,7 +11,13 @@ class ProductList(APIView):
     permission_classes = []
 
     def get(self, request):
-        products = Product.objects.all()
+        is_new = request.query_params.get('new', '').lower() == 'true'
+        
+        if is_new:
+            products = Product.objects.all().order_by('-creation_date')[:2]
+        else:
+            products = Product.objects.all()
+            
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
 
@@ -22,6 +29,17 @@ class ProductDetail(APIView):
     def get(self, request, pk):
         product = get_object_or_404(Product, pk=pk)
         serializer = ProductSerializer(product)
+        return Response(serializer.data)
+    
+class ProductSearch(APIView):
+    def get(self, request):
+        query = request.GET.get('search', '')
+        
+        products = Product.objects.annotate(
+            search=SearchVector('name', 'description')
+        ).filter(search=query)
+        
+        serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
     
 class CategoryList(APIView):

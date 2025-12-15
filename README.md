@@ -38,7 +38,3 @@ python manage.py runserver
 
 python manage.py makemigrations - создать миграции
 python manage.py migrate - применить миграции
-
-## Создание пользователя сейчас только через createsuperuser
-
-python manage.py createsuperuser

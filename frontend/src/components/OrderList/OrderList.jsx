@@ -6,14 +6,13 @@ function OrderList({ orders }) {
     return (
         <div className="order-list">
             <h1>Заказы</h1>
-            <div className='orders-container'>
-                {orders.length === 0 ? (
-                    <p>Нет заказов</p>
-                ) : (
-                    orders.map(order => (
-                        <OrderCard key={order.id} order={order} />
-                    ))
-                )}
+            {orders && (
+                <h2 className='order-list__not-found'>Нет заказов</h2>
+            )}
+            <div className='order-list__orders-container'>        
+                {orders.map(order => (
+                    <OrderCard key={order.id} order={order} />
+                ))}
             </div>
         </div>
     );

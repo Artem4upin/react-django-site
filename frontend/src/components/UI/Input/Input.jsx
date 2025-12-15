@@ -25,13 +25,13 @@ function Input({
         </label>
       )}
       <input
-        id={id}
-        name={name || id} 
-        className={className}
+        id={id || ''}
+        name={name || id || ''} 
+        className={className || 'input'}
         type={type}
         value={value || ''}
         onChange={onChange}
-        placeholder={placeholder}
+        placeholder={placeholder || ''}
         required={required}
         pattern={pattern}
         autoComplete={autoComplete}

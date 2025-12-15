@@ -28,7 +28,8 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True, blank=True)
     subcategory = models.ForeignKey(Subcategory, on_delete=models.PROTECT, null=True, blank=True)
     description = models.TextField(blank=True)
-    creation_date = models.DateField(auto_now_add=True)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    #image_pass
     
     def __str__(self):
         return self.name

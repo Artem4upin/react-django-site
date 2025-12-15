@@ -60,7 +60,6 @@ function ProductCard({
                     ))}
                 </ul>
             </div>
-            <p className="product-card__description">{product.description}</p>
             
             {isCart ? (
                 <div className="product-card__cart-actions">

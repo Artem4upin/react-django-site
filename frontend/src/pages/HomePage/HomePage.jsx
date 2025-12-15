@@ -4,22 +4,20 @@ import './HomePage.css'
 import ProductList from '../../components/ProductList/ProductList'
 import Loading from '../../components/UI/Loading/Loading'
 import Banner from '../../components/UI/Banner/Banner'
-// scss
-// context и кастомный хук для проверок
 
 function HomePage() {
   
-  const [products, setProducts] = useState([])
+  const [newProducts, setNewProducts] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-        loadProducts()
+    loadNewProducts()
   }, []);
 
-  const loadProducts = async () => {
+  const loadNewProducts = async () => {
     try {
-      const response = await api.get('/products/')
-      setProducts(response.data)
+      const response = await api.get('/products/?new=true')
+      setNewProducts(response.data)
       setLoading(false)
     } catch (error) {
       console.error('Ошибка:', error)
@@ -40,7 +38,7 @@ function HomePage() {
         <Banner />
         <div className='home-page__new-products'>
           <label className='new-products__label'>Новинки</label>
-          <ProductList products = {products} isCart={false} />
+          <ProductList products={newProducts} isCart={false} />
         </div>
       </div>
     </div>
