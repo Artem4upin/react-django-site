@@ -18,7 +18,7 @@ class ProductList(APIView):
         else:
             products = Product.objects.all()
             
-        serializer = ProductSerializer(products, many=True)
+        serializer = ProductSerializer(products, many=True, context={'request': request})
         return Response(serializer.data)
 
 class ProductDetail(APIView):
@@ -28,7 +28,7 @@ class ProductDetail(APIView):
 
     def get(self, request, pk):
         product = get_object_or_404(Product, pk=pk)
-        serializer = ProductSerializer(product)
+        serializer = ProductSerializer(product, context={'request': request})
         return Response(serializer.data)
     
 class ProductSearch(APIView):

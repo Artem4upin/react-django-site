@@ -24,15 +24,18 @@ function ProductPage() {
         try {
             const response = await api.get(`/products/${id}/`)
             setProduct(response.data)
+            
         } catch (error) {
             console.error('Ошибка загрузки товара:', error)
         } finally {
             setLoading(false)
+            
         }
     };
 
     const handleAddToCartClick = () => {
         addToCart(product.id, quantity, product.name)
+        console.log(product.image_pass)
     }
 
     if (loading) {
@@ -43,7 +46,6 @@ function ProductPage() {
         return (
             <div>
                 <h2>Товар не найден</h2>
-                <button onClick={() => navigate('/catalog')}>Назад к товарам</button>
             </div>
         )
     }
@@ -52,8 +54,19 @@ function ProductPage() {
         <div className="product-page">
             <button className="back-btn" onClick={() => navigate(-1)}>Назад</button>
             <div className="product-page__content">
+                <div className="product-page__image-container">
+                    {product.image_pass ? (
+                        <img 
+                            src={product.image_pass} 
+                            alt={product.name}
+                            className="image-container__image"
+                        />
+                    ) : (
+                        <p className="image-container_no-image">Нет изображения</p>
+                    )}
+                </div>
                 <div className="product-page__info">
-                    <h1>{product.name}</h1>
+                    <h3>{product.name}</h3>
                     <div className="product-page__price">Цена: {product.price} ₽</div>
                     
                     <div className="product-page__parameters">

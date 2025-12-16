@@ -27,7 +27,7 @@ function Header(){
                     </Link>
                 </div>
                 <div className='account-btn'>
-                    {user ? (<Link to='/account'>Личный кабинет</Link>) 
+                    {user ? (<Link to='/account'>{user.username}</Link>) 
                     : (<Link to='/login'>Войти</Link>)
                     }
                 </div>

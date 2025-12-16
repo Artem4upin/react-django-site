@@ -3,7 +3,19 @@
   border: 2px solid #e6e8f3;
   padding: 15px;
   border-radius: 8px;
+  display: flex;
+  gap: 20px;
+}
 
+.product-card__image-container {
+    width: 200px; 
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+.product-card__info-container {
+  flex: 1;
 }
 
 .product-card__title {

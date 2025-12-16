@@ -40,43 +40,57 @@ function ProductCard({
 
     return (
         <div className="product-card" >
-            <h3 className="product-card__title" onClick={handleTitleClick}>
-                {product.name || product.product_name}
-            </h3>
-            <p className="product-card__price">{product.price || product.product_price} ₽</p> 
-            <div className="product-card__parameters">
-                {isCart ? (
-                    <div className="product-card__info">
-                        <h4 className="product-card__quantity">{`Количество: ${product.quantity}`}</h4>
-                    </div>
+            <div className="product-card__image-container">
+                {product.image_pass ? (
+                    <img 
+                        src={product.image_pass} 
+                        alt={product.name}
+                        className="image-container__image"
+                    />
                 ) : (
-                    <h4>Характеристики</h4>    
-                )} 
-                <ul className="product-card__list">
-                    {product.parameters?.map((param, index) => ( 
-                        <li key={index} className="product-card__item">
-                            <span className="product-card__parameter">{`${param.name}: ${param.value}`}</span>
-                        </li>
-                    ))}
-                </ul>
+                    <p className="image-container_no-image">Нет изображения</p>
+                )}
+
             </div>
-            
-            {isCart ? (
-                <div className="product-card__cart-actions">
-                    <Button className='exit-btn' text='Удалить' onClick={handleDeleteFromCartClick} />
-                    <div className="cart-actions__checkbox">
-                        <p className="cart-actions__checkbox-title">Добавить в заказ</p>
-                        <input 
-                            type="checkbox" 
-                            className="cart-actions__checkbox-input"
-                            checked={isSelected}
-                            onChange={handleCheckboxChange}
-                        />
-                    </div>
+            <div className="product-card__info-container">
+                <h3 className="product-card__title" onClick={handleTitleClick}>
+                    {product.name || product.product_name}
+                </h3>
+                <p className="product-card__price">{product.price || product.product_price} ₽</p> 
+                <div className="product-card__parameters">
+                    {isCart ? (
+                        <div className="product-card__info">
+                            <h4 className="product-card__quantity">{`Количество: ${product.quantity}`}</h4>
+                        </div>
+                    ) : (
+                        <h4>Характеристики</h4>    
+                    )} 
+                    <ul className="product-card__list">
+                        {product.parameters?.map((param, index) => ( 
+                            <li key={index} className="product-card__item">
+                                <span className="product-card__parameter">{`${param.name}: ${param.value}`}</span>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-            ) : ( user && (
-                <Button className='add-to-cart-btn' text='В корзину' onClick={handleAddToCartClick} />
-            ))}
+                
+                {isCart ? (
+                    <div className="product-card__cart-actions">
+                        <Button className='exit-btn' text='Удалить' onClick={handleDeleteFromCartClick} />
+                        <div className="cart-actions__checkbox">
+                            <p className="cart-actions__checkbox-title">Добавить в заказ</p>
+                            <input 
+                                type="checkbox" 
+                                className="cart-actions__checkbox-input"
+                                checked={isSelected}
+                                onChange={handleCheckboxChange}
+                            />
+                        </div>
+                    </div>
+                ) : ( user && (
+                    <Button className='add-to-cart-btn' text='В корзину' onClick={handleAddToCartClick} />
+                ))}
+            </div>
         </div>
     );
 }

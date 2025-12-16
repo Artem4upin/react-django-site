@@ -4,7 +4,7 @@ import './ManagerPage.css'
 import Loading from '../../components/UI/Loading/Loading';
 import ModalConfirm from '../../components/modal/ModalConfirm/ModalConfirm';
 import Input from '../../components/UI/Input/Input';
-import Button from '../../components/UI/button/button';
+import Button from '../../components/UI/Button/Button';
 
 function ManagerPage() {
   const [orders, setOrders] = useState([])
@@ -44,22 +44,21 @@ function ManagerPage() {
 
     const filtered = orders.filter(order => {
       const orderDate = new Date(order.created_at)
-      orderDate.setHours(0, 0, 0, 0)
       
-      let startState = true
-      let endState = true
+      let isStartDate = true
+      let isEndDate = true
       
       if (startDate) {
         const start = new Date(startDate)
-        startState = orderDate >= start
+        isStartDate = orderDate >= start
       }
       
       if (endDate) {
         const end = new Date(endDate)
-        endState = orderDate <= end
+        isEndDate = orderDate <= end
       }
       
-      return startState && endState
+      return isStartDate && isEndDate
     })
 
     setFilteredOrders(filtered)

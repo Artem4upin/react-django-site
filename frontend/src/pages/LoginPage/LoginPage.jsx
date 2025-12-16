@@ -47,7 +47,7 @@ function LoginPage() {
         localStorage.setItem('token', response.data.token)
         setUser(response.data.user)
         reset()
-        navigate('/')
+        navigate('/account')
       }
     } catch (err) {
       if (err.response) {

@@ -43,11 +43,11 @@
 
 .form-input-group label {
   display: block;
+  margin: 0;
   margin-bottom: 8px;
   font-weight: bold;
   color: #555;
   font-size: 16px;
-  width: 100%;
 }
 
 .form-input-group input {
@@ -56,15 +56,9 @@
   border: 2px solid #ddd;
   border-radius: 6px;
   font-size: 16px;
-  transition: border-color 0.3s;
   box-sizing: border-box;
 }
 
-.form-input-group input:focus {
-  outline: none;
-  border-color: #2c5aa0;
-  box-shadow: 0 0 5px rgba(44, 90, 160, 0.3);
-}
 
 .login-submit-btn {
   background-color: #0b4177;
@@ -76,7 +70,6 @@
 .auth-links {
   text-align: center;
   margin: 20px 0;
-  color: #666;
   font-size: 16px;
   width: 100%;
 }
