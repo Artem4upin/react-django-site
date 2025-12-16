@@ -1,4 +1,3 @@
-// components/modal/ModalConfirm/ModalConfirm.jsx
 import React from "react";
 import Button from "../../UI/Button/Button";
 import "./ModalConfirm.css";

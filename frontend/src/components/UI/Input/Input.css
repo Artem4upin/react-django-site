@@ -17,8 +17,8 @@
 
 .input-form {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
     width: 100%;
     margin-bottom: 15px;
 }
@@ -28,4 +28,8 @@
     margin-right: 15px;
     text-align: left;
     min-width: 100px;
+}
+
+.input-form__error {
+    color: red;
 }

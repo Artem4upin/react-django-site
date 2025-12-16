@@ -1,24 +1,37 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { api } from "../../api"
 import './AccountPage.css'
 import { AuthContext } from "../../hooks/authContext";
 import Loading from "../../components/UI/Loading/Loading"
 import ModalChangePassword from "../../components/modal/ModalChangePassword/ModalChangePassword";
 import Button from "../../components/UI/Button/Button";
-import Input from "../../components/UI/Input/Input";
+import InputForm from "../../components/UI/Input/InputForm";
 
 function AccountPage() {
     const { user, setUser } = useContext(AuthContext)
     const [loading, setLoading] = useState(true)
-    const [username, setUsername] = useState('')
-    const [email, setEmail] = useState('')
-    const [phone, setPhone] = useState('')
-    const [first_name, setFirstName] = useState('')
-    const [last_name, setLastName] = useState('')
     const [showModal, setShowModal] = useState(false)
+    const [saveSuccess, setSaveSuccess] = useState(false)
     const navigate = useNavigate()
     
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        reset,
+        setValue
+    } = useForm({
+        defaultValues: {
+            username: '',
+            email: '',
+            phone: '',
+            first_name: '',
+            last_name: '',
+        }
+    })
+
     useEffect(() => {
         get_user_data()
     }, [])
@@ -27,11 +40,13 @@ function AccountPage() {
         try {
             const response = await api.get('/auth/get-user-data/')
             const userData = response.data.user
-            setUsername(userData.username)
-            setEmail(userData.email)
-            setPhone(userData.phone)
-            setFirstName(userData.first_name)
-            setLastName(userData.last_name)
+            reset({
+                username: userData.username || '',
+                email: userData.email || '',
+                phone: userData.phone || '',
+                first_name: userData.first_name || '',
+                last_name: userData.last_name || '',
+            })
         } catch (error) {
             console.error('Ошибка загрузки данных:', error)
         } finally {
@@ -39,18 +54,14 @@ function AccountPage() {
         }
     };
 
-    const updateUserData = async (e) => {
-        e.preventDefault();
-        const userData = {
-            username,
-            email,
-            phone,
-            first_name,
-            last_name,
-        };
-
+    const updateUserData = async (data) => {
         try {
-            await api.patch('/auth/update-user-data/', userData)
+            await api.patch('/auth/update-user-data/', data)
+            setSaveSuccess(true)
+            
+            setTimeout(() => {
+                setSaveSuccess(false)
+            }, 3000)
         } catch (error) {
             console.error('Ошибка сохранения', error)
             alert('Ошибка сохранения данных')
@@ -102,74 +113,105 @@ function AccountPage() {
                     <section className="account-section">
                         <h2 className="section-title">Аккаунт</h2>
                         
-                        <form onSubmit={updateUserData} className="profile-form">
+                        <form onSubmit={handleSubmit(updateUserData)} className="profile-form">
                             <div className="form-section">
                                 <h3 className="form-section-title">Основная информация</h3>
                                 
                                 <div className="form-grid">
                                     <div className="form-group">
-                                        <label htmlFor="username" className="form-label">
-                                            Логин
-                                        </label>
-                                        <Input
+                                        <InputForm
                                             id="username"
-                                            value={username}
-                                            onChange={(e) => setUsername(e.target.value)}
-                                            required
-                                            className="account-page__form-input"
+                                            name="username"
+                                            label="Логин"
+                                            type="text"
+                                            register={register}
+                                            validation={{
+                                                required: 'Логин обязателен',
+                                                minLength: {
+                                                    value: 5,
+                                                    message: 'Минимум 5 символов'
+                                                },
+                                                maxLength: {
+                                                    value: 50,
+                                                    message: 'Максимум 50 символов'
+                                                }
+                                            }}
+                                            error={errors.username}
+                                            autoComplete="username"
                                         />
                                     </div>
                                     
                                     <div className="form-group">
-                                        <label htmlFor="email" className="form-label">
-                                            Email
-                                        </label>
-                                        <Input
+                                        <InputForm
                                             id="email"
-                                            type="email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            required
-                                            className="account-page__form-input"
+                                            name="email"
+                                            label="Email"
+                                            type="text"
+                                            register={register}
+                                            validation={{
+                                                required: 'Email обязателен',
+                                                pattern: {
+                                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                                    message: 'Некорректный email'
+                                                }
+                                            }}
+                                            error={errors.email}
+                                            autoComplete="email"
                                         />
                                     </div>
                                     
                                     <div className="form-group">
-                                        <label htmlFor="first-name" className="form-label">
-                                            Имя
-                                        </label>
-                                        <Input
-                                            id="first-name"
-                                            value={first_name}
-                                            onChange={(e) => setFirstName(e.target.value)}
-                                            className="account-page__form-input"
+                                        <InputForm
+                                            id="first_name"
+                                            name="first_name"
+                                            label="Имя"
+                                            type="text"
+                                            register={register}
+                                            validation={{
+                                                maxLength: {
+                                                    value: 50,
+                                                    message: 'Максимум 50 символов'
+                                                }
+                                            }}
+                                            error={errors.first_name}
+                                            autoComplete="given-name"
                                         />
                                     </div>
                                     
                                     <div className="form-group">
-                                        <label htmlFor="last-name" className="form-label">
-                                            Фамилия
-                                        </label>
-                                        <Input
-                                            id="last-name"
-                                            value={last_name}
-                                            onChange={(e) => setLastName(e.target.value)}
-                                            className="account-page__form-input"
+                                        <InputForm
+                                            id="last_name"
+                                            name="last_name"
+                                            label="Фамилия"
+                                            type="text"
+                                            register={register}
+                                            validation={{
+                                                maxLength: {
+                                                    value: 50,
+                                                    message: 'Максимум 50 символов'
+                                                }
+                                            }}
+                                            error={errors.last_name}
+                                            autoComplete="family-name"
                                         />
                                     </div>
                                     
                                     <div className="form-group">
-                                        <label htmlFor="phone" className="form-label">
-                                            Телефон
-                                        </label>
-                                        <Input
+                                        <InputForm
                                             id="phone"
+                                            name="phone"
+                                            label="Телефон"
                                             type="tel"
-                                            placeholder="+7 (999) 999-99-99"
-                                            pattern="[78]{1}[0-9]{10}"
-                                            value={phone}
-                                            onChange={(e) => setPhone(e.target.value)}
-                                            className="account-page__form-input"
+                                            register={register}
+                                            validation={{
+                                                pattern: {
+                                                    value: /^[78]\d{10}$/,
+                                                    message: 'Введите телефон в формате 79999999999'
+                                                }
+                                            }}
+                                            error={errors.phone}
+                                            placeholder="79999999999"
+                                            autoComplete="tel"
                                         />
                                     </div>
                                 </div>
@@ -179,8 +221,14 @@ function AccountPage() {
                                 <Button 
                                     type="submit"
                                     className="submit-btn" 
-                                    text="Сохранить изменения"
+                                    text={isSubmitting ? "Сохранение..." : "Сохранить изменения"}
+                                    disabled={isSubmitting}
                                 />
+                                {saveSuccess && (
+                                <div className="form-success">
+                                    Данные успешно сохранены!
+                                </div>
+                                )}
                             </div>
                         </form>
                     </section>
@@ -213,7 +261,7 @@ function AccountPage() {
                                 <div className="action-info">
                                     <h3 className="action-title">Выход из аккаунта</h3>
                                     <p className="action-description">
-                                        Завершите текущую сессию на этом устройстве
+                                        Завершить текущую сессию
                                     </p>
                                 </div>
                                 <Button 

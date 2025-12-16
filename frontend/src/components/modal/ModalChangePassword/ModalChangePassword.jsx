@@ -49,10 +49,6 @@ function ModalChangePassword ({showModal, setShowModal}) {
                 <form className='modal-change-password__change-password-form' onSubmit={handleSubmit(onSubmit)}>
                     <span>Смена пароля</span>
                     
-                    {newPassword !== newPasswordRepeat && ( 
-                        <div className='error-message'>Пароли не совпадают</div>
-                    )}
-                    
                     <InputForm
                         id="password"
                         name="currentPassword"

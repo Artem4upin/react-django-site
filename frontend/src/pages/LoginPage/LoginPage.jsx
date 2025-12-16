@@ -82,90 +82,80 @@ function LoginPage() {
         
         <form className='auth-form' onSubmit={handleSubmit(onSubmit)}>
           {isRegistration && (
-            <div>
-              <div className="form-input-group">
-                <InputForm
-                  id="email"
-                  name="email"
-                  label="Email"
-                  type="email"
-                  register={register}
-                  validation={{
-                    required: 'Email обязателен',
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: 'Некорректный email'
-                    }
-                  }}
-                  error={errors.email}
-                  autoComplete="off"
-                />
-              </div>
-            </div>
-          )}
-          
-          <div className="form-input-group">
             <InputForm
-              id="username"
-              name="username"
-              label="Логин"
-              type="text"
+              id="email"
+              name="email"
+              label="Email"
+              type="text" 
               register={register}
               validation={{
-                required: 'Логин обязателен',
-                minLength: {
-                  value: 5,
-                  message: 'Минимум 5 символа'
-                },
-                maxLength: {
-                  value: 50,
-                  message: 'Максимум 50 символов'
+                required: 'Email обязателен',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'Некорректный email'
                 }
               }}
-              error={errors.username}
+              error={errors.email}
               autoComplete="off"
             />
-          </div>
+          )}
           
-          <div className="form-input-group">
+          <InputForm
+            id="username"
+            name="username"
+            label="Логин"
+            type="text"
+            register={register}
+            validation={{
+              required: 'Логин обязателен',
+              minLength: {
+                value: 5,
+                message: 'Минимум 5 символов'
+              },
+              maxLength: {
+                value: 50,
+                message: 'Максимум 50 символов'
+              }
+            }}
+            error={errors.username}
+            autoComplete="off"
+          />
+          
+          <InputForm
+            id="password"
+            name="password"
+            label="Пароль"
+            type="password"
+            register={register}
+            validation={{
+              required: 'Пароль обязателен',
+              minLength: {
+                value: 6,
+                message: 'Минимум 6 символов'
+              },
+              maxLength: {
+                value: 50,
+                message: 'Максимум 50 символов'
+              }
+            }}
+            error={errors.password}
+            autoComplete="off"
+          />
+          
+          {isRegistration && (
             <InputForm
-              id="password"
-              name="password"
-              label="Пароль"
+              id="password_repeat"
+              name="password_repeat"
+              label="Повторите пароль"
               type="password"
               register={register}
               validation={{
-                required: 'Пароль обязателен',
-                minLength: {
-                  value: 6,
-                  message: 'Минимум 6 символов'
-                },
-                maxLength: {
-                  value: 50,
-                  message: 'Максимум 50 символов'
-                }
+                required: 'Повтор пароля обязателен',
+                validate: value => value === password || 'Пароли не совпадают'
               }}
-              error={errors.password}
+              error={errors.password_repeat}
               autoComplete="off"
             />
-          </div>
-          
-          {isRegistration && (
-            <div className="form-input-group">
-              <InputForm
-                id="password_repeat"
-                name="password_repeat"
-                label="Повторите пароль"
-                type="password"
-                register={register}
-                validation={{
-                  required: 'Повтор пароля обязателен',
-                  validate: value => value === password || 'Пароли не совпадают'
-                }}
-                error={errors.password_repeat}
-                autoComplete="off"
-              />
-            </div>
           )}
           
           <Button  

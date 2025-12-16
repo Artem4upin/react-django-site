@@ -32,25 +32,7 @@
   width: 100%;
 }
 
-.form-input-group {
-  margin-bottom: 20px;
-  width: 100%;
-}
-
-.form-input-group > div {
-  width: 100%;
-}
-
-.form-input-group label {
-  display: block;
-  margin: 0;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #555;
-  font-size: 16px;
-}
-
-.form-input-group input {
+.auth-form input {
   width: 100%;
   padding: 15px;
   border: 2px solid #ddd;
@@ -59,6 +41,20 @@
   box-sizing: border-box;
 }
 
+.auth-form label {
+  display: block;
+  margin: 0;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+  font-size: 16px;
+}
+
+
+.form-input-group {
+  margin-bottom: 20px;
+  width: 100%;
+}
 
 .login-submit-btn {
   background-color: #0b4177;

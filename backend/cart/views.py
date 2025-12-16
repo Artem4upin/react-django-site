@@ -13,11 +13,11 @@ class CartItems(APIView):
     def get(self, request, pk=None):
         if pk is not None:
             cart_item = get_object_or_404(Cart_item, id=pk, user=request.user)
-            serializer = CartItemSerializer(cart_item)
+            serializer = CartItemSerializer(cart_item, context={'request': request})
             return Response(serializer.data)
         else:
             orders = Cart_item.objects.filter(user=request.user)
-            serializer = CartItemSerializer(orders, many=True)
+            serializer = CartItemSerializer(orders, many=True, context={'request': request})
             return Response(serializer.data)
     
     def post(self, request):

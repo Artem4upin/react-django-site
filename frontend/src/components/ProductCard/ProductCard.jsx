@@ -43,7 +43,7 @@ function ProductCard({
             <div className="product-card__image-container">
                 {product.image_pass ? (
                     <img 
-                        src={product.image_pass} 
+                        src={product.image_pass || product.product.image_pass} 
                         alt={product.name}
                         className="image-container__image"
                     />
