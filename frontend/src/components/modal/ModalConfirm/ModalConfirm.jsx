@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../../UI/Button/Button";
 import "./ModalConfirm.css";
 
-function ModalConfirm({ showModal, setShowModal, onConfirm, onCancel }) {
+function ModalConfirm({ showModal, setShowModal, onConfirm, onCancel, newStatus }) {
     if (!showModal) return null;
 
     return (
@@ -13,6 +13,9 @@ function ModalConfirm({ showModal, setShowModal, onConfirm, onCancel }) {
                     <h3>Подтвердите действие</h3>
                 </div>
                 <p className="modal-confirm__message">Вы уверены что хотите изменить статус заказа?</p>
+                {(newStatus == 'Completed' || newStatus == 'Canceled') && (
+                    <p className="modal-confirm__message">Заказ будет перемещен в архив</p>
+                )}
                 <div className="modal-confirm__buttons-container">
                     <Button 
                         className={'btn'}

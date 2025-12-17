@@ -39,7 +39,7 @@ class ProductSearch(APIView):
             search=SearchVector('name', 'description')
         ).filter(search=query)
         
-        serializer = ProductSerializer(products, many=True)
+        serializer = ProductSerializer(products, many=True, context={'request': request})
         return Response(serializer.data)
     
 class CategoryList(APIView):

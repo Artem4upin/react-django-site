@@ -34,8 +34,9 @@ function ProductPage() {
     };
 
     const handleAddToCartClick = () => {
+        if (quantity > product.quantity || quantity < 1)
+            return 
         addToCart(product.id, quantity, product.name)
-        console.log(product.image_pass)
     }
 
     if (loading) {
@@ -104,7 +105,7 @@ function ProductPage() {
                             </Button>
                             <input 
                             type="text" 
-                            maxLength={2} 
+                            
                             className='product-page__product-quantity' 
                             value={quantity}
                             readOnly
@@ -112,6 +113,7 @@ function ProductPage() {
                             <Button 
                             className='quantity-btn'
                             onClick={() => setQuantity(quantity + 1)}
+                            disabled={quantity >= product.quantity}
                             text={'+'}
                             >
                             </Button>
@@ -123,4 +125,4 @@ function ProductPage() {
     )
 }
 
-export default ProductPage;
+export default ProductPage

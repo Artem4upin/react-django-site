@@ -44,7 +44,7 @@ function ProductCard({
                 {product.image_pass ? (
                     <img 
                         src={product.image_pass || product.product.image_pass} 
-                        alt={product.name}
+                        alt={product.name || product.product.name}
                         className="image-container__image"
                     />
                 ) : (

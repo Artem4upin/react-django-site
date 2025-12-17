@@ -14,20 +14,25 @@ function ManagerPage() {
   const [selectedOrderId, setSelectedOrderId] = useState(null)
   const [selectedNewStatus, setSelectedNewStatus] = useState('')
 
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
-  const [isFiltered, setIsFiltered] = useState(false)
+  const today = new Date().toISOString().split('T')[0]
+  const [startDate, setStartDate] = useState(today)
+  const [endDate, setEndDate] = useState(today)
 
   useEffect(() => {
     loadAllOrders()
   }, [])
+
+  useEffect(() => {
+    if (orders.length > 0) {
+        applyFilter()
+    }
+  }, [orders, startDate, endDate])
 
   const loadAllOrders = async () => {
     try {
       const response = await api.get('/orders/manager-orders/')
       const ordersData = response.data
       setOrders(ordersData)
-      setFilteredOrders(ordersData)
     } catch (error) {
       console.error('Ошибка загрузки заказов:', error)
     } finally {
@@ -38,7 +43,7 @@ function ManagerPage() {
   const applyFilter = () => {
     if (!startDate && !endDate) {
       setFilteredOrders(orders)
-      setIsFiltered(false)
+
       return
     }
 
@@ -62,14 +67,11 @@ function ManagerPage() {
     })
 
     setFilteredOrders(filtered)
-    setIsFiltered(true)
   }
 
   const resetFilter = () => {
-    setStartDate('')
-    setEndDate('')
-    setFilteredOrders(orders)
-    setIsFiltered(false)
+    setStartDate(today)
+    setEndDate(today)
   }
 
   const handleStatusChangeClick = (orderId, newStatus) => {
@@ -115,8 +117,8 @@ function ManagerPage() {
       
       <div className="manager-page__order-sum-container">
         <div className="manager-page__order-sum">
-          <h3>Количество заказов</h3>
-          <p>{isFiltered ? filteredOrders.length : orders.length}</p>
+          <h3>Количество заказов за {startDate === endDate ? 'сегодня' : 'период'}</h3>
+          <p>{filteredOrders.length}</p>
         </div>
       </div>
       
@@ -129,7 +131,6 @@ function ManagerPage() {
           className='input'
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
-
         />
         
         <p>До</p>
@@ -138,30 +139,22 @@ function ManagerPage() {
           className='input'
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
-
         />
         
         <div className='filter-container__buttons'>
           <Button 
-            text={'Применить'}
-            className={'submit-btn'}
-            onClick={applyFilter}
-          />
-
-          <Button 
-            text={'Отмена'}
+            text={'Заказы за сегодня'}
             className={'btn'}
             onClick={resetFilter}
-            disabled={!isFiltered && !startDate && !endDate}
           />
         </div>
       </div>
-
         {filteredOrders.length === 0 ? (
         <p className="manager-page__no-orders">Заказы не найдены</p>
       ) : (
         <div className="orders">
           {filteredOrders.map(order => (
+            !order.is_deleted && (
             <div key={order.id} className="orders__card">
               <header className="order__header">
                 <div>
@@ -218,7 +211,7 @@ function ManagerPage() {
                 </div>
               )}
             </div>
-          ))}
+          )))}
         </div>
       )}
       
@@ -227,6 +220,7 @@ function ManagerPage() {
         setShowModal={setShowModal}
         onConfirm={confirmStatusChange}
         onCancel={cancelStatusChange}
+        newStatus={selectedNewStatus}
       />
     </main>
   )

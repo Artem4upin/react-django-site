@@ -14,3 +14,13 @@
   padding-top: 200px;
   padding-bottom: 500px;
 }
+
+.orders-page__buttons {
+  margin-top: 20px;
+  margin-bottom: 100px;
+}
+
+.orders-page__buttons button {
+  display: flex;
+  justify-self: center;
+}

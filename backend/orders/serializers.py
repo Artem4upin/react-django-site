@@ -13,6 +13,7 @@ class OrderSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(source='user.id', read_only=True)
     username = serializers.CharField(source='user.username', read_only=True)
     price_sum = serializers.DecimalField(max_digits=10, decimal_places=2, coerce_to_string=False)
+    is_deleted = serializers.BooleanField(read_only=True)
     class Meta:
         model = Order
         fields = [
@@ -25,5 +26,6 @@ class OrderSerializer(serializers.ModelSerializer):
             'price_sum',
             'delivery_date',
             'delivery_address',
-            'orderitem_set'
+            'orderitem_set',
+            'is_deleted',
         ]

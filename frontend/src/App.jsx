@@ -13,6 +13,9 @@ import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 import ProductPage from './pages/ProductPage/ProductPage'
 import AboutPage from './pages/AboutPage/AboutPage'
+import PrivacyPage from './pages/PrivacyPage/PrivacyPage'
+import TermsPage from './pages/TermsPage/TermsPage'
+import FaqPage from './pages/FaqPage/FaqPage'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -53,6 +56,9 @@ function App() {
           <Route path='/cart' element={<CartPage />} />
           <Route path='/orders' element={<OrdersPage />} />
           <Route path='/manager-page' element={<ManagerPage />} />
+          <Route path='/privacy' element={<PrivacyPage />} />
+          <Route path='/terms' element={<TermsPage />} />
+          <Route path='/faq' element={<FaqPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <Footer />

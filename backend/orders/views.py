@@ -96,13 +96,28 @@ class ManagerOrders(APIView):
         order.status = new_status
         order.save()
         
+        if new_status == 'Completed':
+            for item in order.orderitem_set.all():
+                 if item.product:
+                    item.product.quantity -= item.quantity
+                    item.product.save()
+
+        if new_status in ['Completed', 'Canceled']:
+            order.delete()
+
+            return Response({
+            "message": f"Заказ {order_id} завершен и перемещен в архив",
+            "order_id": order_id,
+            "status": new_status
+        }, status=200)
+
         serializer = OrderSerializer(order)
         return Response(serializer.data)
     
     def delete(self, request, order_id=None):
         if order_id is None:
             return Response({"error": "ID заказа не указан"}, status=400)
-        
+
         order = get_object_or_404(Order, id=order_id)
-        order.delete()
-        return Response({"message": "Заказ удален"}, status=204)
+        order.hard_delete()
+        return Response({"message": "Заказ полностью удален"}, status=204)
