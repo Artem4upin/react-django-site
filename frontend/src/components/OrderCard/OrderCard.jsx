@@ -3,10 +3,21 @@ import './OrderCard.css';
 import OrderItems from './OrderItems/OrderItems';
 
 function OrderCard({ order }) {
+
+
+    const statusTranslations = {
+        'Created': 'Создан',
+        'Work': 'В работе', 
+        'Sent': 'Отправлен',
+        'Done': 'Готов к выдаче',
+        'Completed': 'Завершен',
+        'Canceled': 'Отменен'
+    }
+
     return (
         <div className="order-card">
             <h3>Заказ №{order.order_number}</h3>
-            <p>Статус: {order.status}</p>
+            <p>Статус: {statusTranslations[order.status] || order.status}</p>
             <p>Дата создания: {new Date (order.created_at).toLocaleDateString('ru')}</p>
             <p>Дата доставки: {new Date (order.delivery_date).toLocaleDateString('ru')}</p>
             <p>Итого: {order.price_sum}₽</p>

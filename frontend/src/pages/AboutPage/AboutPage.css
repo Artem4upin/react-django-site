@@ -16,21 +16,19 @@
 .about-page__title {
     font-size: 36px;
     margin-bottom: 30px;
-    color: #333;
     text-align: center;
 }
 
 .about-page__content {
     font-size: 16px;
     line-height: 1.6;
-    color: #555;
 }
 
 .about-page__content h2 {
     font-size: 24px;
     margin-top: 30px;
     margin-bottom: 15px;
-    color: #333;
+    color: #2c5aa0;
 }
 
 .about-page__content p {
@@ -48,14 +46,4 @@
 
 .about-page__content strong {
     color: #333;
-}
-
-@media (max-width: 768px) {
-    .about-page__title {
-        font-size: 28px;
-    }
-    
-    .about-page__content h2 {
-        font-size: 20px;
-    }
 }

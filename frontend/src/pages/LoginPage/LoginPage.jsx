@@ -130,8 +130,8 @@ function LoginPage() {
             validation={{
               required: 'Пароль обязателен',
               minLength: {
-                value: 6,
-                message: 'Минимум 6 символов'
+                value: 4,
+                message: 'Минимум 4 символа'
               },
               maxLength: {
                 value: 50,

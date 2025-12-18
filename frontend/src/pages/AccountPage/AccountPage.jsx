@@ -40,6 +40,9 @@ function AccountPage() {
         try {
             const response = await api.get('/auth/get-user-data/')
             const userData = response.data.user
+            
+            setUser(userData)
+
             reset({
                 username: userData.username || '',
                 email: userData.email || '',
@@ -58,6 +61,13 @@ function AccountPage() {
         try {
             await api.patch('/auth/update-user-data/', data)
             setSaveSuccess(true)
+
+            if (response.data.succes) {
+            setUser(prevUser => ({
+                ...prevUser,
+                ...response.data.user
+            }))
+            }
             
             setTimeout(() => {
                 setSaveSuccess(false)
@@ -101,14 +111,27 @@ function AccountPage() {
                             {user?.user_type === 'Manager' && (
                                 <li className="nav-item">
                                     <Link to='/manager-page' className="nav-link">
-                                        <span className="nav-text">Панель управления</span>
+                                        <span className="nav-text">Панель управления заказами</span>
                                     </Link>
                                 </li>
+                            )}
+                            {user?.user_type === 'Admin' && (
+                                <>
+                                    <li className="nav-item">
+                                        <Link to='/manager-page' className="nav-link">
+                                            <span className="nav-text">Панель управления заказами</span>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link to='/role-management' className="nav-link">
+                                            <span className="nav-text">Управление ролями</span>
+                                        </Link>
+                                    </li>
+                                </>
                             )}
                         </ul>
                     </nav>
                 </aside>
-
                 <main className="account-main">
                     <section className="account-section">
                         <h2 className="section-title">Аккаунт</h2>

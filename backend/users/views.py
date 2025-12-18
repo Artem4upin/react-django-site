@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
@@ -167,3 +168,54 @@ def register_view(request):
         })
     except Exception as e:
         return Response({'error': str(e)}, status=400)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_users_list(request):
+    if request.user.user_type != 'Admin':
+        return Response({"error": "Доступ запрещен"}, status=403)
+    
+    users = User.objects.all().order_by('id')
+    
+    users_data = []
+    for user in users:
+        users_data.append({
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'user_type': user.user_type,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+        })
+    
+    return Response({'users': users_data})
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def update_user_role(request, user_id):
+    if request.user.user_type != 'Admin':
+        return Response({"error": "Доступ запрещен"}, status=403)
+    
+    user_to_update = get_object_or_404(User, id=user_id)
+    
+    new_role = request.data.get('user_type')
+    
+    if not new_role:
+        return Response({"error": "Роль не указана"}, status=400)
+    
+    valid_roles = ['User', 'Manager', 'Admin']
+    if new_role not in valid_roles:
+        return Response({"error": f"Допустимы только роли: {valid_roles}"}, status=400)
+    
+    user_to_update.user_type = new_role
+    user_to_update.save()
+    
+    return Response({
+        "success": True,
+        "message": f"Роль пользователя {user_to_update.username} изменена на {new_role}",
+        "user": {
+            'id': user_to_update.id,
+            'username': user_to_update.username,
+            'user_type': user_to_update.user_type
+        }
+    })

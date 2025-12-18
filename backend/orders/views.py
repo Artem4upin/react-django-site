@@ -3,6 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Q
+from datetime import datetime, date
 from .premissions import IsManager
 from .models import Order, OrderItem
 from cart.models import Cart_item
@@ -76,7 +78,47 @@ class ManagerOrders(APIView):
             serializer = OrderSerializer(order)
             return Response(serializer.data)
         else:
-            orders = Order.objects.all().prefetch_related('orderitem_set').select_related('user')
+            start_date_str = request.GET.get('start_date')
+            end_date_str = request.GET.get('end_date')
+            order_number = request.GET.get('order_number')
+            
+            orders = Order.objects.filter(is_deleted=False)\
+                                 .prefetch_related('orderitem_set')\
+                                 .select_related('user')\
+                                 .order_by('-created_at')
+            
+            if order_number:
+                orders = orders.filter(order_number__icontains=order_number)
+            
+            if start_date_str or end_date_str:
+                if start_date_str:
+                    try:
+                        start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+                    except ValueError:
+                        return Response({"error": "Неверный формат start_date. Используйте YYYY-MM-DD"}, status=400)
+                else:
+                    start_date = None
+                
+                if end_date_str:
+                    try:
+                        end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+                    except ValueError:
+                        return Response({"error": "Неверный формат end_date. Используйте YYYY-MM-DD"}, status=400)
+                else:
+                    end_date = date.today()
+                
+                if start_date and end_date:
+                    if start_date > end_date:
+                        return Response({"error": "Начальная дата не может быть позже конечной"}, status=400)
+                    orders = orders.filter(created_at__range=[start_date, end_date])
+                elif start_date:
+                    orders = orders.filter(created_at__gte=start_date)
+                elif end_date:
+                    orders = orders.filter(created_at__lte=end_date)
+            else:
+                today = date.today()
+                orders = orders.filter(created_at=today)
+            
             serializer = OrderSerializer(orders, many=True)
             return Response(serializer.data)
     
@@ -104,12 +146,11 @@ class ManagerOrders(APIView):
 
         if new_status in ['Completed', 'Canceled']:
             order.delete()
-
             return Response({
-            "message": f"Заказ {order_id} завершен и перемещен в архив",
-            "order_id": order_id,
-            "status": new_status
-        }, status=200)
+                "message": f"Заказ {order_id} завершен и перемещен в архив",
+                "order_id": order_id,
+                "status": new_status
+            }, status=200)
 
         serializer = OrderSerializer(order)
         return Response(serializer.data)

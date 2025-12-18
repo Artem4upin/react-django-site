@@ -8,7 +8,6 @@ import Button from '../../components/UI/Button/Button';
 
 function ManagerPage() {
   const [orders, setOrders] = useState([])
-  const [filteredOrders, setFilteredOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [selectedOrderId, setSelectedOrderId] = useState(null)
@@ -17,61 +16,43 @@ function ManagerPage() {
   const today = new Date().toISOString().split('T')[0]
   const [startDate, setStartDate] = useState(today)
   const [endDate, setEndDate] = useState(today)
+  const [orderNumberFilter, setOrderNumberFilter] = useState('')
 
   useEffect(() => {
-    loadAllOrders()
+    fetchFilteredOrders()
   }, [])
 
-  useEffect(() => {
-    if (orders.length > 0) {
-        applyFilter()
-    }
-  }, [orders, startDate, endDate])
-
-  const loadAllOrders = async () => {
+  const fetchFilteredOrders = async () => {
+    setLoading(true)
     try {
-      const response = await api.get('/orders/manager-orders/')
-      const ordersData = response.data
-      setOrders(ordersData)
+      const params = {
+        start_date: startDate,
+        end_date: endDate,
+      }
+      
+      if (orderNumberFilter) {
+        params.order_number = orderNumberFilter
+      }
+      
+      const response = await api.get('/orders/manager-orders/', { params })
+      setOrders(response.data)
     } catch (error) {
       console.error('Ошибка загрузки заказов:', error)
+      alert('Ошибка загрузки заказов: ' + (error.response?.data?.error || error.message))
     } finally {
       setLoading(false)
     }
   }
 
   const applyFilter = () => {
-    if (!startDate && !endDate) {
-      setFilteredOrders(orders)
-
-      return
-    }
-
-    const filtered = orders.filter(order => {
-      const orderDate = new Date(order.created_at)
-      
-      let isStartDate = true
-      let isEndDate = true
-      
-      if (startDate) {
-        const start = new Date(startDate)
-        isStartDate = orderDate >= start
-      }
-      
-      if (endDate) {
-        const end = new Date(endDate)
-        isEndDate = orderDate <= end
-      }
-      
-      return isStartDate && isEndDate
-    })
-
-    setFilteredOrders(filtered)
+    fetchFilteredOrders()
   }
 
-  const resetFilter = () => {
+  const resetToToday = () => {
     setStartDate(today)
     setEndDate(today)
+    setOrderNumberFilter('')
+    fetchFilteredOrders()
   }
 
   const handleStatusChangeClick = (orderId, newStatus) => {
@@ -85,20 +66,12 @@ function ManagerPage() {
       await api.patch(`/orders/manager-orders/${selectedOrderId}/`, {
         status: selectedNewStatus
       })
-      const updatedOrders = orders.map(order => 
-        order.id === selectedOrderId ? { ...order, status: selectedNewStatus } : order
-      )
       
-      const updatedFilteredOrders = filteredOrders.map(order => 
-        order.id === selectedOrderId ? { ...order, status: selectedNewStatus } : order
-      )
-      
-      setOrders(updatedOrders)
-      setFilteredOrders(updatedFilteredOrders)
+      fetchFilteredOrders()
       
       setShowModal(false)
     } catch (error) {
-      alert('Ошибка обновления статуса')
+      alert('Ошибка обновления статуса: ' + (error.response?.data?.error || error.message))
       setShowModal(false)
     }
   }
@@ -113,12 +86,12 @@ function ManagerPage() {
 
   return (
     <main className="manager-page">
-      <h1>Панель управления</h1>
+      <h1>Панель управления заказами</h1>
       
       <div className="manager-page__order-sum-container">
         <div className="manager-page__order-sum">
-          <h3>Количество заказов за {startDate === endDate ? 'сегодня' : 'период'}</h3>
-          <p>{filteredOrders.length}</p>
+          <h3>Количество заказов</h3>
+          <p>{orders.length}</p>
         </div>
       </div>
       
@@ -141,20 +114,35 @@ function ManagerPage() {
           onChange={(e) => setEndDate(e.target.value)}
         />
         
+        <p>Номер заказа</p>
+        <Input
+          type='text'
+          className='input'
+          value={orderNumberFilter}
+          onChange={(e) => setOrderNumberFilter(e.target.value)}
+          placeholder="Поиск по номеру заказа"
+        />
+        
         <div className='filter-container__buttons'>
+          <Button 
+            text={'Применить'}
+            className={'btn'}
+            onClick={applyFilter}
+          />
+          
           <Button 
             text={'Заказы за сегодня'}
             className={'btn'}
-            onClick={resetFilter}
+            onClick={resetToToday}
           />
         </div>
       </div>
-        {filteredOrders.length === 0 ? (
+      
+      {orders.length === 0 ? (
         <p className="manager-page__no-orders">Заказы не найдены</p>
       ) : (
         <div className="orders">
-          {filteredOrders.map(order => (
-            !order.is_deleted && (
+          {orders.map(order => (
             <div key={order.id} className="orders__card">
               <header className="order__header">
                 <div>
@@ -211,7 +199,7 @@ function ManagerPage() {
                 </div>
               )}
             </div>
-          )))}
+          ))}
         </div>
       )}
       

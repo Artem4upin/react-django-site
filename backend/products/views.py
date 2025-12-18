@@ -1,9 +1,11 @@
+import json
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response  
 from .models import Category, Product
 from .serializers import *
 from django.contrib.postgres.search import SearchVector
+from .premissions import IsManager
 
 class ProductList(APIView):
 
@@ -30,6 +32,23 @@ class ProductDetail(APIView):
         product = get_object_or_404(Product, pk=pk)
         serializer = ProductSerializer(product, context={'request': request})
         return Response(serializer.data)
+    
+    def patch(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+
+        allowed_fields = ['name', 'price', 'quantity', 'description']
+        data = request.data
+        
+        for field in allowed_fields:
+            if field in data:
+                setattr(product, field, data[field])
+        
+        try:
+            product.save()
+            serializer = ProductSerializer(product, context={'request': request})
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
     
 class ProductSearch(APIView):
     def get(self, request):
@@ -86,3 +105,45 @@ class ParametersView(APIView):
                 })
         
         return Response(parameters_data)
+    
+class ProductCreate(APIView):
+    permission_classes = [IsManager]
+    
+    def post(self, request):        
+        try:
+            data = request.data
+            
+            product = Product.objects.create(
+                name=data.get('name'),
+                price=float(data.get('price', 0)),
+                quantity=int(data.get('quantity', 1)),
+                description=data.get('description', ''),
+                brand_id=data.get('brand'),
+                category_id=data.get('category'),
+                subcategory_id=data.get('subcategory'),
+            )
+            
+            if 'image' in request.FILES:
+                product.image_pass = request.FILES['image']
+                product.save()
+            
+            parameters_json = data.get('parameters')
+            if parameters_json:
+                try:
+                    parameters_data = json.loads(parameters_json)
+                    for param_data in parameters_data:
+                        if isinstance(param_data, dict) and 'parameter' in param_data and 'value' in param_data:
+                            Product_parameters.objects.create(
+                                product=product,
+                                parameter_id=param_data['parameter'],
+                                value=param_data['value']
+                            )
+                except Exception as e:
+                    print(f"Ошибка при создании параметров: {e}")
+            
+            serializer = ProductSerializer(product, context={'request': request})
+            return Response(serializer.data, status=201)
+            
+        except Exception as e:
+            print(f"Общая ошибка создания товара: {e}")
+            return Response({"error": str(e)}, status=400)

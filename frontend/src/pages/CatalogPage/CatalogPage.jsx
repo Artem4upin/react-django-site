@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { api } from '../../api';
 import ProductList from '../../components/ProductList/ProductList';
 import './CatalogPage.css'
@@ -6,6 +6,9 @@ import Loading from '../../components/UI/Loading/Loading';
 import Category from '../../components/Category/Category';
 import ProductFilter from '../../components/ProductFilter/ProductFilter';
 import Search from '../../components/UI/Search/Search';
+import Button from '../../components/UI/Button/Button';
+import { AuthContext } from '../../hooks/authContext';
+import { useNavigate } from 'react-router-dom';
 
 function CatalogPage() {
     const [products, setProducts] = useState([])
@@ -14,7 +17,7 @@ function CatalogPage() {
     const [selectedCategoryName, setSelectedCategoryName] = useState(null)
     const [selectedSubcategoryName, setSelectedSubcategoryName] = useState(null)
     const [searchResult, setSearchResult] = useState([])
-    
+    const { user } = useContext(AuthContext)
     const [currentFilters, setCurrentFilters] = useState({
         category: null,
         subcategory: null,
@@ -26,6 +29,8 @@ function CatalogPage() {
         inStock: true
     })
 
+    const navigate = useNavigate();
+    
     useEffect(() => {
         loadProducts()
     }, [])
@@ -150,6 +155,10 @@ function CatalogPage() {
         setFilteredProducts(filtered)
     }
 
+    const createNewProduct = () => {
+        navigate('/create-product');
+    }
+
     if (loading) {
         return <Loading />
     }
@@ -164,12 +173,16 @@ function CatalogPage() {
         </div>
         <div className='catalog-page__title-content'>
             <h1 className='catalog-page__title'>Товары</h1>
+            
             <div className='catalog-page__title-category'>
                 
                 <p>{selectedCategoryName && (selectedCategoryName)}</p>
                 {selectedSubcategoryName && (<p>-</p>)}
                 <p>{selectedSubcategoryName && (selectedSubcategoryName)}</p>
             </div>
+            {user?.user_type === 'Manager' && (
+                <Button text={'Добавить товар'} className={'submit-btn'} onClick={createNewProduct}/>
+            )}
         </div>
         <div className='catalog-page__content'>
             <div className="catalog-page__filters-wrapper">

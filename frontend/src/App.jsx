@@ -16,6 +16,8 @@ import AboutPage from './pages/AboutPage/AboutPage'
 import PrivacyPage from './pages/PrivacyPage/PrivacyPage'
 import TermsPage from './pages/TermsPage/TermsPage'
 import FaqPage from './pages/FaqPage/FaqPage'
+import CreateProductPage from './pages/CreateProductPage/CreateProductPage'
+import RoleManagementPage from './pages/RoleManagmentPage/RoleManagementPage'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -52,10 +54,12 @@ function App() {
           <Route path='/account' element={<AccountPage />} />
           <Route path='/catalog' element={<CatalogPage />} />
           <Route path='/product/:id' element={<ProductPage />} />
+          <Route path='/create-product' element={<CreateProductPage />} />
           <Route path='/about' element={<AboutPage />} />
           <Route path='/cart' element={<CartPage />} />
           <Route path='/orders' element={<OrdersPage />} />
           <Route path='/manager-page' element={<ManagerPage />} />
+          <Route path="/role-management" element={<RoleManagementPage />} />
           <Route path='/privacy' element={<PrivacyPage />} />
           <Route path='/terms' element={<TermsPage />} />
           <Route path='/faq' element={<FaqPage />} />

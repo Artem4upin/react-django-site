@@ -23,9 +23,10 @@ function ModalChangePassword ({showModal, setShowModal}) {
 
     const newPassword = watch('newPassword')
     const newPasswordRepeat = watch('newPasswordRepeat')
-    const [APImessage, setAPIMessage] = useState()
+    const [errorPassword, setErrorPassword] = useState()
 
     const onSubmit = async (data) => {
+        setErrorPassword()
         try{
             const response = await api.post('/auth/change-password/', {
                 current_password: data.currentPassword,
@@ -33,14 +34,20 @@ function ModalChangePassword ({showModal, setShowModal}) {
             })
 
             if (response.data.success) {
-                setAPIMessage('Пароль изменен')
+                setErrorPassword('Пароль изменен')
                 reset()
                 setShowModal(false)
             }
         } catch (error) {
-            setAPIMessage(error.response?.data?.error || 'Ошибка смены пароля')
+            setErrorPassword(error.response?.data?.error || 'Ошибка смены пароля')
         }
     }
+
+    const handleChangePasswordTrue = () => {
+        setTimeout(() => {
+        setErrorPassword()
+        setShowModal(false)
+    }, 5000)}
 
     if (!showModal) return
 
@@ -50,9 +57,10 @@ function ModalChangePassword ({showModal, setShowModal}) {
                 <form className='modal-change-password__change-password-form' onSubmit={handleSubmit(onSubmit)}>
                     <span>Смена пароля</span>
 
-                    {APImessage && (
-                        <p className='modal-change-password__error-message' >Ошибка: {APImessage}</p>
-                    )}
+                    {errorPassword && (
+                        (errorPassword == 'Пароль изменен'? (handleChangePasswordTrue) : (
+                        <p className='modal-change-password__error-message' >Ошибка: {errorPassword}</p>
+                    )))}
                     
                     <InputForm
                         id="password"
