@@ -1,11 +1,11 @@
 import './Button.css'
 
 function Button ({
-    className, 
-    type, 
-    text, 
-    onClick, 
-    disabled
+    className='',
+    type='',
+    text='',
+    onClick = () => {},
+    disabled = false
 }) {
     return(
         <div className='button'>

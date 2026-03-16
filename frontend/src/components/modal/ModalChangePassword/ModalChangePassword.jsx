@@ -5,7 +5,7 @@ import InputForm from '../../UI/Input/InputForm';
 import Button from '../../UI/Button/Button';
 import './ModalChangePassword.css'
 
-function ModalChangePassword ({showModal, setShowModal}) {
+function ModalChangePassword ({showModal = true, setShowModal}) {
     
     const {
         register,

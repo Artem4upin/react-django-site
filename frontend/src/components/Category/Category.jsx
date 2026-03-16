@@ -4,7 +4,7 @@ import { api } from '../../api';
 import Loading from '../UI/Loading/Loading';
 import Button from '../UI/Button/Button';
 
-function Category({ onFilterChange}) {
+function Category({ onFilterChange = () => {} }) {
     const [categories, setCategories] = useState([])
     const [selectedCategory, setSelectedCategory] = useState()
     const [selectedSubcategory, setSelectedSubcategory] = useState()

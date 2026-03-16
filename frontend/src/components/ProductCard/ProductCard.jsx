@@ -6,11 +6,11 @@ import { addToCart, deleteFromCart, goToProduct } from "../../utils/functions";
 import { AuthContext } from "../../hooks/authContext";
 
 function ProductCard({ 
-    product, 
-    isCart, 
-    onItemDelete, 
-    isSelected,
-    onCheckboxChange 
+    product = {},
+    isCart = false,
+    onItemDelete = () => {},
+    isSelected = false,
+    onCheckboxChange = () => {}
 }) {
     const navigate = useNavigate()
     

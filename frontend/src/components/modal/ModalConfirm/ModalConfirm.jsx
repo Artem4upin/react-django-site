@@ -2,7 +2,13 @@ import React from "react";
 import Button from "../../UI/Button/Button";
 import "./ModalConfirm.css";
 
-function ModalConfirm({ showModal, setShowModal, onConfirm, onCancel, newStatus }) {
+function ModalConfirm({
+                          showModal = true,
+                          setShowModal,
+                          onConfirm = () => {},
+                          onCancel = () => {},
+                          newStatus = '',
+}) {
     if (!showModal) return null;
 
     return (

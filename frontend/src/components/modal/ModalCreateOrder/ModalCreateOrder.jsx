@@ -3,11 +3,11 @@ import './ModalCreateOrder.css'
 import Button from '../../UI/Button/Button'
 
 function ModalCreateOrder({ 
-    showOrderModal, 
+    showOrderModal = true,
     setShowOrderModal, 
-    createOrder, 
-    selectedItemsCount,
-    totalPrice 
+    createOrder = () => {},
+    selectedItemsCount = 0,
+    totalPrice = 0,
 }) {
     const [address, setAddress] = useState('')
 

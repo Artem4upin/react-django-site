@@ -1,8 +1,12 @@
 import React from 'react';
 import './OrderCard.css';
-import OrderItems from './OrderItems/OrderItems';
 
-function OrderCard({ order }) {
+function OrderCard({ order = {
+    status: 'Created',
+    created_at: new Date(),
+    delivery_date: new Date(),
+    price_sum: 0
+} }) {
 
 
     const statusTranslations = {

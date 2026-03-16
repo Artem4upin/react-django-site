@@ -6,6 +6,8 @@ from .models import Category, Product
 from .serializers import *
 from django.contrib.postgres.search import SearchVector
 from .premissions import IsManager
+from rest_framework.pagination import PageNumberPagination
+from backend.config import PRODUCT_PAGE_SIZE
 
 class ProductList(APIView):
 
@@ -14,14 +16,17 @@ class ProductList(APIView):
 
     def get(self, request):
         is_new = request.query_params.get('new', '').lower() == 'true'
-        
         if is_new:
             products = Product.objects.all().order_by('-creation_date')[:2]
         else:
             products = Product.objects.all()
-            
-        serializer = ProductSerializer(products, many=True, context={'request': request})
-        return Response(serializer.data)
+
+        pagination = PageNumberPagination()
+        pagination.page_size = PRODUCT_PAGE_SIZE
+        result_page = pagination.paginate_queryset(products, request)
+
+        serializer = ProductSerializer(result_page, many=True, context={'request': request})
+        return pagination.get_paginated_response(serializer.data)
 
 class ProductDetail(APIView):
     

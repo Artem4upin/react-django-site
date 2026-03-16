@@ -17,7 +17,7 @@ function HomePage() {
   const loadNewProducts = async () => {
     try {
       const response = await api.get('/products/?new=true')
-      setNewProducts(response.data)
+      setNewProducts(response.data.results)
       setLoading(false)
     } catch (error) {
       console.error('Ошибка:', error)
@@ -25,7 +25,7 @@ function HomePage() {
   }
 
   if (loading) {
-    return <Loading />
+    return <Loading fullPage={true} />
   }
 
   return (
@@ -33,7 +33,7 @@ function HomePage() {
       <div className='home-page__content'>
         <div className='home-page__shop-banner'>
           <h1>TechShop</h1>
-          <h3>Магазин компютерных комплектующих</h3>
+          <h3>Магазин компьютерных комплектующих</h3>
         </div>
         <Banner />
         <div className='home-page__new-products'>

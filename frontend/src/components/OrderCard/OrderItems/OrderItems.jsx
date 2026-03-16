@@ -1,7 +1,12 @@
 import React from "react"
 import './OrderItems.css'
 
-function OrderItems ({orderitem_set}) {
+function OrderItems ({orderitem_set = {
+    id: 0,
+    product_name: "",
+    quantity: 0,
+    product_price: 0
+}}) {
     return(
 
     <div className="order-items">

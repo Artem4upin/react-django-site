@@ -10,9 +10,11 @@
   justify-self: center;
 }
 
-.orders-page__not-found {
-  padding-top: 200px;
-  padding-bottom: 500px;
+.order-page__not-found {
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
+  padding-bottom: 300px;
 }
 
 .orders-page__buttons {

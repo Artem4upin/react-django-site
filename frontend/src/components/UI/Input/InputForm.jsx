@@ -1,13 +1,13 @@
 import React from 'react';
 
 function InputForm({
-  id,
-  name,
-  label,
+  id= 0,
+  name = '',
+  label = '',
   type = 'text',
   register,
-  validation,
-  error,
+  validation = {},
+  error = '',
   placeholder = '',
   autoComplete = 'on',
   className = 'input'

@@ -30,8 +30,8 @@ export const deleteFromCart = async (productId, onItemDelete) => {
         }
 }
 
-    export const calculateTotalPrice = (items) => {
-        return items.reduce((sum, item) => {
-            return sum + (parseFloat(item.price || item.product_price) * (item.quantity || 1))
-        }, 0).toFixed(2)
-    }
+export const calculateTotalPrice = (items) => {
+    return items.reduce((sum, item) => {
+        return sum + (parseFloat(item.price || item.product_price) * (item.quantity || 1))
+    }, 0).toFixed(2)
+}

@@ -2,15 +2,15 @@ import React from 'react';
 import './Input.css';
 
 function Input({ 
-    id, 
-    name, 
-    label, 
+    id = 0,
+    name = '',
+    label = '',
     type = 'text', 
-    value, 
-    onChange, 
-    placeholder, 
+    value,
+    onChange = () => {},
+    placeholder = "",
     required = false,
-    pattern,
+    pattern = "",
     className = 'input',
     autoComplete = 'on'
 }) {

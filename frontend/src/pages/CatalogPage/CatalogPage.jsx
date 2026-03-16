@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {useState, useEffect, useContext, useRef} from 'react';
 import { api } from '../../api';
 import ProductList from '../../components/ProductList/ProductList';
 import './CatalogPage.css'
@@ -9,6 +9,9 @@ import Search from '../../components/UI/Search/Search';
 import Button from '../../components/UI/Button/Button';
 import { AuthContext } from '../../hooks/authContext';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import {getErrorMsg} from "../../utils/errorMassages.jsx";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage.jsx";
 
 function CatalogPage() {
     const [products, setProducts] = useState([])
@@ -17,6 +20,12 @@ function CatalogPage() {
     const [selectedCategoryName, setSelectedCategoryName] = useState(null)
     const [selectedSubcategoryName, setSelectedSubcategoryName] = useState(null)
     const [searchResult, setSearchResult] = useState([])
+
+    const [loadingMore, setLoadingMore] = useState(false)
+    const [nextPage, setNextPage] = useState('');
+    const observerRef = useRef(null);
+    const [loadingError, setLoadingError] = useState('');
+
     const { user } = useContext(AuthContext)
     const [currentFilters, setCurrentFilters] = useState({
         category: null,
@@ -36,17 +45,73 @@ function CatalogPage() {
     }, [])
 
     useEffect(() => {
+        if (products.length > 0 || searchResult.length > 0) {
         applyFilters()
+        }
     }, [products, searchResult, currentFilters])
 
-    const loadProducts = async () => {
+    const loadProducts = async (page = 1) => {
+        setLoading(true);
+        setLoadingError(null);
+
+        const timeout = setTimeout(() => {
+            setLoading(false);
+            setLoadingError("Превышено время ожидания. Попробуйте перезагрузить страницу")
+        }, 5000);
+
         try {
-            const response = await api.get('/products/')
-            setProducts(response.data)
+            const response = await api.get(`/products/?page=${page}`);
+            console.log(response.data);
+            setProducts(response.data.results);
+            setNextPage(response.data.next);
+            clearTimeout(timeout);
         } catch (error) {
-            console.error('Ошибка загрузки товаров:', error)
+            clearInterval(timeout);
+            setLoadingError(getErrorMsg(error));
+            setProducts([]);
         } finally {
             setLoading(false)
+        }
+    }
+
+    const loadingMoreProducts = async () => {
+        if (loadingMore || !nextPage) return;
+        setLoadingMore(true);
+        setLoadingError(null);
+
+        const timeout = setTimeout(() => {
+            setLoadingMore(false);
+            setLoadingError("Превышено время ожидания. Попробуйте перезагрузить страницу")
+        }, 5000);
+
+        try {
+            const response = await axios.get(nextPage);
+            clearTimeout(timeout);
+            setProducts(currentProducts => [...currentProducts, ...response.data.results]);
+            setNextPage(response.data.next);
+        } catch (error) {
+            clearTimeout(timeout);
+            setLoadingError(getErrorMsg(error));
+            console.error('Ошибка загрузки товаров', error);
+        } finally {
+            setLoadingMore(false);
+        }
+    }
+
+    const lastProduct = (div) => {
+        if (loadingMore) return;
+
+        if (observerRef.current) {
+            observerRef.current.disconnect();
+        }
+
+        observerRef.current = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && nextPage && !loadingError) {
+                loadingMoreProducts();
+            }
+        })
+        if (div) {
+            observerRef.current.observe(div);
         }
     }
 
@@ -201,11 +266,15 @@ function CatalogPage() {
                     <ProductList
                         className='product-list_one-column' 
                         products={filteredProducts}
+                        loadingMore={loadingMore}
+                        nextPage={nextPage}
+                        lastProduct={lastProduct}
                     />
                 </div>
             ) : (
                 <h2 className='catalog-page__products-not-found'>Нет результатов</h2>
             )}
+                {loadingError && <ErrorMessage errorMsg={loadingError}/>}
             </main>
         </div>
     </div>

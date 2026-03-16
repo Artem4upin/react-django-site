@@ -18,10 +18,9 @@ function OrdersPage() {
     try {
       const response = await api.get('/orders/user-orders/')
       setOrders(response.data)
+      setLoading(false)
     } catch (error) {
       console.error('Ошибка загрузки заказов:', error)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -42,7 +41,7 @@ if (loading) {
       )}
 
       <main className='orders-page__main-container'>
-        {!orders && (
+        {orders.length < 1 && (
           <h2 className='order-page__not-found'>Нет заказов</h2>
         )}
         <OrderList 

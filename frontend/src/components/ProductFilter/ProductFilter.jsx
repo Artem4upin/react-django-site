@@ -4,7 +4,11 @@ import { api } from '../../api';
 import Loading from '../UI/Loading/Loading';
 import Button from '../UI/Button/Button';
 
-function ProductFilter({ onFilterChange, onResetProductFilters, selectedCategory }) {
+function ProductFilter({
+                           onFilterChange = () => {},
+                           onResetProductFilters = () => {},
+                           selectedCategory = ''
+}) {
     const [brands, setBrands] = useState([])
     const [parameters, setParameters] = useState([])
     const [loading, setLoading] = useState(true)

@@ -1,10 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import './Search.css'
 import Input from '../Input/Input'
 import Button from "../button/button";
 import { api } from "../../../api";
 
-function Search ({searchResult, setSearchResult}) {
+function Search ({
+                     searchResult = [],
+                     setSearchResult}
+) {
 
     const [searchValue, setSearchValue] = useState('')
 
