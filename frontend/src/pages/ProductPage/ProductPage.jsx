@@ -2,10 +2,10 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../../api';
 import './ProductPage.css';
-import Button from '../../components/UI/Button/Button';
-import Loading from '../../components/UI/Loading/Loading';
-import Input from '../../components/UI/Input/Input';
-import { addToCart } from '../../utils/functions';
+import Button from '../../components/UI/button/button.tsx';
+import Loading from '../../components/UI/Loading/Loading.tsx';
+import Input from '../../components/UI/Input/Input.tsx';
+import { addToCart } from '../../utils/functions.tsx';
 import { AuthContext } from '../../hooks/authContext';
 
 function ProductPage() {
@@ -99,7 +99,7 @@ function ProductPage() {
     }
 
     if (loading) {
-        return <Loading />
+        return <Loading fullPage={true}/>
     }
 
     if (!product) {

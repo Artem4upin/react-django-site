@@ -2,9 +2,9 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../../api'
 import { AuthContext } from '../../hooks/authContext'
-import Button from '../../components/UI/Button/Button'
-import Input from '../../components/UI/Input/Input'
-import Loading from '../../components/UI/Loading/Loading'
+import Button from '../../components/UI/button/button.tsx'
+import Input from '../../components/UI/Input/Input.tsx'
+import Loading from '../../components/UI/Loading/Loading.tsx'
 import './CreateProductPage.css'
 
 function CreateProductPage() {
@@ -158,7 +158,7 @@ function CreateProductPage() {
     }
 
     if (loadingData) {
-        return <Loading />
+        return <Loading fullPage={true} />
     }
 
     return (

@@ -1,14 +1,22 @@
 import React from "react";
-import Button from "../../UI/Button/Button";
+import Button from "../../UI/button/button";
 import "./ModalConfirm.css";
 
+interface IModalConfirmProps {
+    showModal: boolean;
+    setShowModal: (showModal: boolean) => void;
+    onConfirm: () => void;
+    onCancel: () => void;
+    newStatus: string;
+}
+
 function ModalConfirm({
-                          showModal = true,
-                          setShowModal,
-                          onConfirm = () => {},
-                          onCancel = () => {},
-                          newStatus = '',
-}) {
+        showModal = true,
+        setShowModal,
+        onConfirm = () => {},
+        onCancel = () => {},
+        newStatus = '',
+}:IModalConfirmProps) {
     if (!showModal) return null;
 
     return (
@@ -19,7 +27,7 @@ function ModalConfirm({
                     <h3>Подтвердите действие</h3>
                 </div>
                 <p className="modal-confirm__message">Вы уверены что хотите изменить статус заказа?</p>
-                {(newStatus == 'Completed' || newStatus == 'Canceled') && (
+                {(newStatus === 'Completed' || newStatus === 'Canceled') && (
                     <p className="modal-confirm__message">Заказ будет перемещен в архив</p>
                 )}
                 <div className="modal-confirm__buttons-container">

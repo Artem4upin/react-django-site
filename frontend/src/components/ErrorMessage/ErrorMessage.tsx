@@ -1,8 +1,6 @@
 import "./ErrorMessage.css"
 
-function ErrorMessage({
-    errorMsg = '',
-                      }) {
+function ErrorMessage({ errorMsg }: { errorMsg: string }) {
 
     return (
         <div>

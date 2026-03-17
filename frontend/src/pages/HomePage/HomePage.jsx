@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { api } from '../../api'
 import './HomePage.css'
-import ProductList from '../../components/ProductList/ProductList'
-import Loading from '../../components/UI/Loading/Loading'
-import Banner from '../../components/UI/Banner/Banner'
+import ProductList from '../../components/ProductList/ProductList.tsx'
+import Loading from '../../components/UI/Loading/Loading.tsx'
+import Banner from '../../components/UI/Banner/Banner.tsx'
 
 function HomePage() {
   

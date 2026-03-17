@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../api'
 import './ManagerPage.css'
-import Loading from '../../components/UI/Loading/Loading';
-import ModalConfirm from '../../components/modal/ModalConfirm/ModalConfirm';
-import Input from '../../components/UI/Input/Input';
-import Button from '../../components/UI/Button/Button';
+import Loading from '../../components/UI/Loading/Loading.tsx';
+import ModalConfirm from '../../components/modal/ModalConfirm/ModalConfirm.tsx';
+import Input from '../../components/UI/Input/Input.tsx';
+import Button from '../../components/UI/button/button.tsx';
 
 function ManagerPage() {
   const [orders, setOrders] = useState([])
@@ -81,7 +81,7 @@ function ManagerPage() {
   }
 
   if (loading) {
-    return <Loading />
+    return <Loading fullPage={true} />
   }
 
   return (

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { api } from '../../api';
-import OrderList from '../../components/OrderList/OrderList';
+import OrderList from '../../components/OrderList/OrderList.tsx';
 import './OrdersPage.css';
-import Loading from '../../components/UI/Loading/Loading';
-import Button from '../../components/UI/button/button'
+import Loading from '../../components/UI/Loading/Loading.tsx';
+import Button from '../../components/UI/button/button.tsx'
 
 function OrdersPage() {
   const [orders, setOrders] = useState([])
@@ -29,7 +29,7 @@ function OrdersPage() {
   }
 
 if (loading) {
-    return <Loading />
+    return <Loading fullPage={true} />
   }
   
   return (

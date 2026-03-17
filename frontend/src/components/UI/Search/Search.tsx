@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, {ChangeEvent, useState} from "react";
 import './Search.css'
 import Input from '../Input/Input'
 import Button from "../button/button";
 import { api } from "../../../api";
+import {IProduct} from "../../../types/product";
+
+interface ISearchProps {
+    searchResult: IProduct[];
+    setSearchResult: (searchResult: IProduct[]) => void;
+}
 
 function Search ({
-                     searchResult = [],
-                     setSearchResult}
-) {
+        searchResult,
+        setSearchResult
+}:ISearchProps) {
 
     const [searchValue, setSearchValue] = useState('')
 
@@ -40,7 +46,7 @@ function Search ({
             type="text" 
             placeholder={'Поиск товара'} 
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
             />
 
             {searchResult.length > 0 && (

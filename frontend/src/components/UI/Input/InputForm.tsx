@@ -1,17 +1,31 @@
 import React from 'react';
+import {FieldError, UseFormRegister} from "react-hook-form";
+
+interface IInputFormProps {
+  id?: string;
+  name: string;
+  label?: string;
+  type?: string;
+  register: UseFormRegister<any>;
+  validation?: object;
+  error?: FieldError;
+  placeholder?: string;
+  autoComplete?: string;
+  className?: string;
+}
 
 function InputForm({
-  id= 0,
+  id= '',
   name = '',
   label = '',
   type = 'text',
   register,
   validation = {},
-  error = '',
+  error,
   placeholder = '',
   autoComplete = 'on',
   className = 'input'
-}) {
+}: IInputFormProps) {
   return (
     <div className='input-form'>
       {label && (

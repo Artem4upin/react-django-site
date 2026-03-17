@@ -1,3 +1,12 @@
 import { createContext } from "react";
+import {IUser} from "../types/user";
 
-export const AuthContext = createContext({  })
+interface IAuthContext {
+    isAuthenticated: boolean;
+    user: IUser | null;
+}
+
+export const AuthContext = createContext<IAuthContext>({
+    isAuthenticated: false,
+    user: null
+})

@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form'
 import { api } from '../../api'
 import './LoginPage.css'
 import { AuthContext } from '../../hooks/authContext'
-import Button from '../../components/UI/Button/Button'
-import InputForm from '../../components/UI/Input/InputForm'
+import Button from '../../components/UI/button/button.tsx'
+import InputForm from '../../components/UI/Input/InputForm.tsx'
 
 function LoginPage() { 
   const { setUser } = useContext(AuthContext)

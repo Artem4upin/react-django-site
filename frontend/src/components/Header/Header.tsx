@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './header.css'
 import CartIcon from '../icons/CartIcon';
-import { AuthContext } from '../../hooks/authContext';
+import { AuthContext } from '../../hooks/AuthContext';
 
 function Header(){
 

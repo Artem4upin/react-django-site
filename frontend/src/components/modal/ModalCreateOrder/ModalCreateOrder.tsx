@@ -1,14 +1,22 @@
-import { useState } from 'react'
+import {JSX, useState} from 'react'
 import './ModalCreateOrder.css'
-import Button from '../../UI/Button/Button'
+import Button from '../../UI/button/button'
+
+interface ModalCreateOrderProps {
+    showOrderModal: boolean;
+    setShowOrderModal: (showOrderModal: boolean) => void;
+    createOrder: (address: string, deliveryDate: string) => void;
+    selectedItemsCount: number;
+    totalPrice: number;
+}
 
 function ModalCreateOrder({ 
     showOrderModal = true,
     setShowOrderModal, 
-    createOrder = () => {},
+    createOrder,
     selectedItemsCount = 0,
     totalPrice = 0,
-}) {
+}: ModalCreateOrderProps): JSX.Element | null {
     const [address, setAddress] = useState('')
 
     if (!showOrderModal) return null

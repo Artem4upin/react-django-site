@@ -1,12 +1,18 @@
 import { api } from "../api";
+import {NavigateFunction} from "react-router-dom";
+import {AxiosResponse} from "axios";
+import {ICartItem} from "../types/cart";
 
-export function goToProduct (navigate, productId) {
+export function goToProduct (navigate: NavigateFunction, productId: number): void {
     navigate(`/product/${productId}`)
 }
 
-export const addToCart = async (productId, productQuantity, productName) => {
+export const addToCart = async (
+    productId: number,
+    productQuantity: number,
+    productName: string): Promise<void> => {
         try {
-            const response = await api.post('cart/cart-items/', {
+            const response: AxiosResponse = await api.post('cart/cart-items/', {
                 product: productId,
                 quantity: productQuantity
             })
@@ -17,7 +23,9 @@ export const addToCart = async (productId, productQuantity, productName) => {
         }
 }
 
-export const deleteFromCart = async (productId, onItemDelete) => {
+export const deleteFromCart = async (
+    productId: number,
+    onItemDelete: (id: number) => void): Promise<void> => {
         try {
             const response = await api.delete(`/cart/cart-items/${productId}/`)
             console.log('Товар удален:', response.data)
@@ -30,8 +38,8 @@ export const deleteFromCart = async (productId, onItemDelete) => {
         }
 }
 
-export const calculateTotalPrice = (items) => {
-    return items.reduce((sum, item) => {
-        return sum + (parseFloat(item.price || item.product_price) * (item.quantity || 1))
+export const calculateTotalPrice = (items: ICartItem[]) => {
+    return items.reduce((sum: number, item: ICartItem) => {
+        return sum + (item.product_price * (item.quantity || 1))
     }, 0).toFixed(2)
 }

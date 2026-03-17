@@ -1,12 +1,12 @@
 import React from "react"
 import './OrderItems.css'
+import {IOrderItemSet} from "../../../types/order";
 
-function OrderItems ({orderitem_set = {
-    id: 0,
-    product_name: "",
-    quantity: 0,
-    product_price: 0
-}}) {
+interface IOrderItemProps {
+    orderitem_set: IOrderItemSet[];
+}
+
+function OrderItems ({orderitem_set}:IOrderItemProps) {
     return(
 
     <div className="order-items">

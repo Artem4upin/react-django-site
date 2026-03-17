@@ -1,12 +1,20 @@
 import './Button.css'
 
+interface IButtonProps {
+    className?: string;
+    type?: "button" | "submit" | "reset" | undefined;
+    text?: string;
+    onClick?: () => void;
+    disabled?: boolean;
+}
+
 function Button ({
     className='',
-    type='',
+    type='button',
     text='',
     onClick = () => {},
     disabled = false
-}) {
+}:IButtonProps) {
     return(
         <div className='button'>
             <button 

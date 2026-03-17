@@ -5,7 +5,7 @@ from products.serializers import ProductSerializer
 class CartItemSerializer(serializers.ModelSerializer):
 
     product_name = serializers.CharField(source='product.name', read_only=True)
-    product_price = serializers.DecimalField(source='product.price', max_digits=10, decimal_places=2, read_only=True)
+    product_price = serializers.DecimalField(source='product.price', max_digits=10, decimal_places=2, read_only=True, coerce_to_string=False)
 
     image_pass = serializers.SerializerMethodField()
     

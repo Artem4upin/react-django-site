@@ -1,16 +1,18 @@
 import { useContext, useEffect, useState } from "react";
-import ProductList from "../../components/ProductList/ProductList";
+import ProductList from "../../components/ProductList/ProductList.tsx";
 import { api } from "../../api";
 import './CartPage.css'
-import Button from "../../components/UI/Button/Button";
-import ModalCreateOrder from "../../components/modal/ModalCreateOrder/ModalCreateOrder";
-import { calculateTotalPrice } from "../../utils/functions";
+import Button from "../../components/UI/button/button.tsx";
+import ModalCreateOrder from "../../components/modal/ModalCreateOrder/ModalCreateOrder.tsx";
+import { calculateTotalPrice } from "../../utils/functions.tsx";
 import { AuthContext } from "../../hooks/authContext";
+import Loading from "../../components/UI/Loading/Loading.tsx";
 
 
 function CartPage() {
 
     const { user } = useContext(AuthContext)
+    const [loading, setLoading] = useState(false);
     const [ cartItems, setCartItems ] = useState([])
     const [selectedCartItems, setSelectedCartItems] = useState([])
     const [showOrderModal, setShowOrderModal] = useState(false)
@@ -24,14 +26,18 @@ function CartPage() {
     useEffect(() => {
         const selected = getSelectedItems()
         setSelectedItemsCount(selected.length)
+        console.log(selected)
         setSelectedTotalPrice(calculateTotalPrice(selected))
     }, [selectedCartItems, cartItems])
 
     const loadCart = async () => {
+        setLoading(true);
+
         try {
         const response = await api.get('/cart/cart-items/')
         setCartItems(response.data)
         setSelectedCartItems(response.data.map(item => item.id))
+        setLoading(false);
         } catch (error) {
         console.error('Ошибка', error)
         }
@@ -76,7 +82,10 @@ function CartPage() {
             alert(error.response?.data?.error || 'Не удалось создать заказ')
         }
     }
-    
+    if (loading) {
+        return <Loading fullPage={true} />
+    }
+
     return(
         <div className="cart-page">
             <div className="cart-page__content">

@@ -4,10 +4,10 @@ import { useForm } from 'react-hook-form';
 import { api } from "../../api"
 import './AccountPage.css'
 import { AuthContext } from "../../hooks/authContext";
-import Loading from "../../components/UI/Loading/Loading"
-import ModalChangePassword from "../../components/modal/ModalChangePassword/ModalChangePassword";
-import Button from "../../components/UI/Button/Button";
-import InputForm from "../../components/UI/Input/InputForm";
+import Loading from "../../components/UI/Loading/Loading.tsx"
+import ModalChangePassword from "../../components/modal/ModalChangePassword/ModalChangePassword.tsx";
+import Button from "../../components/UI/button/button.tsx";
+import InputForm from "../../components/UI/Input/InputForm.tsx";
 
 function AccountPage() {
     const { user, setUser } = useContext(AuthContext)
@@ -90,7 +90,7 @@ function AccountPage() {
     }
 
     if (loading) {
-        return <Loading />
+        return <Loading fullPage={true} />
     }
 
     return (

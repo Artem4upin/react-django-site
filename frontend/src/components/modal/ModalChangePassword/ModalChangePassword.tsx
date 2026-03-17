@@ -1,11 +1,22 @@
 import { useState } from 'react'
-import { useForm } from 'react-hook-form';
+import {SubmitHandler, useForm} from 'react-hook-form';
 import { api } from '../../../api'
 import InputForm from '../../UI/Input/InputForm';
-import Button from '../../UI/Button/Button';
+import Button from '../../UI/button/button';
 import './ModalChangePassword.css'
 
-function ModalChangePassword ({showModal = true, setShowModal}) {
+interface IChangePasswordInputs {
+    currentPassword: string;
+    newPassword: string;
+    newPasswordRepeat: string;
+}
+
+interface ModalChangePasswordProps {
+    showModal?: boolean;
+    setShowModal: (show: boolean) => void;
+}
+
+function ModalChangePassword ({showModal = true, setShowModal}: ModalChangePasswordProps) {
     
     const {
         register,
@@ -13,7 +24,7 @@ function ModalChangePassword ({showModal = true, setShowModal}) {
         watch,
         reset,
         formState: {errors, isSubmitting}
-    } = useForm({
+    } = useForm<IChangePasswordInputs>({
         defaultValues: {
             currentPassword: '',
             newPassword: '',
@@ -23,10 +34,10 @@ function ModalChangePassword ({showModal = true, setShowModal}) {
 
     const newPassword = watch('newPassword')
     const newPasswordRepeat = watch('newPasswordRepeat')
-    const [errorPassword, setErrorPassword] = useState()
+    const [errorPassword, setErrorPassword] = useState<string | undefined>()
 
-    const onSubmit = async (data) => {
-        setErrorPassword()
+    const onSubmit: SubmitHandler<IChangePasswordInputs> = async (data) => {
+        setErrorPassword(undefined)
         try{
             const response = await api.post('/auth/change-password/', {
                 current_password: data.currentPassword,
@@ -36,16 +47,16 @@ function ModalChangePassword ({showModal = true, setShowModal}) {
             if (response.data.success) {
                 setErrorPassword('Пароль изменен')
                 reset()
-                setShowModal(false)
+                handleChangePasswordTrue()
             }
-        } catch (error) {
+        } catch (error: any) {
             setErrorPassword(error.response?.data?.error || 'Ошибка смены пароля')
         }
     }
 
     const handleChangePasswordTrue = () => {
         setTimeout(() => {
-        setErrorPassword()
+        setErrorPassword(undefined)
         setShowModal(false)
     }, 5000)}
 
@@ -58,9 +69,10 @@ function ModalChangePassword ({showModal = true, setShowModal}) {
                     <span>Смена пароля</span>
 
                     {errorPassword && (
-                        (errorPassword == 'Пароль изменен'? (handleChangePasswordTrue) : (
-                        <p className='modal-change-password__error-message' >Ошибка: {errorPassword}</p>
-                    )))}
+                        errorPassword === 'Пароль изменен'
+                            ? (null)
+                            : <p className='modal-change-password__error-message'>Ошибка: {errorPassword}</p>
+                    )}
                     
                     <InputForm
                         id="password"
@@ -100,7 +112,7 @@ function ModalChangePassword ({showModal = true, setShowModal}) {
                         register={register}
                         validation={{
                             required: 'Обязательное поле',
-                            validate: value => value === newPassword || 'Пароли не совпадают'
+                            validate: (value: string) => value === newPassword || 'Пароли не совпадают'
                         }}
                         error={errors.newPasswordRepeat}
                         autoComplete="off"

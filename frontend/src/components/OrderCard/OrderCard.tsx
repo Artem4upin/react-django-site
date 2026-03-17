@@ -1,13 +1,12 @@
 import React from 'react';
 import './OrderCard.css';
+import {IOrder} from "../../types/order";
 
-function OrderCard({ order = {
-    status: 'Created',
-    created_at: new Date(),
-    delivery_date: new Date(),
-    price_sum: 0
-} }) {
+interface IOrderCardProps {
+    order: IOrder;
+}
 
+function OrderCard({ order }:IOrderCardProps) {
 
     const statusTranslations = {
         'Created': 'Создан',
@@ -17,7 +16,6 @@ function OrderCard({ order = {
         'Completed': 'Завершен',
         'Canceled': 'Отменен'
     }
-
     return (
         <div className="order-card">
             <h3>Заказ №{order.order_number}</h3>

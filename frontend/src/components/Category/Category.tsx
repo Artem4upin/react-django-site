@@ -2,13 +2,18 @@ import { useState, useEffect } from 'react';
 import './Category.css';
 import { api } from '../../api';
 import Loading from '../UI/Loading/Loading';
-import Button from '../UI/Button/Button';
+import Button from '../UI/button/button';
+import {ICategory, ISubcategory} from "../../types/product";
 
-function Category({ onFilterChange = () => {} }) {
-    const [categories, setCategories] = useState([])
-    const [selectedCategory, setSelectedCategory] = useState()
-    const [selectedSubcategory, setSelectedSubcategory] = useState()
-    const [loading, setLoading] = useState(true)
+interface ICategoryProps {
+    onFilterChange: (category: ICategory | null, subcategory: ISubcategory | null) => void;
+}
+
+function Category({ onFilterChange }:ICategoryProps) {
+    const [categories, setCategories] = useState<ICategory[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
+    const [selectedSubcategory, setSelectedSubcategory] = useState<ISubcategory | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         loadCategories()
@@ -25,7 +30,7 @@ function Category({ onFilterChange = () => {} }) {
         }
     };
 
-    const handleCategoryClick = (category) => {
+    const handleCategoryClick = (category: ICategory) => {
         if (selectedCategory?.id === category.id) {
             resetFilters()
         } else {
@@ -35,7 +40,7 @@ function Category({ onFilterChange = () => {} }) {
         }
     };
 
-    const handleSubcategoryClick = (subcategory) => {
+    const handleSubcategoryClick = (subcategory: ISubcategory) => {
         if (selectedSubcategory?.id === subcategory.id) {
             setSelectedSubcategory(null)
             onFilterChange(selectedCategory, null)

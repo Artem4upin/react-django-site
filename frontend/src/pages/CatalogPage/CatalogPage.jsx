@@ -1,17 +1,17 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
 import { api } from '../../api';
-import ProductList from '../../components/ProductList/ProductList';
+import ProductList from '../../components/ProductList/ProductList.tsx';
 import './CatalogPage.css'
-import Loading from '../../components/UI/Loading/Loading';
-import Category from '../../components/Category/Category';
-import ProductFilter from '../../components/ProductFilter/ProductFilter';
-import Search from '../../components/UI/Search/Search';
-import Button from '../../components/UI/Button/Button';
+import Loading from '../../components/UI/Loading/Loading.tsx';
+import Category from '../../components/Category/Category.tsx';
+import ProductFilter from '../../components/ProductFilter/ProductFilter.tsx';
+import Search from '../../components/UI/Search/Search.tsx';
+import Button from '../../components/UI/button/button.tsx';
 import { AuthContext } from '../../hooks/authContext';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import {getErrorMsg} from "../../utils/errorMassages.jsx";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage.jsx";
+import {getErrorMsg} from "../../utils/errorMassages.tsx";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage.tsx";
 
 function CatalogPage() {
     const [products, setProducts] = useState([])
@@ -61,7 +61,6 @@ function CatalogPage() {
 
         try {
             const response = await api.get(`/products/?page=${page}`);
-            console.log(response.data);
             setProducts(response.data.results);
             setNextPage(response.data.next);
             clearTimeout(timeout);
@@ -225,7 +224,7 @@ function CatalogPage() {
     }
 
     if (loading) {
-        return <Loading />
+        return <Loading fullPage={true} />
     }
 
     return (
@@ -264,7 +263,8 @@ function CatalogPage() {
             {filteredProducts.length > 0 ? (
                 <div className="catalog-page__product-list">
                     <ProductList
-                        className='product-list_one-column' 
+                        className='product-list_one-column'
+                        isCart={false}
                         products={filteredProducts}
                         loadingMore={loadingMore}
                         nextPage={nextPage}

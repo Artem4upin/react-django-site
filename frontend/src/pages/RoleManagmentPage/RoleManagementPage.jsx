@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { api } from '../../api'
 import './RoleManagementPage.css'
-import Loading from '../../components/UI/Loading/Loading';
-import Button from '../../components/UI/Button/Button';
+import Loading from '../../components/UI/Loading/Loading.tsx';
+import Button from '../../components/UI/button/button.tsx';
 import { AuthContext } from '../../hooks/authContext';
 
 function RoleManagementPage() {
@@ -63,7 +63,7 @@ function RoleManagementPage() {
   }
 
   if (loading) {
-    return <Loading />
+    return <Loading fullPage={true}/>
   }
 
   return (
