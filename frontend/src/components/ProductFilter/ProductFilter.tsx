@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef, ChangeEvent, JSX } from 'react';
+import { useState, useRef, ChangeEvent} from 'react';
 import './ProductFilter.css';
-import { api } from '../../api';
-import Loading from '../UI/Loading/Loading';
+
 import Button from '../UI/button/button';
 import {IBrand, ICategory, IParameter} from "../../types/product";
 
@@ -9,49 +8,24 @@ interface ProductFilterProps {
     onFilterChange: (key: string, value: string | number | boolean) => void;
     onResetProductFilters: () => void;
     selectedCategory: ICategory | null;
+    parameters: IParameter[];
+    brands: IBrand[];
 }
 
 function ProductFilter({
-                           onFilterChange,
-                           onResetProductFilters,
-                           selectedCategory
+        onFilterChange,
+        onResetProductFilters,
+        selectedCategory,
+        parameters,
+        brands,
     }: ProductFilterProps) {
 
-    const [brands, setBrands] = useState<IBrand[]>([]);
-    const [parameters, setParameters] = useState<IParameter[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
     const [selectedParamId, setSelectedParamId] = useState<string>('');
 
     const minPriceRef = useRef<HTMLInputElement>(null);
     const maxPriceRef = useRef<HTMLInputElement>(null);
     const brandSelectRef = useRef<HTMLSelectElement>(null);
     const inStockCheckboxRef = useRef<HTMLInputElement>(null);
-
-    useEffect(() => {
-        loadData();
-    }, [selectedCategory]);
-
-    const loadData = async () => {
-        try {
-            setLoading(true);
-            const brandsResponse = await api.get<IBrand[]>('/brands/');
-            setBrands(brandsResponse.data);
-
-            const paramsResponse = await api.get<IParameter[]>('/parameters/');
-            let filteredParams = paramsResponse.data;
-
-            if (selectedCategory) {
-                filteredParams = filteredParams.filter(
-                    param => param.category_id === selectedCategory.id
-                );
-            }
-            setParameters(filteredParams);
-        } catch (error) {
-            console.error('Ошибка загрузки данных:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleParamChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const id = e.target.value;
@@ -75,8 +49,6 @@ function ProductFilter({
         const parameter = parameters.find(p => String(p.id) === selectedParamId);
         return parameter ? parameter.values : [];
     };
-
-    if (loading) return <Loading />;
 
     return (
         <div className="product-filter">
@@ -115,7 +87,9 @@ function ProductFilter({
                             <option key="param-default" value="">
                                 {selectedCategory ? "Выберите характеристику" : "Выберите категорию"}
                             </option>
-                            {parameters.map(param => (
+                            {parameters
+                                .filter(param => !selectedCategory || param.category_id === selectedCategory.id)
+                                .map(param => (
                                 <option key={`param-${param.id}`} value={param.id}>
                                     {param.name}
                                 </option>

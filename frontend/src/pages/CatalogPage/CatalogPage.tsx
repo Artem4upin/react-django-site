@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import {getErrorMsg} from "../../utils/errorMassages";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import {ICategory, IProduct, ISubcategory} from "../../types/product";
+import {IBrand, ICategory, IParameter, IProduct, ISubcategory} from "../../types/product";
 
 interface IFilters {
     category: ICategory | null;
@@ -32,11 +32,13 @@ function CatalogPage() {
     const [selectedSubcategoryName, setSelectedSubcategoryName] = useState('')
     const [loadingMore, setLoadingMore] = useState(false)
     const [nextPage, setNextPage] = useState('');
-    const observerRef = useRef<IntersectionObserver | null>(null);
     const [loadingError, setLoadingError] = useState('');
-
-
-
+    const [categories, setCategories] = useState<ICategory[]>([]);
+    const [filterData, setFilterData] = useState<{brands: IBrand[], params: IParameter[]}>({
+        brands: [],
+        params: []
+    });
+    const observerRef = useRef<IntersectionObserver | null>(null);
     const { user } = useContext(AuthContext)
     const [currentFilters, setCurrentFilters] = useState<IFilters>({
         category: null,
@@ -48,11 +50,10 @@ function CatalogPage() {
         paramValue: null,
         inStock: true
     })
-
     const navigate = useNavigate();
 
     useEffect(() => {
-        loadProducts()
+        loadData()
     }, [])
 
     useEffect(() => {
@@ -61,7 +62,7 @@ function CatalogPage() {
         }
     }, [products, currentFilters])
 
-    const loadProducts = async (page: number = 1) => {
+    const loadData = async (page: number = 1) => {
         setLoading(true);
         setLoadingError('');
 
@@ -71,16 +72,27 @@ function CatalogPage() {
         }, 5000);
 
         try {
-            const response = await api.get(`/products/?page=${page}`);
-            setProducts(response.data.results);
-            setNextPage(response.data.next);
+            const [productsRes, categoriesRes, brandsRes, paramsRes] = await Promise.all([
+                api.get(`/products/?page=${page}`),
+                api.get<ICategory[]>('/categories/'),
+                api.get<IBrand[]>('/brands/'),
+                api.get<IParameter[]>('/parameters/')
+            ]);
+
+            setProducts(productsRes.data.results);
+            setNextPage(productsRes.data.next);
+            setCategories(categoriesRes.data)
+            setFilterData({
+                brands: brandsRes.data,
+                params: paramsRes.data
+            });
             clearTimeout(timeout);
         } catch (error: any) {
-            clearTimeout(timeout);
             setLoadingError(getErrorMsg(error));
             setProducts([]);
+            clearTimeout(timeout);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     }
 
@@ -255,11 +267,14 @@ function CatalogPage() {
             <div className="catalog-page__filters-wrapper">
                 <Category
                     onFilterChange={handleCategoryFilterChange}
+                    categories={categories}
                 />
                 <ProductFilter
                     onFilterChange={handleFilterChange}
                     onResetProductFilters={handleResetProductFilters}
                     selectedCategory={currentFilters.category}
+                    parameters={filterData.params}
+                    brands={filterData.brands}
                 />
             </div>
             <main className='catalog-page__main-container'>

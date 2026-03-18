@@ -1,34 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './Category.css';
-import { api } from '../../api';
-import Loading from '../UI/Loading/Loading';
 import Button from '../UI/button/button';
 import {ICategory, ISubcategory} from "../../types/product";
 
 interface ICategoryProps {
     onFilterChange: (category: ICategory | null, subcategory: ISubcategory | null) => void;
+    categories: ICategory[];
 }
 
-function Category({ onFilterChange }:ICategoryProps) {
-    const [categories, setCategories] = useState<ICategory[]>([]);
+function Category({
+        onFilterChange,
+        categories
+}:ICategoryProps) {
+
     const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
     const [selectedSubcategory, setSelectedSubcategory] = useState<ISubcategory | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-
-    useEffect(() => {
-        loadCategories()
-    }, [])
-
-    const loadCategories = async () => {
-        try {
-            const response = await api.get('/categories/')
-            setCategories(response.data)
-        } catch (error) {
-            console.error('Ошибка загрузки категорий:', error)
-        } finally {
-            setLoading(false)
-        }
-    };
 
     const handleCategoryClick = (category: ICategory) => {
         if (selectedCategory?.id === category.id) {
@@ -55,10 +41,6 @@ function Category({ onFilterChange }:ICategoryProps) {
         setSelectedSubcategory(null)
         onFilterChange(null, null)
     };
-
-    if (loading) {
-        return <Loading />
-    }
 
     return (
         <div className="category">
