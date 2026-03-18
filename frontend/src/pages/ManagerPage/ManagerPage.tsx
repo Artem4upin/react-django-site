@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../api'
 import './ManagerPage.css'
-import Loading from '../../components/UI/Loading/Loading.tsx';
-import ModalConfirm from '../../components/modal/ModalConfirm/ModalConfirm.tsx';
-import Input from '../../components/UI/Input/Input.tsx';
-import Button from '../../components/UI/button/button.tsx';
+import Loading from '../../components/UI/Loading/Loading';
+import ModalConfirm from '../../components/modal/ModalConfirm/ModalConfirm';
+import Input from '../../components/UI/Input/Input';
+import Button from '../../components/UI/button/button';
+import {IOrder, TStatusOrder} from "../../types/order";
+
+interface IFetchParams {
+  start_date: string;
+  end_date: string;
+  order_number?: string;
+}
 
 function ManagerPage() {
-  const [orders, setOrders] = useState([])
+  const [orders, setOrders] = useState<IOrder[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
-  const [selectedOrderId, setSelectedOrderId] = useState(null)
-  const [selectedNewStatus, setSelectedNewStatus] = useState('')
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null)
+  const [selectedNewStatus, setSelectedNewStatus] = useState<TStatusOrder | ''>('')
 
   const today = new Date().toISOString().split('T')[0]
-  const [startDate, setStartDate] = useState(today)
-  const [endDate, setEndDate] = useState(today)
+  const [startDate, setStartDate] = useState<string>(today)
+  const [endDate, setEndDate] = useState<string>(today)
   const [orderNumberFilter, setOrderNumberFilter] = useState('')
 
   useEffect(() => {
@@ -25,7 +32,7 @@ function ManagerPage() {
   const fetchFilteredOrders = async () => {
     setLoading(true)
     try {
-      const params = {
+      const params: IFetchParams = {
         start_date: startDate,
         end_date: endDate,
       }
@@ -34,9 +41,9 @@ function ManagerPage() {
         params.order_number = orderNumberFilter
       }
       
-      const response = await api.get('/orders/manager-orders/', { params })
+      const response = await api.get<IOrder[]>('/orders/manager-orders/', { params })
       setOrders(response.data)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Ошибка загрузки заказов:', error)
       alert('Ошибка загрузки заказов: ' + (error.response?.data?.error || error.message))
     } finally {
@@ -55,7 +62,7 @@ function ManagerPage() {
     fetchFilteredOrders()
   }
 
-  const handleStatusChangeClick = (orderId, newStatus) => {
+  const handleStatusChangeClick = (orderId: number, newStatus: TStatusOrder) => {
     setSelectedOrderId(orderId)
     setSelectedNewStatus(newStatus)
     setShowModal(true)
@@ -70,7 +77,7 @@ function ManagerPage() {
       fetchFilteredOrders()
       
       setShowModal(false)
-    } catch (error) {
+    } catch (error: any) {
       alert('Ошибка обновления статуса: ' + (error.response?.data?.error || error.message))
       setShowModal(false)
     }
@@ -142,7 +149,7 @@ function ManagerPage() {
         <p className="manager-page__no-orders">Заказы не найдены</p>
       ) : (
         <div className="orders">
-          {orders.map(order => (
+          {orders.map((order: IOrder) => (
             <div key={order.id} className="orders__card">
               <header className="order__header">
                 <div>
@@ -157,7 +164,7 @@ function ManagerPage() {
                   <span>Статус: </span>
                   <select 
                     value={order.status}
-                    onChange={(e) => handleStatusChangeClick(order.id, e.target.value)}
+                    onChange={(e) => handleStatusChangeClick(order.id, e.target.value as TStatusOrder)}
                   >
                     <option value="Created">Создан</option>
                     <option value="Work">В работе</option>
@@ -170,7 +177,7 @@ function ManagerPage() {
                 
                 <div>
                   <span>Сумма: </span>
-                  <p>{parseFloat(order.price_sum).toFixed(2)} ₽</p>
+                  <p>{Number(order.price_sum).toFixed(2)} ₽</p>
                 </div>
                 
                 <div>
@@ -192,7 +199,7 @@ function ManagerPage() {
                       <li key={item.id}>
                         <span>{item.product_name}</span>
                         <span>{item.quantity} шт.</span>
-                        <span>{parseFloat(item.product_price).toFixed(2)} ₽</span>
+                        <span>{Number(item.product_price).toFixed(2)} ₽</span>
                       </li>
                     ))}
                   </ul>

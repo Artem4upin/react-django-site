@@ -2,27 +2,28 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../../api';
 import './ProductPage.css';
-import Button from '../../components/UI/button/button.tsx';
-import Loading from '../../components/UI/Loading/Loading.tsx';
-import Input from '../../components/UI/Input/Input.tsx';
-import { addToCart } from '../../utils/functions.tsx';
-import { AuthContext } from '../../hooks/authContext';
+import Button from '../../components/UI/button/button';
+import Loading from '../../components/UI/Loading/Loading';
+import Input from '../../components/UI/Input/Input';
+import { addToCart } from '../../utils/functions';
+import { AuthContext } from '../../hooks/AuthContext';
+import {IProduct} from "../../types/product";
 
 function ProductPage() {
     const { id } = useParams()
     const navigate = useNavigate()
     
     const { user } = useContext(AuthContext)
-    const [product, setProduct] = useState(null)
+    const [product, setProduct] = useState<IProduct | null>(null)
     const [quantity, setQuantity] = useState(1)
     const [loading, setLoading] = useState(true)
     const [isEdit, setIsEdit] = useState(false)
-    const [saving, setSaving] = useState(false)
+    const [isSaving, setIsSaving] = useState(false)
     
-    const [editName, setEditName] = useState()
-    const [editPrice, setEditPrice] = useState()
-    const [editQuantity, setEditQuantity] = useState()
-    const [editDescription, setEditDescription] = useState()
+    const [editName, setEditName] = useState('')
+    const [editPrice, setEditPrice] = useState(0)
+    const [editQuantity, setEditQuantity] = useState(0)
+    const [editDescription, setEditDescription] = useState('')
 
     useEffect(() => {
         loadProduct()
@@ -31,15 +32,15 @@ function ProductPage() {
     useEffect(() => {
         if (product) {
             setEditName(product.name || '')
-            setEditPrice(product.price || '')
-            setEditQuantity(product.quantity || '')
+            setEditPrice(product.price || 0)
+            setEditQuantity(product.quantity || 0)
             setEditDescription(product.description || '')
         }
     }, [product])
 
     const loadProduct = async () => {
         try {
-            const response = await api.get(`/products/${id}/`)
+            const response = await api.get<IProduct>(`/products/${id}/`)
             setProduct(response.data)
         } catch (error) {
             console.error('Ошибка загрузки товара:', error)
@@ -54,17 +55,17 @@ function ProductPage() {
     }
 
     const saveEdit = async () => {
-        if (!user?.user_type === 'Manager') {
+        if (user?.user_type !== 'Manager') {
             alert('Только менеджер может редактировать товары')
             return
         }
 
-        setSaving(true)
+        setIsSaving(true)
         try {
             const dataToUpdate = {
                 name: editName,
-                price: editPrice,
-                quantity: editQuantity,
+                price: Number(editPrice),
+                quantity: Number(editQuantity),
                 description: editDescription
             }
 
@@ -74,28 +75,28 @@ function ProductPage() {
             setIsEdit(false)
             alert('Товар успешно обновлен!')
             
-        } catch (error) {
+        } catch (error: any) {
             console.error('Ошибка сохранения:', error)
             alert('Ошибка сохранения: ' + (error.response?.data?.error || error.message))
         } finally {
-            setSaving(false)
+            setIsSaving(false)
         }
     }
 
     const cancelEdit = () => {
         if (product) {
             setEditName(product.name || '')
-            setEditPrice(product.price || '')
-            setEditQuantity(product.quantity || '')
+            setEditPrice(product.price || 0)
+            setEditQuantity(product.quantity || 0)
             setEditDescription(product.description || '')
         }
         setIsEdit(false)
     }
 
     const handleAddToCartClick = () => {
-        if (quantity > product.quantity || quantity < 1)
-            return 
-        addToCart(product.id, quantity, product.name)
+        if (!product) return
+        if (quantity > product.quantity || quantity < 1) return;
+        addToCart(product.id, quantity, product.name);
     }
 
     if (loading) {
@@ -160,9 +161,7 @@ function ProductPage() {
                             onClick={() => setQuantity(Math.max(1, quantity - 1))}
                             disabled={quantity <= 1}
                             text={'-'}
-                            >
-                            -
-                            </Button>
+                            />
                             <input 
                             type="text" 
                             
@@ -175,8 +174,7 @@ function ProductPage() {
                             onClick={() => setQuantity(quantity + 1)}
                             disabled={quantity >= product.quantity}
                             text={'+'}
-                            >
-                            </Button>
+                            />
                         </div>
                     </div>
                     )}
@@ -199,7 +197,7 @@ function ProductPage() {
                             <Input 
                                 type="number"
                                 value={editPrice}
-                                onChange={(e) => setEditPrice(e.target.value)}
+                                onChange={(e) => setEditPrice(Number(e.target.value))}
                             />
                         </div>
 
@@ -208,7 +206,7 @@ function ProductPage() {
                             <Input 
                                 type="number"
                                 value={editQuantity}
-                                onChange={(e) => setEditQuantity(e.target.value)}
+                                onChange={(e) => setEditQuantity(Number(e.target.value))}
                             />
                         </div>
 
@@ -218,7 +216,7 @@ function ProductPage() {
                                 className='product-page__edit-description'
                                 value={editDescription}
                                 onChange={(e) => setEditDescription(e.target.value)}
-                                rows="5"
+                                rows={5}
                                 placeholder="Описание товара"
                             />
                         </div>
@@ -226,17 +224,17 @@ function ProductPage() {
                     
                     <div className='product-page__edit-buttons'>
                         <Button
-                            text={saving ? "Сохранение..." : "Сохранить"} 
+                            text={isSaving ? "Сохранение..." : "Сохранить"}
                             className={'submit-btn'}
                             onClick={saveEdit}
-                            disabled={saving}
+                            disabled={isSaving}
                         />
 
                         <Button
                             text="Отмена"
                             className="exit-btn"
                             onClick={cancelEdit}
-                            disabled={saving}
+                            disabled={isSaving}
                         />
                     </div>
                 </div>

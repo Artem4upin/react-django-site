@@ -16,7 +16,6 @@ export const addToCart = async (
                 product: productId,
                 quantity: productQuantity
             })
-            console.log(response.data)
             alert(`Товар ${productName} добавлен в корзину`)
         } catch (error) {
             console.error('Ошибка добавления в корзину')

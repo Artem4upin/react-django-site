@@ -3,9 +3,16 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form' 
 import { api } from '../../api'
 import './LoginPage.css'
-import { AuthContext } from '../../hooks/authContext'
-import Button from '../../components/UI/button/button.tsx'
-import InputForm from '../../components/UI/Input/InputForm.tsx'
+import { AuthContext } from '../../hooks/AuthContext'
+import Button from '../../components/UI/button/button'
+import InputForm from '../../components/UI/Input/InputForm'
+
+interface ILoginFormData {
+  username: string;
+  email?: string;
+  password: string;
+  password_repeat?: string;
+}
 
 function LoginPage() { 
   const { setUser } = useContext(AuthContext)
@@ -20,7 +27,7 @@ function LoginPage() {
     formState: { errors },
     reset,
     watch,
-  } = useForm({
+  } = useForm<ILoginFormData>({
     defaultValues: {
       username: '',
       email: '',
@@ -31,7 +38,7 @@ function LoginPage() {
 
   const password = watch('password')
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: ILoginFormData) => {
     setLoading(true)
     setAPIError('')
 
@@ -49,10 +56,10 @@ function LoginPage() {
         reset()
         navigate('/account')
       }
-    } catch (err) {
-      if (err.response) {
-        setAPIError(err.response.data.error || `Ошибка ${isRegistration ? 'регистрации' : 'входа'}`)
-      } else if (err.request) {
+    } catch (error: any) {
+      if (error.response) {
+        setAPIError(error.response.data.error || `Ошибка ${isRegistration ? 'регистрации' : 'входа'}`)
+      } else if (error.request) {
         setAPIError('Ошибка сети')
       } else {
         setAPIError('Произошла ошибка')
@@ -151,7 +158,7 @@ function LoginPage() {
               register={register}
               validation={{
                 required: 'Повтор пароля обязателен',
-                validate: value => value === password || 'Пароли не совпадают'
+                validate: (value: string) => value === password || 'Пароли не совпадают'
               }}
               error={errors.password_repeat}
               autoComplete="off"

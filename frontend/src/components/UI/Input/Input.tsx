@@ -1,8 +1,8 @@
 import React, {ChangeEvent} from 'react';
 import './Input.css';
 
-interface IInputProps {
-    id?: string;           // ID лучше делать строкой
+interface IInputProps extends React.HTMLProps<HTMLInputElement> {
+    id?: string;
     name?: string;
     label?: string;
     type?: string;
@@ -13,6 +13,7 @@ interface IInputProps {
     pattern?: string;
     className?: string;
     autoComplete?: string;
+    min?: string;
 }
 
 function Input({ 

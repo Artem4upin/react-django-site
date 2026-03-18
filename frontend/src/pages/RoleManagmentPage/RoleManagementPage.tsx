@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { api } from '../../api'
 import './RoleManagementPage.css'
-import Loading from '../../components/UI/Loading/Loading.tsx';
-import Button from '../../components/UI/button/button.tsx';
-import { AuthContext } from '../../hooks/authContext';
+import Loading from '../../components/UI/Loading/Loading';
+import Button from '../../components/UI/button/button';
+import { AuthContext } from '../../hooks/AuthContext';
+import {IUser, TUserType} from "../../types/user";
 
 function RoleManagementPage() {
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState<IUser[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
@@ -21,14 +22,13 @@ function RoleManagementPage() {
     setLoading(true)
     setError('')
     try {
-      const response = await api.get('/auth/users/')
-
+      const response = await api.get<{users: IUser[]}>('/auth/users/')
         const filteredUsers = response.data.users.filter(
         userItem => userItem.id !== user?.id
       )
       
       setUsers(filteredUsers)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Ошибка загрузки пользователей:', error)
       setError('Ошибка загрузки пользователей: ' + (error.response?.data?.error || error.message))
     } finally {
@@ -36,7 +36,7 @@ function RoleManagementPage() {
     }
   }
 
-  const handleRoleChange = async (userId, newRole) => {
+  const handleRoleChange = async (userId: number, newRole: TUserType) => {
     setError('')
     setSuccessMessage('')
     
@@ -56,7 +56,7 @@ function RoleManagementPage() {
         setSuccessMessage('')
       }, 3000)
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Ошибка изменения роли:', error)
       setError('Ошибка изменения роли: ' + (error.response?.data?.error || error.message))
     }
@@ -103,7 +103,7 @@ function RoleManagementPage() {
                   <span>Роль: </span>
                   <select 
                     value={user.user_type}
-                    onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                    onChange={(e) => handleRoleChange(user.id, e.target.value as TUserType)}
                     className="role-select"
                   >
                     <option value="User">Пользователь</option>

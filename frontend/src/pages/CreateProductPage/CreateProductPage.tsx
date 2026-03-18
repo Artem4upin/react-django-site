@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, {useState, useEffect, useContext, ChangeEvent} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../../api'
-import { AuthContext } from '../../hooks/authContext'
-import Button from '../../components/UI/button/button.tsx'
-import Input from '../../components/UI/Input/Input.tsx'
-import Loading from '../../components/UI/Loading/Loading.tsx'
+import { AuthContext } from '../../hooks/AuthContext'
+import Button from '../../components/UI/button/button'
+import Input from '../../components/UI/Input/Input'
+import Loading from '../../components/UI/Loading/Loading'
 import './CreateProductPage.css'
+import {IBrand, ICategory, IParameter, ISubcategory} from "../../types/product";
 
 function CreateProductPage() {
     const navigate = useNavigate()
@@ -18,16 +19,16 @@ function CreateProductPage() {
     const [price, setPrice] = useState('')
     const [quantity, setQuantity] = useState('1')
     const [description, setDescription] = useState('')
-    const [brandId, setBrandId] = useState('')
-    const [categoryId, setCategoryId] = useState('')
-    const [subcategoryId, setSubcategoryId] = useState('')
-    const [image, setImage] = useState(null)
+    const [brandId, setBrandId] = useState<string>('')
+    const [categoryId, setCategoryId] = useState<string>('')
+    const [subcategoryId, setSubcategoryId] = useState<string>('')
+    const [image, setImage] = useState<File | null>(null)
     
-    const [brands, setBrands] = useState([])
-    const [categories, setCategories] = useState([])
-    const [subcategories, setSubcategories] = useState([])
-    const [parameters, setParameters] = useState([])
-    const [paramValues, setParamValues] = useState({})
+    const [brands, setBrands] = useState<IBrand[]>([])
+    const [categories, setCategories] = useState<ICategory[]>([])
+    const [subcategories, setSubcategories] = useState<ISubcategory[]>([])
+    const [parameters, setParameters] = useState<IParameter[]>([])
+    const [paramValues, setParamValues] = useState<Record<number, string>>({})
 
     useEffect(() => {
         loadData()
@@ -60,18 +61,18 @@ function CreateProductPage() {
         }
     }
 
-    const loadSubcategoriesAndParameters = async (categoryId) => {
+    const loadSubcategoriesAndParameters = async (categoryId: string) => {
         try {
-            const category = categories.find(cat => cat.id == categoryId)
+            const category = categories.find(cat => cat.id == Number(categoryId))
             if (category) {
                 setSubcategories(category.subcategories || [])
             }
             
-            const paramsRes = await api.get('/parameters/')
-            const categoryParams = paramsRes.data.filter(param => param.category_id == categoryId)
+            const paramsRes = await api.get<IParameter[]>('/parameters/')
+            const categoryParams = paramsRes.data.filter(param => param.category_id == Number(categoryId))
             setParameters(categoryParams)
             
-            const initialValues = {}
+            const initialValues: Record<number, string> = {}
             categoryParams.forEach(param => {
                 initialValues[param.id] = ''
             })
@@ -82,17 +83,17 @@ function CreateProductPage() {
         }
     }
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0]
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
         if (file) {
             setImage(file)
         }
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         
-        if (!user?.user_type === 'Manager') {
+        if (user?.user_type !== 'Manager') {
             alert('Только менеджер может создавать товары')
             return
         }
@@ -107,8 +108,8 @@ function CreateProductPage() {
             const formData = new FormData()
             
             formData.append('name', name)
-            formData.append('price', parseFloat(price))
-            formData.append('quantity', parseInt(quantity) || 1)
+            formData.append('price', price)
+            formData.append('quantity', quantity || "1")
             formData.append('description', description)
             if (brandId) formData.append('brand', brandId)
             formData.append('category', categoryId)
@@ -118,7 +119,7 @@ function CreateProductPage() {
                 formData.append('image', image)
             }
             
-            const parametersArray = []
+            const parametersArray: {parameter: number, value: string}[] = []
             Object.entries(paramValues).forEach(([paramId, value]) => {
                 if (value && value.trim()) {
                     parametersArray.push({
@@ -132,7 +133,7 @@ function CreateProductPage() {
                 formData.append('parameters', JSON.stringify(parametersArray))
             }
 
-            const response = await api.post('/products/create/', formData, {
+            await api.post('/products/create/', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -141,7 +142,7 @@ function CreateProductPage() {
             alert('Товар успешно создан!')
             navigate('/catalog')
             
-        } catch (error) {
+        } catch (error: any) {
             console.error('Ошибка создания товара:', error)
             console.error('Детали ошибки:', error.response?.data)
             alert('Ошибка создания товара')
@@ -150,7 +151,7 @@ function CreateProductPage() {
         }
     }
 
-    const handleParamChange = (paramId, value) => {
+    const handleParamChange = (paramId: number, value: string) => {
         setParamValues(prev => ({
             ...prev,
             [paramId]: value
@@ -295,7 +296,7 @@ function CreateProductPage() {
                         onChange={(e) => setDescription(e.target.value)}
                         className="description-input"
                         placeholder="Описание товара"
-                        rows="4"
+                        rows={4}
                     />
                 </div>
 

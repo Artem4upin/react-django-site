@@ -1,7 +1,7 @@
 export interface IOrderItemSet {
     id: number;
     order: number;
-    product : number;
+    product_id : number;
     product_name: string;
     product_price: number;
     quantity: number;
@@ -14,9 +14,11 @@ export interface IOrder {
     id: number;
     is_deleted: boolean;
     order_number: string;
-    orderitem_set: IOrderItemSet
+    orderitem_set: IOrderItemSet[]
     price_sum: number;
-    status: 'Created' | 'Work' | 'Sent' | 'Done' | 'Completed'| 'Canceled';
+    status: TStatusOrder;
     user_id: number;
     username: string;
 }
+
+export type TStatusOrder = 'Created' | 'Work' | 'Sent' | 'Done' | 'Completed'| 'Canceled'

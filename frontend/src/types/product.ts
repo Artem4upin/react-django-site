@@ -1,9 +1,17 @@
+export interface IParameter {
+    id: number;
+    name: string;
+    category_id: number;
+    category_name?: string;
+    values: string[];
+}
+
 export interface IProductParameter {
     id: number;
     param_id: number;
     name: string;
     category_id: number;
-    values: string[];
+    value: string;
 }
 
 export interface IProduct {

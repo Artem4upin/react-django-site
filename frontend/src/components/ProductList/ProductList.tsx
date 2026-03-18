@@ -1,8 +1,8 @@
 import './ProductList.css'
 import {IProduct} from "../../types/product";
 import {ICartItem} from "../../types/cart";
-import ProductCardCatalog from "../ProductCardCatalog/ProductCardCatalog";
-import ProductCardCart from "../ProductCardCart/ProductCardCart";
+import ProductCardCatalog from "../ProductCard/ProductCardCatalog";
+import ProductCardCart from "../ProductCard/ProductCardCart";
 
 type TProductListProps =
     | {

@@ -1,4 +1,3 @@
-// FaqPage.jsx (минимальная)
 import React from 'react';
 import './FaqPage.css';
 

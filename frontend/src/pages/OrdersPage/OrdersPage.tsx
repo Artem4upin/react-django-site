@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { api } from '../../api';
-import OrderList from '../../components/OrderList/OrderList.tsx';
+import OrderList from '../../components/OrderList/OrderList';
 import './OrdersPage.css';
-import Loading from '../../components/UI/Loading/Loading.tsx';
-import Button from '../../components/UI/button/button.tsx'
+import Loading from '../../components/UI/Loading/Loading';
+import Button from '../../components/UI/button/button'
 
 function OrdersPage() {
   const [orders, setOrders] = useState([])

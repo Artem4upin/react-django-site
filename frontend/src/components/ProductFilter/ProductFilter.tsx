@@ -3,7 +3,7 @@ import './ProductFilter.css';
 import { api } from '../../api';
 import Loading from '../UI/Loading/Loading';
 import Button from '../UI/button/button';
-import {IBrand, ICategory, IProductParameter} from "../../types/product";
+import {IBrand, ICategory, IParameter} from "../../types/product";
 
 interface ProductFilterProps {
     onFilterChange: (key: string, value: string | number | boolean) => void;
@@ -18,7 +18,7 @@ function ProductFilter({
     }: ProductFilterProps) {
 
     const [brands, setBrands] = useState<IBrand[]>([]);
-    const [parameters, setParameters] = useState<IProductParameter[]>([]);
+    const [parameters, setParameters] = useState<IParameter[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedParamId, setSelectedParamId] = useState<string>('');
 
@@ -37,7 +37,7 @@ function ProductFilter({
             const brandsResponse = await api.get<IBrand[]>('/brands/');
             setBrands(brandsResponse.data);
 
-            const paramsResponse = await api.get<IProductParameter[]>('/parameters/');
+            const paramsResponse = await api.get<IParameter[]>('/parameters/');
             let filteredParams = paramsResponse.data;
 
             if (selectedCategory) {

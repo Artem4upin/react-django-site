@@ -3,11 +3,20 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { api } from "../../api"
 import './AccountPage.css'
-import { AuthContext } from "../../hooks/authContext";
-import Loading from "../../components/UI/Loading/Loading.tsx"
-import ModalChangePassword from "../../components/modal/ModalChangePassword/ModalChangePassword.tsx";
-import Button from "../../components/UI/button/button.tsx";
-import InputForm from "../../components/UI/Input/InputForm.tsx";
+import { AuthContext } from "../../hooks/AuthContext";
+import Loading from "../../components/UI/Loading/Loading"
+import ModalChangePassword from "../../components/modal/ModalChangePassword/ModalChangePassword";
+import Button from "../../components/UI/button/button";
+import InputForm from "../../components/UI/Input/InputForm";
+import {IUser} from "../../types/user";
+
+interface IFormData {
+    username: string;
+    email: string;
+    phone: string;
+    first_name: string;
+    last_name: string;
+}
 
 function AccountPage() {
     const { user, setUser } = useContext(AuthContext)
@@ -21,8 +30,7 @@ function AccountPage() {
         handleSubmit,
         formState: { errors, isSubmitting },
         reset,
-        setValue
-    } = useForm({
+    } = useForm<IFormData>({
         defaultValues: {
             username: '',
             email: '',
@@ -39,7 +47,7 @@ function AccountPage() {
     const get_user_data = async () => {
         try {
             const response = await api.get('/auth/get-user-data/')
-            const userData = response.data.user
+            const userData: IUser = response.data.user
             
             setUser(userData)
 
@@ -57,16 +65,16 @@ function AccountPage() {
         }
     };
 
-    const updateUserData = async (data) => {
+    const updateUserData = async (data: IFormData) => {
         try {
-            await api.patch('/auth/update-user-data/', data)
+            const response = await api.patch('/auth/update-user-data/', data)
             setSaveSuccess(true)
 
-            if (response.data.succes) {
-            setUser(prevUser => ({
-                ...prevUser,
-                ...response.data.user
-            }))
+            if (response.data.success) {
+                setUser({
+                    ...user!,
+                    ...response.data.user
+                })
             }
             
             setTimeout(() => {

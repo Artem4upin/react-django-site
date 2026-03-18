@@ -1,20 +1,21 @@
 import { useContext, useEffect, useState } from "react";
-import ProductList from "../../components/ProductList/ProductList.tsx";
+import ProductList from "../../components/ProductList/ProductList";
 import { api } from "../../api";
 import './CartPage.css'
-import Button from "../../components/UI/button/button.tsx";
-import ModalCreateOrder from "../../components/modal/ModalCreateOrder/ModalCreateOrder.tsx";
-import { calculateTotalPrice } from "../../utils/functions.tsx";
-import { AuthContext } from "../../hooks/authContext";
-import Loading from "../../components/UI/Loading/Loading.tsx";
+import Button from "../../components/UI/button/button";
+import ModalCreateOrder from "../../components/modal/ModalCreateOrder/ModalCreateOrder";
+import { calculateTotalPrice } from "../../utils/functions";
+import { AuthContext } from "../../hooks/AuthContext";
+import Loading from "../../components/UI/Loading/Loading";
+import {ICartItem} from "../../types/cart";
 
 
 function CartPage() {
 
     const { user } = useContext(AuthContext)
     const [loading, setLoading] = useState(false);
-    const [ cartItems, setCartItems ] = useState([])
-    const [selectedCartItems, setSelectedCartItems] = useState([])
+    const [ cartItems, setCartItems ] = useState<ICartItem[]>([])
+    const [selectedCartItems, setSelectedCartItems] = useState<number[]>([])
     const [showOrderModal, setShowOrderModal] = useState(false)
     const [selectedItemsCount, setSelectedItemsCount] = useState(0)
     const [selectedTotalPrice, setSelectedTotalPrice] = useState(0)
@@ -26,24 +27,26 @@ function CartPage() {
     useEffect(() => {
         const selected = getSelectedItems()
         setSelectedItemsCount(selected.length)
-        console.log(selected)
-        setSelectedTotalPrice(calculateTotalPrice(selected))
+        setSelectedTotalPrice(Number(calculateTotalPrice(selected)))
     }, [selectedCartItems, cartItems])
 
     const loadCart = async () => {
         setLoading(true);
-
         try {
-        const response = await api.get('/cart/cart-items/')
-        setCartItems(response.data)
-        setSelectedCartItems(response.data.map(item => item.id))
-        setLoading(false);
+            const response = await api.get<ICartItem[]>('/cart/cart-items/')
+            setCartItems(response.data)
+            setSelectedCartItems(response.data.map(item => item.id))
+            setLoading(false);
+            console.log(response.data)
         } catch (error) {
-        console.error('Ошибка', error)
+            console.error('Ошибка', error)
+        }
+        finally {
+            setLoading(false);
         }
     }
 
-    const handleCheckboxChange = (cartItemId, isChecked) => {
+    const handleCheckboxChange = (cartItemId: number, isChecked: boolean) => {
         if (isChecked) {
             setSelectedCartItems(prev => [...prev, cartItemId])
         } else {
@@ -51,7 +54,7 @@ function CartPage() {
         }
     }
 
-     const getSelectedItems = () => {
+     const getSelectedItems = (): ICartItem[] => {
         return cartItems.filter(item => selectedCartItems.includes(item.id))
     }
 
@@ -62,14 +65,14 @@ function CartPage() {
         setShowOrderModal(true)
     }
 
-    const onItemDelete = (deletedItemId) => {
+    const onItemDelete = (deletedItemId: number) => {
         setCartItems(prev => prev.filter(item => item.id !== deletedItemId))
         setSelectedCartItems(prev => prev.filter(id => id !== deletedItemId))
     }
 
-    const createOrder = async (address, date) => {
+    const createOrder = async (address: string, date: Date | string) => {
         try {
-            const response = await api.post('/orders/user-orders/', {
+             await api.post('/orders/user-orders/', {
                 delivery_address: address,
                 delivery_date: date,
                 cart_items: selectedCartItems
@@ -77,7 +80,7 @@ function CartPage() {
             setShowOrderModal(false)
             setCartItems(prev => prev.filter(item => !selectedCartItems.includes(item.id)))
             setSelectedCartItems([])
-        } catch (error) {
+        } catch (error: any) {
             console.error('Ошибка:', error)
             alert(error.response?.data?.error || 'Не удалось создать заказ')
         }

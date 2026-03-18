@@ -1,33 +1,44 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
 import { api } from '../../api';
-import ProductList from '../../components/ProductList/ProductList.tsx';
+import ProductList from '../../components/ProductList/ProductList';
 import './CatalogPage.css'
-import Loading from '../../components/UI/Loading/Loading.tsx';
-import Category from '../../components/Category/Category.tsx';
-import ProductFilter from '../../components/ProductFilter/ProductFilter.tsx';
-import Search from '../../components/UI/Search/Search.tsx';
-import Button from '../../components/UI/button/button.tsx';
-import { AuthContext } from '../../hooks/authContext';
+import Loading from '../../components/UI/Loading/Loading';
+import Category from '../../components/Category/Category';
+import ProductFilter from '../../components/ProductFilter/ProductFilter';
+import Button from '../../components/UI/button/button';
+import { AuthContext } from '../../hooks/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import {getErrorMsg} from "../../utils/errorMassages.tsx";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage.tsx";
+import {getErrorMsg} from "../../utils/errorMassages";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import {ICategory, IProduct, ISubcategory} from "../../types/product";
+
+interface IFilters {
+    category: ICategory | null;
+    subcategory: ISubcategory | null;
+    minPrice: number | null;
+    maxPrice: number | null;
+    brandId: number | null;
+    paramId: number | null;
+    paramValue: string | null;
+    inStock: boolean;
+}
 
 function CatalogPage() {
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState<IProduct[]>([])
     const [loading, setLoading] = useState(true)
-    const [filteredProducts, setFilteredProducts] = useState([])
-    const [selectedCategoryName, setSelectedCategoryName] = useState(null)
-    const [selectedSubcategoryName, setSelectedSubcategoryName] = useState(null)
-    const [searchResult, setSearchResult] = useState([])
-
+    const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([])
+    const [selectedCategoryName, setSelectedCategoryName] = useState('')
+    const [selectedSubcategoryName, setSelectedSubcategoryName] = useState('')
     const [loadingMore, setLoadingMore] = useState(false)
     const [nextPage, setNextPage] = useState('');
-    const observerRef = useRef(null);
+    const observerRef = useRef<IntersectionObserver | null>(null);
     const [loadingError, setLoadingError] = useState('');
 
+
+
     const { user } = useContext(AuthContext)
-    const [currentFilters, setCurrentFilters] = useState({
+    const [currentFilters, setCurrentFilters] = useState<IFilters>({
         category: null,
         subcategory: null,
         minPrice: null,
@@ -39,20 +50,20 @@ function CatalogPage() {
     })
 
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         loadProducts()
     }, [])
 
     useEffect(() => {
-        if (products.length > 0 || searchResult.length > 0) {
+        if (products.length > 0) {
         applyFilters()
         }
-    }, [products, searchResult, currentFilters])
+    }, [products, currentFilters])
 
-    const loadProducts = async (page = 1) => {
+    const loadProducts = async (page: number = 1) => {
         setLoading(true);
-        setLoadingError(null);
+        setLoadingError('');
 
         const timeout = setTimeout(() => {
             setLoading(false);
@@ -64,8 +75,8 @@ function CatalogPage() {
             setProducts(response.data.results);
             setNextPage(response.data.next);
             clearTimeout(timeout);
-        } catch (error) {
-            clearInterval(timeout);
+        } catch (error: any) {
+            clearTimeout(timeout);
             setLoadingError(getErrorMsg(error));
             setProducts([]);
         } finally {
@@ -76,7 +87,7 @@ function CatalogPage() {
     const loadingMoreProducts = async () => {
         if (loadingMore || !nextPage) return;
         setLoadingMore(true);
-        setLoadingError(null);
+        setLoadingError('');
 
         const timeout = setTimeout(() => {
             setLoadingMore(false);
@@ -88,7 +99,7 @@ function CatalogPage() {
             clearTimeout(timeout);
             setProducts(currentProducts => [...currentProducts, ...response.data.results]);
             setNextPage(response.data.next);
-        } catch (error) {
+        } catch (error: any) {
             clearTimeout(timeout);
             setLoadingError(getErrorMsg(error));
             console.error('Ошибка загрузки товаров', error);
@@ -97,14 +108,14 @@ function CatalogPage() {
         }
     }
 
-    const lastProduct = (div) => {
+    const lastProduct = (div: HTMLDivElement | null) => {
         if (loadingMore) return;
 
         if (observerRef.current) {
             observerRef.current.disconnect();
         }
 
-        observerRef.current = new IntersectionObserver((entries) => {
+        observerRef.current = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
             if (entries[0].isIntersecting && nextPage && !loadingError) {
                 loadingMoreProducts();
             }
@@ -114,28 +125,28 @@ function CatalogPage() {
         }
     }
 
-    const handleCategoryFilterChange = (category, subcategory) => {
+    const handleCategoryFilterChange = (category: ICategory | null, subcategory: ISubcategory | null) => {
         if (category && !subcategory) {
             setSelectedCategoryName(category.name)
-            setSelectedSubcategoryName(null)
+            setSelectedSubcategoryName('')
         } else if (category && subcategory) {
             setSelectedCategoryName(category.name)
             setSelectedSubcategoryName(subcategory.name)
         } else {
-            setSelectedCategoryName(null)
-            setSelectedSubcategoryName(null)
+            setSelectedCategoryName('')
+            setSelectedSubcategoryName('')
         }
-        
+
         setCurrentFilters(filters => ({
             ...filters,
             category,
             subcategory,
-            paramId: null,        
+            paramId: null,
             paramValue: null
         }))
     }
 
-    const handleFilterChange = (type, value) => {
+    const handleFilterChange = (type: string, value: string | number | boolean) => {
         if (type === 'reset') {
             setCurrentFilters({
                 category: null,
@@ -147,11 +158,11 @@ function CatalogPage() {
                 paramValue: null,
                 inStock: true
             })
-            setSelectedCategoryName(null)
-            setSelectedSubcategoryName(null)
+            setSelectedCategoryName('')
+            setSelectedSubcategoryName('')
             return
         }
-        
+
         setCurrentFilters(filters => ({
             ...filters,
             [type]: value === '' ? null : value
@@ -160,7 +171,7 @@ function CatalogPage() {
 
     const handleResetProductFilters = () => {
         setCurrentFilters(filters => ({
-            ...filters, 
+            ...filters,
             minPrice: null,
             maxPrice: null,
             brandId: null,
@@ -171,47 +182,47 @@ function CatalogPage() {
     }
 
     const applyFilters = () => {
-        let filtered = [...(searchResult.length > 0? searchResult : products)]
-        
+        let filtered = [...products]
+
         if (currentFilters.category && !currentFilters.subcategory) {
-            filtered = filtered.filter(product => 
-                product.category_id === currentFilters.category.id
+            filtered = filtered.filter(product =>
+                product.category_id === currentFilters.category?.id
             )
         } else if (currentFilters.category && currentFilters.subcategory) {
-            filtered = filtered.filter(product => 
-                product.subcategory_id === currentFilters.subcategory.id
+            filtered = filtered.filter(product =>
+                product.subcategory_id === currentFilters.subcategory?.id
             )
         }
-        
+
         if (currentFilters.minPrice !== null) {
-            filtered = filtered.filter(product => 
-                parseFloat(product.price) >= parseFloat(currentFilters.minPrice)
+            filtered = filtered.filter(product =>
+                Number(product.price) >= Number(currentFilters.minPrice)
             )
         }
-        
+
         if (currentFilters.maxPrice !== null) {
-            filtered = filtered.filter(product => 
-                parseFloat(product.price) <= parseFloat(currentFilters.maxPrice)
+            filtered = filtered.filter(product =>
+                Number(product.price) <= Number(currentFilters.maxPrice)
             )
         }
-        
+
         if (currentFilters.brandId !== null) {
-            filtered = filtered.filter(product => 
-                product.brand && product.brand === parseInt(currentFilters.brandId)
+            filtered = filtered.filter(product =>
+                product.brand && product.brand === Number(currentFilters.brandId)
             )
         }
-        
+
         if (currentFilters.paramId !== null && currentFilters.paramValue !== null) {
             filtered = filtered.filter(product => {
-                return product.parameters.some(param => 
-                    param.param_id == currentFilters.paramId && 
+                return product.parameters?.some(param =>
+                    param.param_id == currentFilters.paramId &&
                     param.value === currentFilters.paramValue
                 )
             })
         }
-        
+
         if (currentFilters.inStock) {
-            filtered = filtered.filter(product => 
+            filtered = filtered.filter(product =>
                 product.quantity > 0
             )
         }
@@ -229,17 +240,9 @@ function CatalogPage() {
 
     return (
     <div className="catalog-page">
-        <div className='catalog-page__search'>
-            <Search 
-            searchResult={searchResult}
-            setSearchResult={setSearchResult}
-            />
-        </div>
         <div className='catalog-page__title-content'>
             <h1 className='catalog-page__title'>Товары</h1>
-            
             <div className='catalog-page__title-category'>
-                
                 <p>{selectedCategoryName && (selectedCategoryName)}</p>
                 {selectedSubcategoryName && (<p>-</p>)}
                 <p>{selectedSubcategoryName && (selectedSubcategoryName)}</p>
@@ -250,10 +253,10 @@ function CatalogPage() {
         </div>
         <div className='catalog-page__content'>
             <div className="catalog-page__filters-wrapper">
-                <Category 
+                <Category
                     onFilterChange={handleCategoryFilterChange}
                 />
-                <ProductFilter 
+                <ProductFilter
                     onFilterChange={handleFilterChange}
                     onResetProductFilters={handleResetProductFilters}
                     selectedCategory={currentFilters.category}
