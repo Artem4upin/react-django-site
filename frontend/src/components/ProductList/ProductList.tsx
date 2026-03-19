@@ -3,6 +3,7 @@ import {IProduct} from "../../types/product";
 import {ICartItem} from "../../types/cart";
 import ProductCardCatalog from "../ProductCard/ProductCardCatalog";
 import ProductCardCart from "../ProductCard/ProductCardCart";
+import Loading from "../UI/Loading/Loading";
 
 type TProductListProps =
     | {
@@ -59,7 +60,7 @@ function ProductList(props: TProductListProps) {
                 );
             })}
 
-            {loadingMore && <div className="loading-more">Загрузка...</div>}
+            {loadingMore && <Loading />}
         </div>
     );
 }

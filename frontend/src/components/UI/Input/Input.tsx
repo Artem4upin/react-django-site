@@ -8,6 +8,7 @@ interface IInputProps extends React.HTMLProps<HTMLInputElement> {
     type?: string;
     value?: string | number;
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+    onInput?: (e: ChangeEvent<HTMLInputElement>) => void;
     placeholder?: string;
     required?: boolean;
     pattern?: string;
@@ -23,6 +24,7 @@ function Input({
     type = 'text', 
     value='',
     onChange,
+    onInput,
     placeholder = "",
     required = false,
     pattern = "",
@@ -46,6 +48,7 @@ function Input({
         type={type}
         value={value || ''}
         onChange={onChange}
+        onInput={onInput}
         placeholder={placeholder || ''}
         required={required}
         pattern={pattern}

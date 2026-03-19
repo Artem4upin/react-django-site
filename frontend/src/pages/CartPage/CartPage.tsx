@@ -17,8 +17,8 @@ function CartPage() {
     const [ cartItems, setCartItems ] = useState<ICartItem[]>([])
     const [selectedCartItems, setSelectedCartItems] = useState<number[]>([])
     const [showOrderModal, setShowOrderModal] = useState(false)
-    const [selectedItemsCount, setSelectedItemsCount] = useState(0)
-    const [selectedTotalPrice, setSelectedTotalPrice] = useState(0)
+    const [selectedItemsCount, setSelectedItemsCount] = useState<number>(0)
+    const [selectedTotalPrice, setSelectedTotalPrice] = useState<number>(0)
 
     useEffect(() => {
         loadCart()

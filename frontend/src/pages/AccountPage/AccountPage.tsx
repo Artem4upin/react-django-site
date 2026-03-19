@@ -9,6 +9,7 @@ import ModalChangePassword from "../../components/modal/ModalChangePassword/Moda
 import Button from "../../components/UI/button/button";
 import InputForm from "../../components/UI/Input/InputForm";
 import {IUser} from "../../types/user";
+import {EMAIL_VALIDATION, PHONE_VALIDATION} from "../../utils/regular";
 
 interface IFormData {
     username: string;
@@ -41,10 +42,10 @@ function AccountPage() {
     })
 
     useEffect(() => {
-        get_user_data()
+        getUserData()
     }, [])
 
-    const get_user_data = async () => {
+    const getUserData = async () => {
         try {
             const response = await api.get('/auth/get-user-data/')
             const userData: IUser = response.data.user
@@ -82,7 +83,6 @@ function AccountPage() {
             }, 3000)
         } catch (error) {
             console.error('Ошибка сохранения', error)
-            alert('Ошибка сохранения данных')
         }
     };
 
@@ -182,7 +182,7 @@ function AccountPage() {
                                             validation={{
                                                 required: 'Email обязателен',
                                                 pattern: {
-                                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                                    value: EMAIL_VALIDATION,
                                                     message: 'Некорректный email'
                                                 }
                                             }}
@@ -231,12 +231,12 @@ function AccountPage() {
                                         <InputForm
                                             id="phone"
                                             name="phone"
-                                            label="Телефон"
+                                            label="Номер телефона"
                                             type="tel"
                                             register={register}
                                             validation={{
                                                 pattern: {
-                                                    value: /^[78]\d{10}$/,
+                                                    value: PHONE_VALIDATION,
                                                     message: 'Введите телефон в формате 79999999999'
                                                 }
                                             }}

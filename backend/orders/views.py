@@ -9,6 +9,8 @@ from .premissions import IsManager
 from .models import Order, OrderItem
 from cart.models import Cart_item
 from .serializers import OrderSerializer
+from rest_framework.pagination import PageNumberPagination
+from backend.config import PRODUCT_PAGE_SIZE
 
 class UserOrders(APIView):
     authentication_classes = [TokenAuthentication]
@@ -118,9 +120,14 @@ class ManagerOrders(APIView):
             else:
                 today = date.today()
                 orders = orders.filter(created_at=today)
-            
-            serializer = OrderSerializer(orders, many=True)
-            return Response(serializer.data)
+
+            pagination = PageNumberPagination()
+            pagination.page_size = PRODUCT_PAGE_SIZE
+
+            result_page = pagination.paginate_queryset(orders, request)
+            serializer = OrderSerializer(result_page, many=True)
+
+            return pagination.get_paginated_response(serializer.data)
     
     def patch(self, request, order_id=None):
         if order_id is None:

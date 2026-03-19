@@ -26,7 +26,7 @@ function RoleManagementPage() {
         const filteredUsers = response.data.users.filter(
         userItem => userItem.id !== user?.id
       )
-      
+
       setUsers(filteredUsers)
     } catch (error: any) {
       console.error('Ошибка загрузки пользователей:', error)

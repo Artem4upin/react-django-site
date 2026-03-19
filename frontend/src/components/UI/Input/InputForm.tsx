@@ -24,7 +24,7 @@ function InputForm({
   error,
   placeholder = '',
   autoComplete = 'on',
-  className = 'input'
+  className = 'input-form'
 }: IInputFormProps) {
   return (
     <div className='input-form'>

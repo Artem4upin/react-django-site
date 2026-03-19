@@ -123,6 +123,15 @@
     margin-top: 10px;
 }
 
+.account-page__form-input {
+    width: 100%;
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
 .form-section {
     margin-bottom: 30px;
 }
@@ -137,7 +146,6 @@
 .form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
 }
 
 .form-group {

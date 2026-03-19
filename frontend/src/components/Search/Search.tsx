@@ -69,19 +69,16 @@ function Search ({
 
             <Input
                 className="search__input"
-                type="text"
+                type="search"
                 placeholder={'Поиск товара'}
                 value={searchValue}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch(e)}
+                onInput={(e: ChangeEvent<HTMLInputElement>) => {
+                    if (e.target.value === '') {
+                        handleSearchReset();
+                    }
+                }}
             />
-
-            {hasSearching && (
-            <Button
-            text="Х"
-            className="exit-btn"
-            onClick={handleSearchReset}
-            />
-            )}
 
             <Button
             text='Поиск'

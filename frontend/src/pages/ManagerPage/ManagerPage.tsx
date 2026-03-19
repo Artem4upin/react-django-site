@@ -7,6 +7,13 @@ import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/button/button';
 import {IOrder, TStatusOrder} from "../../types/order";
 
+interface IPaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
 interface IFetchParams {
   start_date: string;
   end_date: string;
@@ -25,24 +32,35 @@ function ManagerPage() {
   const [endDate, setEndDate] = useState<string>(today)
   const [orderNumberFilter, setOrderNumberFilter] = useState('')
 
+  const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
+  const [prevPageUrl, setPrevPageUrl] = useState<string | null>(null);
+  const [totalCount, setTotalCount] = useState(0);
+
   useEffect(() => {
     fetchFilteredOrders()
   }, [])
 
-  const fetchFilteredOrders = async () => {
+  const fetchFilteredOrders = async (url: string | null = null) => {
     setLoading(true)
     try {
-      const params: IFetchParams = {
-        start_date: startDate,
-        end_date: endDate,
+      let response;
+      if (url) {
+        response = await api.get<IPaginatedResponse<IOrder>>(url);
+      } else {
+        const params: IFetchParams = {
+          start_date: startDate,
+          end_date: endDate,
+        }
+        if (orderNumberFilter) {
+          params.order_number = orderNumberFilter
+        }
+        response = await api.get<IPaginatedResponse<IOrder>>('/orders/manager-orders/', { params })
       }
-      
-      if (orderNumberFilter) {
-        params.order_number = orderNumberFilter
-      }
-      
-      const response = await api.get<IOrder[]>('/orders/manager-orders/', { params })
-      setOrders(response.data)
+
+      setOrders(response.data.results);
+      setNextPageUrl(response.data.next);
+      setPrevPageUrl(response.data.previous);
+      setTotalCount(response.data.count);
     } catch (error: any) {
       console.error('Ошибка загрузки заказов:', error)
       alert('Ошибка загрузки заказов: ' + (error.response?.data?.error || error.message))
@@ -73,9 +91,7 @@ function ManagerPage() {
       await api.patch(`/orders/manager-orders/${selectedOrderId}/`, {
         status: selectedNewStatus
       })
-      
       fetchFilteredOrders()
-      
       setShowModal(false)
     } catch (error: any) {
       alert('Ошибка обновления статуса: ' + (error.response?.data?.error || error.message))
@@ -92,133 +108,147 @@ function ManagerPage() {
   }
 
   return (
-    <main className="manager-page">
-      <h1>Панель управления заказами</h1>
-      
-      <div className="manager-page__order-sum-container">
-        <div className="manager-page__order-sum">
-          <h3>Количество заказов</h3>
-          <p>{orders.length}</p>
-        </div>
-      </div>
-      
-      <div className='manager-page__filter-container'>
-        <h4>Фильтр за период</h4>
+      <main className="manager-page">
+        <h1>Панель управления заказами</h1>
 
-        <p>От</p>
-        <Input 
-          type='date'
-          className='input'
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-        
-        <p>До</p>
-        <Input
-          type='date'
-          className='input'
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
-        
-        <p>Номер заказа</p>
-        <Input
-          type='text'
-          className='input'
-          value={orderNumberFilter}
-          onChange={(e) => setOrderNumberFilter(e.target.value)}
-          placeholder="Поиск по номеру заказа"
-        />
-        
-        <div className='filter-container__buttons'>
-          <Button 
-            text={'Применить'}
-            className={'btn'}
-            onClick={applyFilter}
-          />
-          
-          <Button 
-            text={'Заказы за сегодня'}
-            className={'btn'}
-            onClick={resetToToday}
-          />
+        <div className="manager-page__order-sum-container">
+          <div className="manager-page__order-sum">
+            <h3>Всего заказов: {totalCount}</h3>
+          </div>
         </div>
-      </div>
-      
-      {orders.length === 0 ? (
-        <p className="manager-page__no-orders">Заказы не найдены</p>
-      ) : (
-        <div className="orders">
-          {orders.map((order: IOrder) => (
-            <div key={order.id} className="orders__card">
-              <header className="order__header">
-                <div>
-                  <h3>Заказ № {order.order_number}</h3>
-                  <p>{order.username}</p>
+
+        <div className='manager-page__filter-container'>
+          <div className="filter-container__main-row">
+
+            <div className="filter-block">
+              <h4>Фильтр за период</h4>
+              <div className="filter-block__inputs">
+                <div className="input-group">
+                  <p>От</p>
+                  <Input
+                      type='date'
+                      className='input'
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                  />
                 </div>
-                <span>{new Date(order.created_at).toLocaleDateString('ru')}</span>
-              </header>
-              
-              <div className="order__info">
-                <div>
-                  <span>Статус: </span>
-                  <select 
-                    value={order.status}
-                    onChange={(e) => handleStatusChangeClick(order.id, e.target.value as TStatusOrder)}
-                  >
-                    <option value="Created">Создан</option>
-                    <option value="Work">В работе</option>
-                    <option value="Sent">Отправлен</option>
-                    <option value="Done">Готов к выдаче</option>
-                    <option value="Completed">Завершен</option>
-                    <option value="Canceled">Отменен</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <span>Сумма: </span>
-                  <p>{Number(order.price_sum).toFixed(2)} ₽</p>
-                </div>
-                
-                <div>
-                  <span>Товаров: </span>
-                  <span>{order.orderitem_set?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0} шт.</span>
-                </div>
-                
-                <div>
-                  <span>Адрес: </span>
-                  <span>{order.delivery_address}</span>
+                <div className="input-group">
+                  <p>До</p>
+                  <Input
+                      type='date'
+                      className='input'
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                  />
                 </div>
               </div>
-              
-              {order.orderitem_set && order.orderitem_set.length > 0 && (
-                <div className="order__items">
-                  <h4>Товары:</h4>
-                  <ul>
-                    {order.orderitem_set.map(item => (
-                      <li key={item.id}>
-                        <span>{item.product_name}</span>
-                        <span>{item.quantity} шт.</span>
-                        <span>{Number(item.product_price).toFixed(2)} ₽</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </div>
-          ))}
+
+            <div className="filter-block">
+              <p className="label-text">Номер заказа</p>
+              <Input
+                  type='text'
+                  className='input'
+                  value={orderNumberFilter}
+                  onChange={(e) => setOrderNumberFilter(e.target.value)}
+                  placeholder="Поиск по номеру заказа"
+              />
+            </div>
+          </div>
+
+          <div className='filter-container__buttons'>
+            <Button text={'Применить'} className={'btn'} onClick={applyFilter} />
+            <Button text={'Сбросить'} className={'btn'} onClick={resetToToday} />
+          </div>
         </div>
-      )}
-      
-      <ModalConfirm 
-        showModal={showModal}
-        setShowModal={setShowModal}
-        onConfirm={confirmStatusChange}
-        onCancel={cancelStatusChange}
-        newStatus={selectedNewStatus}
-      />
-    </main>
+
+        {orders.length === 0 ? (
+            <p className="manager-page__no-orders">Заказы не найдены</p>
+        ) : (
+            <>
+              <div className="orders">
+                {orders.map((order: IOrder) => (
+                    <div key={order.id} className="orders__card">
+                      <header className="order__header">
+                        <div>
+                          <h3>Заказ № {order.order_number}</h3>
+                          <p>{order.username}</p>
+                        </div>
+                        <span>{new Date(order.created_at).toLocaleDateString('ru')}</span>
+                      </header>
+                      <div className="order__info">
+                        <div>
+                          <span>Статус: </span>
+                          <select
+                              value={order.status}
+                              onChange={(e) => handleStatusChangeClick(order.id, e.target.value as TStatusOrder)}
+                          >
+                            <option value="Created">Создан</option>
+                            <option value="Work">В работе</option>
+                            <option value="Sent">Отправлен</option>
+                            <option value="Done">Готов к выдаче</option>
+                            <option value="Completed">Завершен</option>
+                            <option value="Canceled">Отменен</option>
+                          </select>
+                        </div>
+                        <div>
+                          <span>Сумма: </span>
+                          <p>{Number(order.price_sum).toFixed(2)} ₽</p>
+                        </div>
+                        <div>
+                          <span>Товаров: </span>
+                          <span>{order.orderitem_set?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0} шт.</span>
+                        </div>
+                        <div>
+                          <span>Адрес: </span>
+                          <span>{order.delivery_address}</span>
+                        </div>
+                      </div>
+                      {order.orderitem_set && order.orderitem_set.length > 0 && (
+                          <div className="order__items">
+                            <h4>Товары:</h4>
+                            <ul>
+                              {order.orderitem_set.map(item => (
+                                  <li key={item.id}>
+                                    <span>{item.product_name}</span>
+                                    <span>{item.quantity} шт.</span>
+                                    <span>{Number(item.product_price).toFixed(2)} ₽</span>
+                                  </li>
+                              ))}
+                            </ul>
+                          </div>
+                      )}
+                    </div>
+                ))}
+              </div>
+
+              {(nextPageUrl || prevPageUrl) && (
+                  <div className="manager-page__pagination">
+                    <Button
+                        text="<"
+                        onClick={() => fetchFilteredOrders(prevPageUrl)}
+                        disabled={!prevPageUrl}
+                        className="btn"
+                    />
+                    <Button
+                        text=">"
+                        onClick={() => fetchFilteredOrders(nextPageUrl)}
+                        disabled={!nextPageUrl}
+                        className="btn"
+                    />
+                  </div>
+              )}
+            </>
+        )}
+        <ModalConfirm
+            showModal={showModal}
+            setShowModal={setShowModal}
+            onConfirm={confirmStatusChange}
+            onCancel={cancelStatusChange}
+            newStatus={selectedNewStatus}
+        />
+      </main>
   )
-}
+  }
 
 export default ManagerPage

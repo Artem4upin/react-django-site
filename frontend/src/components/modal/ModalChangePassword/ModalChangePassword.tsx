@@ -77,6 +77,7 @@ function ModalChangePassword ({showModal = true, setShowModal}: ModalChangePassw
                     <InputForm
                         id="password"
                         name="currentPassword"
+                        className="input-form"
                         label="Введите пароль"
                         type="password"
                         register={register}
@@ -92,6 +93,7 @@ function ModalChangePassword ({showModal = true, setShowModal}: ModalChangePassw
                     <InputForm
                         id="new-password"
                         name="newPassword"
+                        className="input-form"
                         label="Введите новый пароль"
                         type="password"
                         register={register}
@@ -107,6 +109,7 @@ function ModalChangePassword ({showModal = true, setShowModal}: ModalChangePassw
                     <InputForm
                         id="new-password-repeat"
                         name="newPasswordRepeat"
+                        className="input-form"
                         label="Повторите новый пароль"
                         type="password"
                         register={register}
