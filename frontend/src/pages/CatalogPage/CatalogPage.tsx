@@ -5,7 +5,7 @@ import './CatalogPage.css'
 import Loading from '../../components/UI/Loading/Loading';
 import Category from '../../components/Category/Category';
 import ProductFilter from '../../components/ProductFilter/ProductFilter';
-import Button from '../../components/UI/button/button';
+import Button from '../../components/UI/Buttons/Button';
 import { AuthContext } from '../../hooks/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form';
 import { api } from '../../../api'
-import InputForm from '../../UI/Input/InputForm';
-import Button from '../../UI/button/button';
+import InputForm from '../../UI/Inputs/InputForm';
+import Button from '../../UI/Buttons/Button';
 import './ModalChangePassword.css'
 
 interface IChangePasswordInputs {

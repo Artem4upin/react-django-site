@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './Category.css';
-import Button from '../UI/button/button';
+import Button from '../UI/Buttons/Button';
 import {ICategory, ISubcategory} from "../../types/product";
 
 interface ICategoryProps {

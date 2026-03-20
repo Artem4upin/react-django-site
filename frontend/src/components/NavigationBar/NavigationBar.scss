@@ -1,0 +1,30 @@
+.navigation-bar {
+  display: none;
+  background-color: #095bad;
+  width: 100%;
+  min-height: 60px;
+  padding: 10px 10px;
+  position: sticky;
+  bottom: 0;
+  @media (max-width: $tablet) {
+    display: block;
+  }
+  a {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 10px;
+    flex-wrap: nowrap;
+    :hover{
+    color: rgb(138, 167, 255);
+    }
+    @media (max-width: $desktop-sm) {
+      font-size: 15px;
+    }
+    @media (max-width: $tablet) {
+      font-size: 10px;
+      margin: 0 5px;
+    }
+  }
+}

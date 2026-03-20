@@ -18,6 +18,7 @@ import TermsPage from './pages/TermsPage/TermsPage'
 import FaqPage from './pages/FaqPage/FaqPage'
 import CreateProductPage from './pages/CreateProductPage/CreateProductPage'
 import RoleManagementPage from './pages/RoleManagmentPage/RoleManagementPage'
+import NavigationBar from "./components/NavigationBar/NavigationBar.tsx";
 
 function App() {
   const [user, setUser] = useState(null)
@@ -48,6 +49,7 @@ function App() {
     value={{ user, setUser }} >
       <Router>
         <Header />
+        <main className="main-content">
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<LoginPage />} />
@@ -65,7 +67,10 @@ function App() {
           <Route path='/faq' element={<FaqPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
+        </main>
+
         <Footer />
+        <NavigationBar />
       </Router>
     </AuthContext.Provider>
   );

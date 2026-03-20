@@ -1,0 +1,72 @@
+.header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  min-height: 70px;
+  padding: 10px 35px;
+  background-color: #095bad;
+  color: white;
+  box-sizing: border-box;
+  z-index: 100;
+  @media (max-width: $desktop-sm) {
+    padding: 10px 15px;
+    min-height: 60px;
+  }
+  @media (max-width: $tablet) {
+    padding: 5px 10px;
+    min-height: 42px;
+  }
+  &__container {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+    @media (max-width: $tablet) {
+      .navigation-links, .cart-button, .account-button {
+        display: none;
+      }
+      .search-container {
+        flex: 1;
+        margin: 0 8px;
+        &__search-wrapper {
+          max-width: 400px;
+          width: 100%;
+        }
+      }
+      .input {
+        width: 100%;
+      }
+      .search {
+        width: 100%;
+        max-width: none;
+      }
+    }
+
+  }
+  &__logo {
+    font-size: 30px;
+    font-weight:bold;
+    margin-right: 10px;
+    @media (max-width: $desktop-sm) {
+      font-size: 20px;
+    }
+    @media (max-width: $tablet) {
+      font-size: 20px;
+    }
+  }
+}
+
+.account-container {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  cursor: pointer;
+  @media (max-width: $desktop-sm) {
+    gap: 16px;
+  }
+  @media (max-width: $tablet) {
+    display: none;
+  }
+}

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { api } from '../../api'
 import './RoleManagementPage.css'
 import Loading from '../../components/UI/Loading/Loading';
-import Button from '../../components/UI/button/button';
+import Button from '../../components/UI/Buttons/Button';
 import { AuthContext } from '../../hooks/AuthContext';
 import {IUser, TUserType} from "../../types/user";
 

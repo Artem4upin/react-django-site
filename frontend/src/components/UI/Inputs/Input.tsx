@@ -1,9 +1,7 @@
 import React, {ChangeEvent} from 'react';
-import './Input.css';
+import './Input.scss';
 
 interface IInputProps extends React.HTMLProps<HTMLInputElement> {
-    id?: string;
-    name?: string;
     label?: string;
     type?: string;
     value?: string | number;
@@ -17,9 +15,9 @@ interface IInputProps extends React.HTMLProps<HTMLInputElement> {
     min?: string;
 }
 
-function Input({ 
-    id = '',
-    name = '',
+function Input({
+    id = 'input-id',
+    name = 'input-name',
     label = '',
     type = 'text', 
     value='',

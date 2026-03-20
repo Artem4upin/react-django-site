@@ -6,8 +6,8 @@ import './AccountPage.css'
 import { AuthContext } from "../../hooks/AuthContext";
 import Loading from "../../components/UI/Loading/Loading"
 import ModalChangePassword from "../../components/modal/ModalChangePassword/ModalChangePassword";
-import Button from "../../components/UI/button/button";
-import InputForm from "../../components/UI/Input/InputForm";
+import Button from "../../components/UI/Buttons/Button";
+import InputForm from "../../components/UI/Inputs/InputForm";
 import {IUser} from "../../types/user";
 import {EMAIL_VALIDATION, PHONE_VALIDATION} from "../../utils/regular";
 

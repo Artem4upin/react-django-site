@@ -3,8 +3,8 @@ import { api } from '../../api'
 import './ManagerPage.css'
 import Loading from '../../components/UI/Loading/Loading';
 import ModalConfirm from '../../components/modal/ModalConfirm/ModalConfirm';
-import Input from '../../components/UI/Input/Input';
-import Button from '../../components/UI/button/button';
+import Input from '../../components/UI/Inputs/Input';
+import Button from '../../components/UI/Buttons/Button';
 import {IOrder, TStatusOrder} from "../../types/order";
 
 interface IPaginatedResponse<T> {

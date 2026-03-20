@@ -3,7 +3,7 @@ import { api } from '../../api';
 import OrderList from '../../components/OrderList/OrderList';
 import './OrdersPage.css';
 import Loading from '../../components/UI/Loading/Loading';
-import Button from '../../components/UI/button/button'
+import Button from '../../components/UI/Buttons/Button'
 
 function OrdersPage() {
   const [orders, setOrders] = useState([])

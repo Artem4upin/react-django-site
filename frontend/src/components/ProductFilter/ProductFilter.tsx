@@ -1,7 +1,7 @@
 import { useState, useRef, ChangeEvent} from 'react';
 import './ProductFilter.css';
 
-import Button from '../UI/button/button';
+import Button from '../UI/Buttons/Button';
 import {IBrand, ICategory, IParameter} from "../../types/product";
 
 interface ProductFilterProps {

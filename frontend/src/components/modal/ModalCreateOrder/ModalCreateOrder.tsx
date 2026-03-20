@@ -1,6 +1,6 @@
 import {JSX, useState} from 'react'
 import './ModalCreateOrder.css'
-import Button from '../../UI/button/button'
+import Button from '../../UI/Buttons/Button'
 
 interface ModalCreateOrderProps {
     showOrderModal: boolean;

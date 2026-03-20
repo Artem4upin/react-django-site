@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useState} from "react";
-import './Search.css'
-import Input from '../UI/Input/Input'
-import Button from "../UI/button/button";
+import './Search.scss'
+import Input from '../UI/Inputs/Input'
+import Button from "../UI/Buttons/Button";
 import { api } from "../../api";
 import {IProduct} from "../../types/product";
 

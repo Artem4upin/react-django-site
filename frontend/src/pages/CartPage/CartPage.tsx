@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import ProductList from "../../components/ProductList/ProductList";
 import { api } from "../../api";
 import './CartPage.css'
-import Button from "../../components/UI/button/button";
+import Button from "../../components/UI/Buttons/Button";
 import ModalCreateOrder from "../../components/modal/ModalCreateOrder/ModalCreateOrder";
 import { calculateTotalPrice } from "../../utils/functions";
 import { AuthContext } from "../../hooks/AuthContext";

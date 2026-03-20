@@ -1,6 +1,6 @@
 import  { useContext } from "react"
-import "./ProductCardCatalog.css"
-import Button from "../UI/button/button"
+import "./ProductCardCatalog.scss"
+import Button from "../UI/Buttons/Button"
 import { useNavigate } from 'react-router-dom';
 import { addToCart, goToProduct } from "../../utils/functions";
 import { AuthContext } from "../../hooks/AuthContext";

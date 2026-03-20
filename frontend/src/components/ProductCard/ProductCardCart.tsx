@@ -1,4 +1,4 @@
-import Button from "../UI/button/button"
+import Button from "../UI/Buttons/Button"
 import { deleteFromCart, goToProduct } from "../../utils/functions";
 import {ICartItem} from "../../types/cart";
 import {useNavigate} from "react-router-dom";
@@ -40,12 +40,13 @@ function ProductCardCart({ item, onDelete, isSelected, onCheckboxChange }: Produ
                     <h4 className="product-card__quantity">Количество: {item.quantity}</h4>
                 </div>
 
-                <div className="product-card__cart-actions">
+                <div className="cart-actions">
                     <Button className="exit-btn" text="Удалить" onClick={handleDelete} />
 
                     <div className="cart-actions__checkbox">
                         <p className="cart-actions__checkbox-title">Добавить в заказ</p>
                         <input
+                            className="cart-actions__checkbox-input"
                             type="checkbox"
                             checked={isSelected}
                             onChange={(e) => onCheckboxChange(item.id, e.target.checked)}

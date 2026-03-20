@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form'
 import { api } from '../../api'
 import './LoginPage.css'
 import { AuthContext } from '../../hooks/AuthContext'
-import Button from '../../components/UI/button/button'
-import InputForm from '../../components/UI/Input/InputForm'
+import Button from '../../components/UI/Buttons/Button'
+import InputForm from '../../components/UI/Inputs/InputForm'
 
 interface ILoginFormData {
   username: string;

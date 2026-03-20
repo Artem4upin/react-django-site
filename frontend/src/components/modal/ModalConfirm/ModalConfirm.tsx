@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../../UI/button/button";
+import Button from "../../UI/Buttons/Button";
 import "./ModalConfirm.css";
 
 interface IModalConfirmProps {

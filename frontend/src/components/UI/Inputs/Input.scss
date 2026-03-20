@@ -1,0 +1,71 @@
+.input {
+    display: flex;
+    flex-direction: column;
+    &__label {
+        margin-bottom: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+    }
+    input {
+        height: 40px;
+        min-width: 160px;
+        max-width: 300px;
+        padding: 8px 12px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-size: 14px;
+        @media (max-width: $desktop-sm) {
+            max-width: 250px;
+            max-height: 30px;
+        }
+        @media (max-width: $tablet) {
+            max-width: none;
+            min-width: 0;
+            width: 100%;
+        }
+    }
+}
+
+.input-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    gap: 8px;
+}
+
+.input-form input {
+    width: 100%;
+    min-height: 20px;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+    @media (max-width: $desktop-sm) {
+        min-width: 150px;
+    }
+}
+
+.input-form__error {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 4px;
+    margin-left: 0;
+}
+
+.search__input {
+    min-width: 300px;
+    max-height: 40px;
+    @media (max-width: $desktop-sm) {
+        min-width: 200px;
+        height: 30px;
+        font-size: 12px;
+    }
+    @media (max-width: $tablet) {
+        min-width: 150px;
+        height: 30px;
+        font-size: 10px;
+    }
+}
