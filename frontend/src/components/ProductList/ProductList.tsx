@@ -1,4 +1,4 @@
-import './ProductList.css'
+import './ProductList.scss'
 import {IProduct} from "../../types/product";
 import {ICartItem} from "../../types/cart";
 import ProductCardCatalog from "../ProductCard/ProductCardCatalog";
@@ -30,7 +30,11 @@ type TProductListProps =
 };
 
 function ProductList(props: TProductListProps) {
-    const { className = 'products-list', loadingMore = false, nextPage = '', products, lastProduct } = props;
+    const { className = 'products-list',
+        loadingMore = false,
+        nextPage = '',
+        products,
+        lastProduct } = props;
 
     return (
         <div className={className}>

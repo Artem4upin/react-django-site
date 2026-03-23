@@ -1,5 +1,5 @@
 import {IProduct} from "../../../types/product";
-import "./SearchDropdown.css"
+import "./SearchDropdown.scss"
 import {goToProduct} from "../../../utils/functions";
 import {useNavigate} from "react-router-dom";
 
@@ -31,27 +31,27 @@ function SearchDropdown({
                             }
 
                             return (
-                                <div key={product.id} className="dropdown-item" onClick={handleClick}>
-                                    <div className="dropdown-item__image">
+                                <div key={product.id} className="search-dropdown__item" onClick={handleClick}>
+                                    <div className="search-dropdown__item__image-container">
                                         {product.image_pass ? (
                                             <img src={product.image_pass} alt={product.name}
-                                                 className="image-container__image"/>
+                                                 className="search-dropdown__item__image-container__image"/>
                                         ) : (
-                                            <p className="image--no-image">Нет изображения</p>
+                                            <p className="search-dropdown__item__image-container__image--no-image">Нет изображения</p>
                                         )}
                                     </div>
 
-                                    <div className="dropdown-item__info-container">
-                                        <h3 className="dropdown-item__title">
+                                    <div className="search-dropdown__item__info-container">
+                                        <h3 className="search-dropdown__item__title">
                                             {product.name}
                                         </h3>
-                                        <p className="dropdown-item__price">{product.price} ₽</p>
+                                        <p className="search-dropdown__item__price">{product.price} ₽</p>
                                     </div>
                                 </div>
                             )
                         })
                     ) : (
-                        <div className="dropdown-empty">Ничего не найдено</div>
+                        <div className="search-dropdown--empty">Ничего не найдено</div>
                     )}
                 </div>
             )}

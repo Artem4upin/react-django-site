@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../../UI/Buttons/Button";
-import "./ModalConfirm.css";
+import "./ModalConfirm.scss";
 
 interface IModalConfirmProps {
     showModal: boolean;

@@ -1,4 +1,4 @@
-import "./ErrorMessage.css"
+import "./ErrorMessage.scss"
 
 function ErrorMessage({ errorMsg }: { errorMsg: string }) {
 

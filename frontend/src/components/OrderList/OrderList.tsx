@@ -1,6 +1,6 @@
 import React from 'react';
 import OrderCard from '../OrderCard/OrderCard';
-import "./OrderList.css"
+import "./OrderList.scss"
 import {IOrder} from "../../types/order";
 
 interface OrderListProps {

@@ -1,5 +1,5 @@
 import { useState, useRef, ChangeEvent} from 'react';
-import './ProductFilter.css';
+import './ProductFilter.scss';
 
 import Button from '../UI/Buttons/Button';
 import {IBrand, ICategory, IParameter} from "../../types/product";

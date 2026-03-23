@@ -9,10 +9,11 @@ function AccountButton() {
     return (
         <div className='account-button'>
             {user ? (
-                    <Link to='/account' className='account-button__account-link'><AccountIcon />
-                        {user.username}
+                    <Link to='/account' className='account-button__account-link'>
+                        <AccountIcon />
+                        <span>{user.username}</span>
                     </Link>)
-                : (<Link to='/login'>Войти</Link>)
+                : (<Link to='/login' className='account-button__account-link'>Войти</Link>)
             }
         </div>
     )

@@ -1,5 +1,5 @@
 import  { useContext } from "react"
-import "./ProductCardCatalog.scss"
+import "./ProductCard.scss"
 import Button from "../UI/Buttons/Button"
 import { useNavigate } from 'react-router-dom';
 import { addToCart, goToProduct } from "../../utils/functions";

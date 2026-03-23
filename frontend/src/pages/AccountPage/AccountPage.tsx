@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { api } from "../../api"
-import './AccountPage.css'
+import './AccountPage.scss'
 import { AuthContext } from "../../hooks/AuthContext";
 import Loading from "../../components/UI/Loading/Loading"
 import ModalChangePassword from "../../components/modal/ModalChangePassword/ModalChangePassword";
@@ -10,6 +10,9 @@ import Button from "../../components/UI/Buttons/Button";
 import InputForm from "../../components/UI/Inputs/InputForm";
 import {IUser} from "../../types/user";
 import {EMAIL_VALIDATION, PHONE_VALIDATION} from "../../utils/regular";
+import OrdersIcon from "../../components/icons/OrdersIcon";
+import OrderManagmentIcon from "../../components/icons/OrderManagmentIcon";
+import RoleIcon from "../../components/icons/RoleIcon";
 
 interface IFormData {
     username: string;
@@ -103,36 +106,43 @@ function AccountPage() {
 
     return (
         <div className="account-page">
-            <header className="account-header">
-                <h1 className="account-title">Личный кабинет</h1>
+            <header className="account-page__header">
+                <h1 className="account-page__title">Личный кабинет</h1>
             </header>
             
-            <div className="account-layout">
-                <aside className="account-sidebar">
-                    <nav className="account-nav">
-                        <ul className="nav-list">
-                            <li className="nav-item">
-                                <Link to='/orders' className="nav-link">
-                                    <span className="nav-text">Мои заказы</span>
+            <div className="account-page__layout">
+                <aside className="account-page__sidebar">
+                    <nav className="account-page__nav">
+                        <ul className="account-page__nav__list">
+                            <li className="account-page__nav__item">
+                                <Link to='/orders' className="account-page__nav__link">
+                                    <OrdersIcon />
+                                    <span className="account-page__nav__text">Мои заказы</span>
                                 </Link>
                             </li>
                             {user?.user_type === 'Manager' && (
-                                <li className="nav-item">
-                                    <Link to='/manager-page' className="nav-link">
-                                        <span className="nav-text">Панель управления заказами</span>
+                                <li className="account-page__nav__item">
+
+                                    <Link to='/manager-page' className="account-page__nav__link">
+                                        <OrderManagmentIcon />
+                                        <span className="account-page__nav__text">Управление заказами</span>
                                     </Link>
                                 </li>
                             )}
                             {user?.user_type === 'Admin' && (
                                 <>
-                                    <li className="nav-item">
-                                        <Link to='/manager-page' className="nav-link">
-                                            <span className="nav-text">Панель управления заказами</span>
+                                    <li className="account-page__nav__item">
+
+                                        <Link to='/manager-page' className="account-page__nav__link">
+                                            <OrderManagmentIcon />
+                                            <span className="account-page__nav__text">Управление заказами</span>
                                         </Link>
                                     </li>
-                                    <li className="nav-item">
-                                        <Link to='/role-management' className="nav-link">
-                                            <span className="nav-text">Управление ролями</span>
+                                    <li className="account-page__nav__item">
+
+                                        <Link to='/role-management' className="account-page__nav__link">
+                                            <RoleIcon />
+                                            <span className="account-page__nav__text">Управление ролями</span>
                                         </Link>
                                     </li>
                                 </>
@@ -140,16 +150,16 @@ function AccountPage() {
                         </ul>
                     </nav>
                 </aside>
-                <main className="account-main">
-                    <section className="account-section">
-                        <h2 className="section-title">Аккаунт</h2>
+                <main className="account-page__main">
+                    <section className="account-page__section">
+                        <h2 className="account-page__section__title">Аккаунт</h2>
                         
-                        <form onSubmit={handleSubmit(updateUserData)} className="profile-form">
-                            <div className="form-section">
-                                <h3 className="form-section-title">Основная информация</h3>
+                        <form onSubmit={handleSubmit(updateUserData)} className="account-page__profile-form">
+                            <div className="account-page__profile-form__form-section">
+                                <h3 className="account-page__profile-form__form-section__title">Основная информация</h3>
                                 
-                                <div className="form-grid">
-                                    <div className="form-group">
+                                <div className="account-page__profile-form__form-grid">
+                                    <div className="account-page__profile-form__form-group">
                                         <InputForm
                                             id="username"
                                             name="username"
@@ -172,7 +182,7 @@ function AccountPage() {
                                         />
                                     </div>
                                     
-                                    <div className="form-group">
+                                    <div className="account-page__profile-form__form-group">
                                         <InputForm
                                             id="email"
                                             name="email"
@@ -191,7 +201,7 @@ function AccountPage() {
                                         />
                                     </div>
                                     
-                                    <div className="form-group">
+                                    <div className="account-page__profile-form__form-group">
                                         <InputForm
                                             id="first_name"
                                             name="first_name"
@@ -209,7 +219,7 @@ function AccountPage() {
                                         />
                                     </div>
                                     
-                                    <div className="form-group">
+                                    <div className="account-page__profile-form__form-group">
                                         <InputForm
                                             id="last_name"
                                             name="last_name"
@@ -227,7 +237,7 @@ function AccountPage() {
                                         />
                                     </div>
                                     
-                                    <div className="form-group">
+                                    <div className="account-page__profile-form__form-group">
                                         <InputForm
                                             id="phone"
                                             name="phone"
@@ -248,7 +258,7 @@ function AccountPage() {
                                 </div>
                             </div>
                             
-                            <div className="form-actions">
+                            <div className="account-page__profile-form__form-actions">
                                 <Button 
                                     type="submit"
                                     className="submit-btn" 
@@ -256,7 +266,7 @@ function AccountPage() {
                                     disabled={isSubmitting}
                                 />
                                 {saveSuccess && (
-                                <div className="form-success">
+                                <div className="account-page__profile-form__form-success">
                                     Данные успешно сохранены!
                                 </div>
                                 )}
@@ -264,14 +274,14 @@ function AccountPage() {
                         </form>
                     </section>
 
-                    <section className="account-section">
-                        <h2 className="section-title">Смена пароля</h2>
+                    <section className="account-page__account-section">
+                        <h2 className="account-page__account-section__section__title">Смена пароля</h2>
                         
-                        <div className="security-actions">
-                            <div className="action-item">
-                                <div className="action-info">
-                                    <h3 className="action-title">Изменение пароля</h3>
-                                    <p className="action-description">
+                        <div className="account-page__account-section__security-actions">
+                            <div className="account-page__account-section__action-item">
+                                <div className="account-page__account-section__action-info">
+                                    <h3 className="account-page__account-section__action-title">Изменение пароля</h3>
+                                    <p className="account-page__account-section__action-description">
                                         Изменить пароль на этом аккаунте
                                     </p>
                                 </div>
@@ -284,14 +294,14 @@ function AccountPage() {
                         </div>
                     </section>
 
-                    <section className="account-section">
-                        <h2 className="section-title">Сессия</h2>
+                    <section className="account-page__account-section">
+                        <h2 className="account-page__account-section__section__title">Сессия</h2>
                         
-                        <div className="session-actions">
-                            <div className="action-item">
-                                <div className="action-info">
-                                    <h3 className="action-title">Выход из аккаунта</h3>
-                                    <p className="action-description">
+                        <div className="account-page__account-section__session-actions">
+                            <div className="account-page__account-section__action-item">
+                                <div className="account-page__account-section__action-info">
+                                    <h3 className="account-page__account-section__action-title">Выход из аккаунта</h3>
+                                    <p className="account-page__account-section__action-description">
                                         Завершить текущую сессию
                                     </p>
                                 </div>

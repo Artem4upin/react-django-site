@@ -1,5 +1,5 @@
 import React from "react"
-import './OrderItems.css'
+import './OrderItems.scss'
 import {IOrderItemSet} from "../../../types/order";
 
 interface IOrderItemProps {
@@ -12,7 +12,7 @@ function OrderItems ({orderitem_set}:IOrderItemProps) {
     <div className="order-items">
                 <h4>Товары {orderitem_set?.length || 0}:</h4>
                 {orderitem_set?.map(item => (
-                    <div key={item.id} className="order-item">
+                    <div key={item.id} className="order-items__item">
                         <p>{item.product_name} {item.quantity} шт. {item.product_price}₽</p>
                     </div>
                 ))}

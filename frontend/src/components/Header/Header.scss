@@ -4,8 +4,8 @@
   width: 100%;
   min-height: 70px;
   padding: 10px 35px;
-  background-color: #095bad;
-  color: white;
+  background-color: $primary-color;
+  color: $white-link-color;
   box-sizing: border-box;
   z-index: 100;
   @media (max-width: $desktop-sm) {
@@ -49,11 +49,8 @@
     font-size: 30px;
     font-weight:bold;
     margin-right: 10px;
-    @media (max-width: $desktop-sm) {
-      font-size: 20px;
-    }
     @media (max-width: $tablet) {
-      font-size: 20px;
+      display: none;
     }
   }
 }

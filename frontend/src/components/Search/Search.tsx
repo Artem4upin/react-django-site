@@ -46,6 +46,11 @@ function Search ({
         }
     }
 
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        searchProducts()
+    }
+
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSearchValue(value);
@@ -65,7 +70,7 @@ function Search ({
     }
 
     return (
-        <div className="search">
+        <form className="search" onSubmit={handleSubmit} noValidate>
 
             <Input
                 className="search__input"
@@ -83,10 +88,10 @@ function Search ({
             <Button
             text='Поиск'
             className={'submit-btn'}
-            onClick={searchProducts}
+            type='submit'
             />
 
-        </div>
+        </form>
     )
 
 }

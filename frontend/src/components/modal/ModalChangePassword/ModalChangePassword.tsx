@@ -3,7 +3,7 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import { api } from '../../../api'
 import InputForm from '../../UI/Inputs/InputForm';
 import Button from '../../UI/Buttons/Button';
-import './ModalChangePassword.css'
+import './ModalChangePassword.scss'
 
 interface IChangePasswordInputs {
     currentPassword: string;

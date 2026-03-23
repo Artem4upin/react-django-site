@@ -1,0 +1,17 @@
+.order-items {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    &__item {
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}
+
+
+
+

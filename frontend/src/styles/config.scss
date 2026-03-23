@@ -6,8 +6,24 @@ $mobile: 375px;
 
 /*Основные цвета*/
 $primary-color: #095aac;
+$secondary-color: #218cff;
 $accent-color: #4587e8;
+$selected-gray-color: #ededed;
+$dark-blue-color: #0b4177
+;
+
+$main-text-color: #2c3e50;
+$secondary-text-color: #555;
+$link-color: #007bff;
+$white-link-color: #FFFFFFFF;
+$price-color: #0065ca;
+
+$border-main-color: #e6e8f3;
+$error-color: #dc3545;
+$success-color: #008000FF;
 
 /*Цвета фона*/
 $bg-main-color: #fdfdfd;
 $bg-secondary-color: #f4f8fd;
+$bg-white-blue: #F0F8FFFF;
+$bg-overlay-color: rgba(0, 0, 0, 0.5)

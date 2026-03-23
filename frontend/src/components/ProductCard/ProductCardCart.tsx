@@ -1,3 +1,4 @@
+import "./ProductCard.scss"
 import Button from "../UI/Buttons/Button"
 import { deleteFromCart, goToProduct } from "../../utils/functions";
 import {ICartItem} from "../../types/cart";
@@ -44,7 +45,7 @@ function ProductCardCart({ item, onDelete, isSelected, onCheckboxChange }: Produ
                     <Button className="exit-btn" text="Удалить" onClick={handleDelete} />
 
                     <div className="cart-actions__checkbox">
-                        <p className="cart-actions__checkbox-title">Добавить в заказ</p>
+                        <p className="cart-actions__checkbox-title">В заказ</p>
                         <input
                             className="cart-actions__checkbox-input"
                             type="checkbox"

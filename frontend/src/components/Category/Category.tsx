@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './Category.css';
+import './Category.scss';
 import Button from '../UI/Buttons/Button';
 import {ICategory, ISubcategory} from "../../types/product";
 
@@ -66,7 +66,7 @@ function Category({
                                 {category.subcategories?.map(subcategory => (
                                     <div 
                                         key={subcategory.id}
-                                        className={`category__subcategory`}
+                                        className={`category__subcategories__subcategory`}
                                         onClick={() => handleSubcategoryClick(subcategory)}
                                     >
                                         {subcategory.name}

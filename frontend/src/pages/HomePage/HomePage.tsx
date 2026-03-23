@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { api } from '../../api'
-import './HomePage.css'
+import './HomePage.scss'
 import ProductList from '../../components/ProductList/ProductList'
 import Loading from '../../components/UI/Loading/Loading'
 import Banner from '../../components/UI/Banner/Banner'
@@ -36,9 +36,9 @@ function HomePage() {
           <h3>Магазин компьютерных комплектующих</h3>
         </div>
         <Banner />
-        <div className='home-page__new-products'>
+        <div className='new-products'>
           <label className='new-products__label'>Новинки</label>
-          <ProductList products={newProducts} isCart={false} />
+            <ProductList products={newProducts} isCart={false} />
         </div>
       </div>
     </div>

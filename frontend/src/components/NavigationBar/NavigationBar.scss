@@ -6,18 +6,19 @@
   padding: 10px 10px;
   position: sticky;
   bottom: 0;
+  z-index: 100;
   @media (max-width: $tablet) {
     display: block;
   }
   a {
-    color: white;
+    color: $white-link-color;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
     margin: 0 10px;
     flex-wrap: nowrap;
     :hover{
-    color: rgb(138, 167, 255);
+    color: $secondary-color;
     }
     @media (max-width: $desktop-sm) {
       font-size: 15px;

@@ -4,6 +4,9 @@
     max-width: 350px;
     & input {
         width: 300px;
+        &::-webkit-search-cancel-button {
+            cursor: pointer;
+        }
         @media (max-width: $desktop-sm) {
             width: 200px;
         }

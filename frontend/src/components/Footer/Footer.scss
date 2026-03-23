@@ -1,10 +1,10 @@
 .footer {
     flex-shrink: 0;
     width: 100%;
-    background: rgb(247, 250, 255);
-    color: rgba(38, 38, 38);
+    background: $bg-secondary-color;
+    color: $main-text-color;
     padding: 10px 0 10px;
-    border: 1px solid rgb(225, 225, 225);
+    border: 1px solid $border-main-color;
     box-sizing: border-box;
 }
 
@@ -57,8 +57,8 @@
         text-align: center;
     }
     &:hover {
-        color: white;
-        background: rgb(47, 47, 47);
+        color: $link-color;
+        background-color: $selected-gray-color;
         text-decoration: none;
     }
 }
@@ -66,7 +66,7 @@
 .footer__copyright {
     text-align: center;
     padding-top: 6px;
-    border-top: 1px solid rgba(64, 64, 64, 0.1);
+    border-top: 1px solid $border-main-color;
     width: 100%;
     font-size: 14px;
 }

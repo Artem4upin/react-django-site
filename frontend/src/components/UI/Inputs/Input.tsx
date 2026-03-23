@@ -41,13 +41,13 @@ function Input({
       )}
       <input
         id={id}
-        name={name || id || ''} 
-        className={className || 'input'}
+        name={name}
+        className={className}
         type={type}
-        value={value || ''}
+        value={value}
         onChange={onChange}
         onInput={onInput}
-        placeholder={placeholder || ''}
+        placeholder={placeholder}
         required={required}
         pattern={pattern}
         autoComplete={autoComplete}

@@ -127,7 +127,6 @@ function ManagerPage() {
                   <p>От</p>
                   <Input
                       type='date'
-                      className='input'
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
                   />
@@ -136,7 +135,6 @@ function ManagerPage() {
                   <p>До</p>
                   <Input
                       type='date'
-                      className='input'
                       value={endDate}
                       onChange={(e) => setEndDate(e.target.value)}
                   />
@@ -148,7 +146,6 @@ function ManagerPage() {
               <p className="label-text">Номер заказа</p>
               <Input
                   type='text'
-                  className='input'
                   value={orderNumberFilter}
                   onChange={(e) => setOrderNumberFilter(e.target.value)}
                   placeholder="Поиск по номеру заказа"
