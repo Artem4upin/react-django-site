@@ -12,6 +12,8 @@ import axios from "axios";
 import {getErrorMsg} from "../../utils/errorMassages";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import {IBrand, ICategory, IParameter, IProduct, ISubcategory} from "../../types/product";
+import FilterSidebar from "./FilterSidebar/FilterSidebar";
+import FilterIcon from "../../components/icons/FilterIcon";
 
 interface IFilters {
     category: ICategory | null;
@@ -34,6 +36,7 @@ function CatalogPage() {
     const [nextPage, setNextPage] = useState('');
     const [loadingError, setLoadingError] = useState('');
     const [categories, setCategories] = useState<ICategory[]>([]);
+    const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
     const [filterData, setFilterData] = useState<{brands: IBrand[], params: IParameter[]}>({
         brands: [],
         params: []
@@ -254,10 +257,20 @@ function CatalogPage() {
     <div className="catalog-page">
         <div className='catalog-page__title-content'>
             <h1 className='catalog-page__title'>Товары</h1>
-            <div className='catalog-page__title-category'>
-                <p>{selectedCategoryName && (selectedCategoryName)}</p>
-                {selectedSubcategoryName && (<p>-</p>)}
-                <p>{selectedSubcategoryName && (selectedSubcategoryName)}</p>
+            <div className='catalog-page__title-right'>
+                <div className='catalog-page__mobile-filter-button'>
+                    <button
+                        onClick={() => setIsMobileFilterOpen(true)}
+                        className={'submit-btn'}
+                    >
+                        <FilterIcon />
+                    </button>
+                </div>
+                <div className='catalog-page__title-category'>
+                    <p>{selectedCategoryName && (selectedCategoryName)}</p>
+                    {selectedSubcategoryName && (<p>-</p>)}
+                    <p>{selectedSubcategoryName && (selectedSubcategoryName)}</p>
+                </div>
             </div>
             {user?.user_type === 'Manager' && (
                 <Button text={'Добавить товар'} className={'submit-btn'} onClick={createNewProduct}/>
@@ -295,6 +308,17 @@ function CatalogPage() {
                 {loadingError && <ErrorMessage errorMsg={loadingError}/>}
             </main>
         </div>
+        <FilterSidebar
+            isMobileFilterOpen={isMobileFilterOpen}
+            setIsMobileFilterOpen={setIsMobileFilterOpen}
+            onCategoryChange={handleCategoryFilterChange}
+            categories={categories}
+            onFilterChange={handleFilterChange}
+            onResetProductFilters={handleResetProductFilters}
+            selectedCategory={currentFilters.category}
+            parameters={filterData.params}
+            brands={filterData.brands}
+        />
     </div>
     );
 }

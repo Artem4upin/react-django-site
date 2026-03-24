@@ -15,12 +15,12 @@ function ProductCardCatalog({ product }: IProductCardCatalogProps) {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
 
-    const handleTitleClick = () => goToProduct(navigate, product.id);
+    const handleProductClick = () => goToProduct(navigate, product.id);
     const handleAddToCart = () => addToCart(product.id, 1, product.name);
 
     return (
         <div className="product-card">
-            <div className="product-card__image-container">
+            <div className="product-card__image-container" onClick={handleProductClick}>
                 {product.image_pass ? (
                     <img src={product.image_pass} alt={product.name} className="image-container__image" />
                 ) : (
@@ -29,7 +29,7 @@ function ProductCardCatalog({ product }: IProductCardCatalogProps) {
             </div>
 
             <div className="product-card__info-container">
-                <h3 className="product-card__title" onClick={handleTitleClick}>
+                <h3 className="product-card__title" onClick={handleProductClick}>
                     {product.name}
                 </h3>
                 <p className="product-card__price">{product.price} ₽</p>

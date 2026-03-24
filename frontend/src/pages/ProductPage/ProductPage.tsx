@@ -129,7 +129,7 @@ function ProductPage() {
                 </div>
                 <div className="product-page__info">
                     <h3>{product.name}</h3>
-                    <div className="product-page__info__price">Цена: {product.price} ₽</div>
+                    <div className="product-page__info__price">Цена: <strong>{product.price} ₽</strong></div>
                     
                     <div className="product-page__info__parameters">
                         <h3>Характеристики:</h3>

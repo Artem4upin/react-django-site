@@ -10,6 +10,13 @@
     &__title {
         margin: 0;
     }
+    &__title-right {
+        display: flex;
+        align-items: center;
+    }
+    &__mobile-filter-button {
+        display: none;
+    }
     &__title-category {
         display: flex;
         gap: 6px;
@@ -35,6 +42,30 @@
         justify-content: center;
         padding: 10px;
         background-color: $bg-main-color;
+    }
+    @media (max-width: $desktop-sm) {
+        &__content {
+            grid-template-columns: 200px 1fr;
+        }
+    }
+    @media (max-width: $tablet) {
+        margin: 0;
+        padding: 20px 10px;
+        & h1 {
+            font-size: 36px;
+        }
+        &__filters-wrapper {
+            display: none;
+        }
+        &__mobile-filter-button {
+            display: block;
+        }
+        &__title-category {
+            display: none;
+        }
+        &__content {
+            grid-template-columns: 1fr;
+        }
     }
 }
 

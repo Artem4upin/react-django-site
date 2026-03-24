@@ -10,7 +10,7 @@
     margin-top: 15px;
     margin-bottom: 50px;
   }
-  @media (max-width: $tablet) {
+  @media (max-width: $desktop-sm) {
     gap: 10px;
     grid-template-columns: 1fr;
   }

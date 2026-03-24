@@ -6,9 +6,9 @@
     &__header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
         margin-bottom: 20px;
         gap: 10px;
+        max-height: 50px;
         & button {
             height: 30px;
             padding: 4px;
@@ -17,13 +17,11 @@
     &__title {
         font-size: 20px;
     }
-
     &__list {
         display: flex;
         flex-direction: column;
         gap: 15px;
     }
-
     &__item {
         display: flex;
         flex-direction: column;

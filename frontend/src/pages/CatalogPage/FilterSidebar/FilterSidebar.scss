@@ -1,0 +1,54 @@
+.filter-sidebar {
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $bg-overlay-color ;
+    z-index: 100;
+    display: flex;
+    justify-content: flex-start;
+  }
+  &__panel {
+    width: 85%;
+    max-width: 400px;
+    background: $bg-main-color;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 50px;
+    animation: slide 0.3s;
+  }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid $border-main-color;
+    h3 {
+      margin: 10%;
+      font-size: 20px;
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  &__content {
+    flex: 1;
+    padding: 20px;
+  }
+}
+
+@keyframes slide {
+  from {
+    width: 0;
+    font-size: 1px;
+  }
+  to {
+    width: 85%;
+    font-size: 16px;
+  }
+}

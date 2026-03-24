@@ -14,7 +14,7 @@ interface ProductCardCartProps {
 function ProductCardCart({ item, onDelete, isSelected, onCheckboxChange }: ProductCardCartProps) {
     const navigate = useNavigate();
 
-    const handleTitleClick = () => goToProduct(navigate, item.product);
+    const handleProductClick = () => goToProduct(navigate, item.product);
     const handleDelete = () => deleteFromCart(item.id, onDelete);
 
     return (
@@ -25,6 +25,7 @@ function ProductCardCart({ item, onDelete, isSelected, onCheckboxChange }: Produ
                         src={item.image_pass}
                         alt={item.product_name}
                         className="image-container__image"
+                        onClick={handleProductClick}
                     />
                 ) : (
                     <p className="image-container_no-image">Нет изображения</p>
@@ -32,7 +33,7 @@ function ProductCardCart({ item, onDelete, isSelected, onCheckboxChange }: Produ
             </div>
 
             <div className="product-card__info-container">
-                <h3 className="product-card__title" onClick={handleTitleClick}>
+                <h3 className="product-card__title" onClick={handleProductClick}>
                     {item.product_name}
                 </h3>
                 <p className="product-card__price">{item.product_price} ₽</p>

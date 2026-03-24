@@ -10,9 +10,7 @@
     padding: 100px;
     background-color: $bg-white-blue;
     text-align: center;
-  }
-  &__shop-banner h1 {
-    margin: 30px;
+    gap: 30px;
   }
   @media (max-width: $tablet) {
     &__shop-banner {

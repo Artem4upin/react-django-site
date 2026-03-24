@@ -13,12 +13,13 @@
     align-items: center;
     justify-content: center;
     & img {
-      max-width: 200px;
-      max-height: 200px;
+      width: 100%;
+      object-fit: contain;
     }
   }
   &__info-container {
     flex: 1;
+    min-width: 100px;
   }
   &__title {
     cursor: pointer;
@@ -40,16 +41,18 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 100%;
+      max-width: 200px;
     }
   }
-  @media (max-width: $tablet) {
-    min-height: 200px;
+  @media (max-width: $desktop-sm) {
+    min-height: 100px;
     max-height: 300px;
     &__image-container {
       & img {
         max-width: 100px;
-        min-width: 80px;
+        max-height: 100px;
+        min-width: 50px;
+        min-height: 50px;
       }
     }
     &__title {
