@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../api'
-import './ManagerPage.css'
+import './ManagerPage.scss'
 import Loading from '../../components/UI/Loading/Loading';
 import ModalConfirm from '../../components/modal/ModalConfirm/ModalConfirm';
 import Input from '../../components/UI/Inputs/Input';
@@ -109,21 +109,21 @@ function ManagerPage() {
 
   return (
       <main className="manager-page">
-        <h1>Панель управления заказами</h1>
+        <h1>Управление заказами</h1>
 
-        <div className="manager-page__order-sum-container">
-          <div className="manager-page__order-sum">
+        <div className="manager-page__sum-container">
+          <div className="manager-page__sum-container__order-sum">
             <h3>Всего заказов: {totalCount}</h3>
           </div>
         </div>
 
         <div className='manager-page__filter-container'>
-          <div className="filter-container__main-row">
+          <div className="manager-page__filter-container__main-row">
 
-            <div className="filter-block">
+            <div className="manager-page__filter-container__filter-block">
               <h4>Фильтр за период</h4>
-              <div className="filter-block__inputs">
-                <div className="input-group">
+              <div className="manager-page__filter-container__filter-block__inputs">
+                <div className="manager-page__filter-container__filter-block__inputs__input-group">
                   <p>От</p>
                   <Input
                       type='date'
@@ -131,7 +131,7 @@ function ManagerPage() {
                       onChange={(e) => setStartDate(e.target.value)}
                   />
                 </div>
-                <div className="input-group">
+                <div className="manager-page__filter-container__filter-block__inputs__input-group">
                   <p>До</p>
                   <Input
                       type='date'
@@ -142,8 +142,8 @@ function ManagerPage() {
               </div>
             </div>
 
-            <div className="filter-block">
-              <p className="label-text">Номер заказа</p>
+            <div className="manager-page__filter-container__filter-block">
+              <p className="manager-page__filter-container__filter-block__label-text">Номер заказа</p>
               <Input
                   type='text'
                   value={orderNumberFilter}
@@ -153,7 +153,7 @@ function ManagerPage() {
             </div>
           </div>
 
-          <div className='filter-container__buttons'>
+          <div className='manager-page__filter-container__buttons'>
             <Button text={'Применить'} className={'btn'} onClick={applyFilter} />
             <Button text={'Сбросить'} className={'btn'} onClick={resetToToday} />
           </div>
@@ -163,17 +163,17 @@ function ManagerPage() {
             <p className="manager-page__no-orders">Заказы не найдены</p>
         ) : (
             <>
-              <div className="orders">
+              <div className="manager-page__orders">
                 {orders.map((order: IOrder) => (
-                    <div key={order.id} className="orders__card">
-                      <header className="order__header">
+                    <div key={order.id} className="manager-page__orders__card">
+                      <header className="manager-page__orders__card__header">
                         <div>
                           <h3>Заказ № {order.order_number}</h3>
                           <p>{order.username}</p>
                         </div>
                         <span>{new Date(order.created_at).toLocaleDateString('ru')}</span>
                       </header>
-                      <div className="order__info">
+                      <div className="manager-page__orders__card__info">
                         <div>
                           <span>Статус: </span>
                           <select
@@ -202,7 +202,7 @@ function ManagerPage() {
                         </div>
                       </div>
                       {order.orderitem_set && order.orderitem_set.length > 0 && (
-                          <div className="order__items">
+                          <div className="manager-page__orders__card__items">
                             <h4>Товары:</h4>
                             <ul>
                               {order.orderitem_set.map(item => (
@@ -220,7 +220,7 @@ function ManagerPage() {
               </div>
 
               {(nextPageUrl || prevPageUrl) && (
-                  <div className="manager-page__pagination">
+                  <div className="manager-page__pagination-buttons">
                     <Button
                         text="<"
                         onClick={() => fetchFilteredOrders(prevPageUrl)}

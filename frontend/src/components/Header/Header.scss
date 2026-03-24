@@ -49,6 +49,9 @@
     font-size: 30px;
     font-weight:bold;
     margin-right: 10px;
+    @media (max-width: $desktop-sm) {
+      font-size: 18px;
+    }
     @media (max-width: $tablet) {
       display: none;
     }

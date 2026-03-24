@@ -5,9 +5,12 @@
   justify-content: space-around;
   gap: 20px;
   @media (max-width: $desktop-sm) {
-    a svg {
-      width: 24px;
-      height: 24px;
+    gap: 0;
+    a {
+      svg {
+        width: 24px;
+        height: 24px;
+      }
     }
   }
   @media (max-width: $tablet) {

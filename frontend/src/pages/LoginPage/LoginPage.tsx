@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form' 
 import { api } from '../../api'
-import './LoginPage.css'
+import './LoginPage.scss'
 import { AuthContext } from '../../hooks/AuthContext'
 import Button from '../../components/UI/Buttons/Button'
 import InputForm from '../../components/UI/Inputs/InputForm'
@@ -18,7 +18,7 @@ function LoginPage() {
   const { setUser } = useContext(AuthContext)
   const [isRegistration, setIsRegistration] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [APIError, setAPIError] = useState('')
+  const [responseError, setResponseError] = useState('')
   const navigate = useNavigate()
 
   const {
@@ -40,7 +40,7 @@ function LoginPage() {
 
   const onSubmit = async (data: ILoginFormData) => {
     setLoading(true)
-    setAPIError('')
+    setResponseError('')
 
     try {
       const loginURL = isRegistration ? '/auth/register/' : '/auth/login/'
@@ -58,11 +58,11 @@ function LoginPage() {
       }
     } catch (error: any) {
       if (error.response) {
-        setAPIError(error.response.data.error || `Ошибка ${isRegistration ? 'регистрации' : 'входа'}`)
+        setResponseError(error.response.data.error || `Ошибка ${isRegistration ? 'регистрации' : 'входа'}`)
       } else if (error.request) {
-        setAPIError('Ошибка сети')
+        setResponseError('Ошибка сети')
       } else {
-        setAPIError('Произошла ошибка')
+        setResponseError('Произошла ошибка')
       }
     } finally {
       setLoading(false)
@@ -71,7 +71,7 @@ function LoginPage() {
 
   const switchMode = () => {
     setIsRegistration(!isRegistration)
-    setAPIError('')
+    setResponseError('')
     reset({
       username: '',
       email: '',
@@ -82,12 +82,12 @@ function LoginPage() {
 
   return (
     <div className="login-page">
-      <div className="auth-container">
+      <div className="login-page__auth-container">
         <h2>{isRegistration ? 'Регистрация' : 'Вход'}</h2>
         
-        {APIError && <div className="error-message">{APIError}</div>}
+        {responseError && <div className="login-page__error-message">{responseError}</div>}
         
-        <form className='auth-form' onSubmit={handleSubmit(onSubmit)}>
+        <form className='login-page__auth-form' onSubmit={handleSubmit(onSubmit)}>
           {isRegistration && (
             <InputForm
               id="email"
@@ -167,7 +167,7 @@ function LoginPage() {
           
           <Button  
             type="submit"
-            className="login-submit-btn" 
+            className="submit-btn"
             disabled={loading} 
             text={loading 
               ? (isRegistration ? 'Регистрация...' : 'Вход...') 
@@ -176,7 +176,7 @@ function LoginPage() {
           />
         </form>
         
-        <div className="auth-links">
+        <div className="login-page__auth-links">
           <button 
             className="switch-mode-btn"
             onClick={switchMode}
@@ -189,7 +189,7 @@ function LoginPage() {
           </button>
         </div>
 
-        <Link to="/" className="back-link">На главную</Link>
+        <Link to="/" className="login-page__back-link">На главную</Link>
       </div>
     </div>
   );

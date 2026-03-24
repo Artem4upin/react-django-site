@@ -1,0 +1,91 @@
+.create-product-page {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    & h1 {
+        font-size: 28px;
+        margin-bottom: 30px;
+        text-align: center;
+        color: #333;
+    }
+}
+
+.create-product-form {
+    background: $bg-main-color;
+    padding: 30px;
+    border: 2px solid $border-main-color;
+    border-radius: 8px;
+    &__form-group {
+        margin-bottom: 20px;
+    }
+    &__form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+        & label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: $secondary-text-color;
+        }
+    }
+    &__form-select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid $border-main-color;
+        border-radius: 6px;
+        font-size: 16px;
+        background: $bg-main-color;
+        cursor: pointer;
+        box-sizing: border-box;
+    }
+    &__form-section {
+        margin: 30px 0;
+        padding: 20px;
+        background-color: $bg-main-color;
+        border-radius: 6px;
+        border: 1px solid $border-main-color;
+        & h3 {
+            margin: 0 0 20px 0;
+            color: $main-text-color;
+            font-size: 18px;
+        }
+    }
+    &__parameters-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    &__parameter-group {
+        & label {
+            font-size: 14px;
+            color: $secondary-text-color;
+        }
+    }
+    &__description-input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid $border-main-color;
+        border-radius: 6px;
+        font-size: 16px;
+        resize: vertical;
+        min-height: 100px;
+        box-sizing: border-box;
+        font-family: inherit;
+    }
+    &__form-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+    @media (max-width: $mobile) {
+        
+    }
+}
+
+.form-buttons .submit-btn {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+}

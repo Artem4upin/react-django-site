@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../../api';
-import './ProductPage.css';
+import './ProductPage.scss';
 import Button from '../../components/UI/Buttons/Button';
 import Loading from '../../components/UI/Loading/Loading';
 import Input from '../../components/UI/Inputs/Input';
@@ -121,27 +121,27 @@ function ProductPage() {
                         <img 
                             src={product.image_pass} 
                             alt={product.name}
-                            className="image-container__image"
+                            className="product-page__image-container__image"
                         />
                     ) : (
-                        <p className="image-container_no-image">Нет изображения</p>
+                        <p className="product-page__image-container__no-image">Нет изображения</p>
                     )}
                 </div>
                 <div className="product-page__info">
                     <h3>{product.name}</h3>
-                    <div className="product-page__price">Цена: {product.price} ₽</div>
+                    <div className="product-page__info__price">Цена: {product.price} ₽</div>
                     
-                    <div className="product-page__parameters">
+                    <div className="product-page__info__parameters">
                         <h3>Характеристики:</h3>
                         {product.parameters?.map((param, index) => (
-                            <div key={index} className="parameters__item">
+                            <div key={index} className="product-page__info__parameters__item">
                                 <span>{param.name}: </span>
                                 <span>{param.value}</span>
                             </div>
                         ))}
                     </div>
                     
-                    <div className="product-page__description">
+                    <div className="product-page__info__description">
                         <h3>Описание</h3>
                         <p>{product.description}</p>
                     </div>
@@ -184,7 +184,7 @@ function ProductPage() {
                     <h3>Редактировать товар</h3>
 
                     <div className='product-page__edit-inputs'>    
-                        <div className="edit-field">
+                        <div className="product-page__edit-inputs__edit-field">
                             <label>Название товара:</label>
                             <Input 
                                 value={editName}
@@ -192,7 +192,7 @@ function ProductPage() {
                             />
                         </div>
 
-                        <div className="edit-field">
+                        <div className="product-page__edit-inputs__edit-field">
                             <label>Цена (₽):</label>
                             <Input 
                                 type="number"
@@ -201,7 +201,7 @@ function ProductPage() {
                             />
                         </div>
 
-                        <div className="edit-field">
+                        <div className="product-page__edit-inputs__edit-field">
                             <label>Количество на складе:</label>
                             <Input 
                                 type="number"
@@ -210,10 +210,10 @@ function ProductPage() {
                             />
                         </div>
 
-                        <div className="edit-field">
+                        <div className="product-page__edit-inputs__edit-field">
                             <label>Описание:</label>
                             <textarea
-                                className='product-page__edit-description'
+                                className='product-page__edit-inputs__edit-description'
                                 value={editDescription}
                                 onChange={(e) => setEditDescription(e.target.value)}
                                 rows={5}
@@ -240,7 +240,7 @@ function ProductPage() {
                 </div>
                 )}
                 {user && user.user_type === 'Manager' && !isEdit && (
-                    <div className='product-page__buttons'>
+                    <div className='product-page__manager-buttons'>
                         <Button text={'Редактировать товар'} className={'submit-btn'} onClick={switchEdit}/>
                     </div>
             )}

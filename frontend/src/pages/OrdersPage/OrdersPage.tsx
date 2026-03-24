@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../../api';
 import OrderList from '../../components/OrderList/OrderList';
-import './OrdersPage.css';
+import './OrdersPage.scss';
 import Loading from '../../components/UI/Loading/Loading';
 import Button from '../../components/UI/Buttons/Button'
 

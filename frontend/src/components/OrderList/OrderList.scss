@@ -5,4 +5,10 @@
         padding: 30px;
         gap: 10px;
     }
+    @media (max-width: $tablet) {
+        &__orders-container {
+            padding: 10px;
+            grid-template-columns: 1fr;
+        }
+    }
 }

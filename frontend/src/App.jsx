@@ -33,7 +33,6 @@ function App() {
             setUser(null)
           }
         } catch (error) {
-          console.error('Ошибка проверки авторизации (пользователь не авторизован):', error);
           if (error.response?.status === 401) {
             localStorage.removeItem('token')
             setUser(null)

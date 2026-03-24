@@ -5,7 +5,7 @@ import { AuthContext } from '../../hooks/AuthContext'
 import Button from '../../components/UI/Buttons/Button'
 import Input from '../../components/UI/Inputs/Input'
 import Loading from '../../components/UI/Loading/Loading'
-import './CreateProductPage.css'
+import './CreateProductPage.scss'
 import {IBrand, ICategory, IParameter, ISubcategory} from "../../types/product";
 
 function CreateProductPage() {
@@ -168,7 +168,7 @@ function CreateProductPage() {
             <h1>Добавить товар</h1>
 
             <form onSubmit={handleSubmit} className="create-product-form">
-                <div className="form-group">
+                <div className="create-product-form__form-group">
                     <label>Название товара *</label>
                     <Input
                         value={name}
@@ -178,8 +178,8 @@ function CreateProductPage() {
                     />
                 </div>
 
-                <div className="form-row">
-                    <div className="form-group">
+                <div className="create-product-form__form-row">
+                    <div className="create-product-form__form-group">
                         <label>Цена (₽) *</label>
                         <Input
                             type="number"
@@ -190,7 +190,7 @@ function CreateProductPage() {
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="create-product-form__form-group">
                         <label>Количество</label>
                         <Input
                             type="number"
@@ -202,13 +202,13 @@ function CreateProductPage() {
                     </div>
                 </div>
 
-                <div className="form-group">
+                <div className="create-product-form__form-group">
                     <label>Бренд *</label>
                     <select
                         value={brandId}
                         required
                         onChange={(e) => setBrandId(e.target.value)}
-                        className="form-select"
+                        className="create-product-form__form-select"
                     >
                         <option value="">Выберите бренд</option>
                         {brands.map(brand => (
@@ -219,13 +219,13 @@ function CreateProductPage() {
                     </select>
                 </div>
 
-                <div className="form-row">
-                    <div className="form-group">
+                <div className="create-product-form__form-row">
+                    <div className="create-product-form__form-group">
                         <label>Категория *</label>
                         <select
                             value={categoryId}
                             onChange={(e) => setCategoryId(e.target.value)}
-                            className="form-select"
+                            className="create-product-form__form-select"
                             required
                         >
                             <option value="">Выберите категорию</option>
@@ -237,12 +237,12 @@ function CreateProductPage() {
                         </select>
                     </div>
 
-                    <div className="form-group">
+                    <div className="create-product-form__form-group">
                         <label>Подкатегория</label>
                         <select
                             value={subcategoryId}
                             onChange={(e) => setSubcategoryId(e.target.value)}
-                            className="form-select"
+                            className="create-product-form__form-select"
                             disabled={!categoryId || subcategories.length === 0}
                         >
                             <option value="">Выберите подкатегорию</option>
@@ -255,7 +255,7 @@ function CreateProductPage() {
                     </div>
                 </div>
 
-                <div className="form-group">
+                <div className="create-product-form__form-group">
                     <label>Изображение</label>
                     <input
                         type="file"
@@ -265,16 +265,16 @@ function CreateProductPage() {
                 </div>
 
                 {parameters.length > 0 && (
-                    <div className="form-section">
+                    <div className="create-product-form__form-section">
                         <h3>Характеристики</h3>
-                        <div className="parameters-container">
+                        <div className="create-product-form__parameters-container">
                             {parameters.map(param => (
-                                <div key={param.id} className="parameter-group">
+                                <div key={param.id} className="create-product-form__parameter-group">
                                     <label>{param.name}</label>
                                     <select
                                         value={paramValues[param.id] || ''}
                                         onChange={(e) => handleParamChange(param.id, e.target.value)}
-                                        className="form-select"
+                                        className="create-product-form__form-select"
                                     >
                                         <option value="">Выберите значение</option>
                                         {param.values?.map(value => (
@@ -289,18 +289,18 @@ function CreateProductPage() {
                     </div>
                 )}
 
-                <div className="form-group">
+                <div className="create-product-form__form-group">
                     <label>Описание</label>
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        className="description-input"
+                        className="create-product-form__description-input"
                         placeholder="Описание товара"
                         rows={4}
                     />
                 </div>
 
-                <div className="form-buttons">
+                <div className="create-product-form__form-buttons">
                     <Button
                         type="submit"
                         text={loading ? "Создание..." : "Создать товар"}

@@ -1,12 +1,12 @@
 import React from 'react';
-import './TermsPage.css';
+import './TermsPage.scss';
 
 function TermsPage() {
   return (
     <div className="terms-page">
       <h1>Условия использования</h1>
       
-      <div className="terms-content">
+      <div className="terms-page__terms-content">
         <section>
           <h2>1. Общие положения</h2>
           <p>Добро пожаловать на TechShop. Используя наш сайт, вы соглашаетесь с настоящими условиями использования.</p>
@@ -57,7 +57,7 @@ function TermsPage() {
           <p>Мы можем изменять условия использования. Продолжение использования сайта означает принятие изменений.</p>
         </section>
 
-        <div className="effective-date">
+        <div className="terms-page__effective-date">
           <p>Условия действительны с 18.12.2025</p>
         </div>
       </div>

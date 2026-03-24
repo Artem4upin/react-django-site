@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
 import { api } from '../../api';
 import ProductList from '../../components/ProductList/ProductList';
-import './CatalogPage.css'
+import './CatalogPage.scss'
 import Loading from '../../components/UI/Loading/Loading';
 import Category from '../../components/Category/Category';
 import ProductFilter from '../../components/ProductFilter/ProductFilter';

@@ -19,10 +19,10 @@ function OrderCard({ order }:IOrderCardProps) {
     return (
         <div className="order-card">
             <h3>Заказ №{order.order_number}</h3>
-            <p>Статус: {statusTranslations[order.status] || order.status}</p>
-            <p>Дата создания: {new Date (order.created_at).toLocaleDateString('ru')}</p>
-            <p>Дата доставки: {new Date (order.delivery_date).toLocaleDateString('ru')}</p>
-            <p>Итого: {order.price_sum}₽</p>
+            <p>Статус: <strong>{statusTranslations[order.status] || order.status}</strong></p>
+            <p>Дата создания: <strong>{new Date (order.created_at).toLocaleDateString('ru')}</strong></p>
+            <p>Дата доставки: <strong>{new Date (order.delivery_date).toLocaleDateString('ru')}</strong></p>
+            <p>Итого: <strong>{order.price_sum}₽</strong></p>
             {
             // <OrderItems orderitem_set = {order.orderitem_set}/>
             }

@@ -1,0 +1,47 @@
+.privacy-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 20px;
+  & h1 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: $secondary-text-color;
+    text-align: center;
+    line-height: 1.2;
+  }
+  & section {
+    margin-bottom: 30px;
+  }
+  &__privacy-content {
+    & h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: $light-blue-color;
+    }
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: $secondary-text-color;
+      margin-bottom: 10px;
+    }
+  }
+  &__contact-info {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid $border-main-color;
+    & p {
+      margin-bottom: 8px;
+      color: $secondary-text-color;
+    }
+  }
+  @media (max-width: $tablet) {
+    & h1 {
+      font-size: 24px;
+    }
+  }
+}
+
+
+
+
+

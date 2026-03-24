@@ -1,12 +1,12 @@
 import React from 'react';
-import './FaqPage.css';
+import './FaqPage.scss';
 
 function FaqPage() {
   return (
     <div className="faq-page">
       <h1>FAQ</h1>
       
-      <div className="faq-content">
+      <div className="faq-page__faq-content">
         <h2>Как оформить заказ?</h2>
         <p>Добавьте товары в корзину и оформите заказ в личном кабинете.</p>
 

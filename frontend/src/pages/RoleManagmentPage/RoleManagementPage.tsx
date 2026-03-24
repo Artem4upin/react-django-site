@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { api } from '../../api'
-import './RoleManagementPage.css'
+import './RoleManagementPage.scss'
 import Loading from '../../components/UI/Loading/Loading';
 import Button from '../../components/UI/Buttons/Button';
 import { AuthContext } from '../../hooks/AuthContext';
@@ -68,43 +68,43 @@ function RoleManagementPage() {
 
   return (
     <main className="role-management-page">
-      <h1>Управление ролями пользователей</h1>
+      <h1>Роли пользователей</h1>
       
       {error && (
-        <div className="error-message">
+        <div className="role-management-page__error-message">
           {error}
         </div>
       )}
       {successMessage && (
-        <div className="success-message">
+        <div className="role-management-page__success-message">
           {successMessage}
         </div>
       )}
       
-      <div className="users-list">
+      <div className="role-management-page__users-list">
         {users.length === 0 ? (
-          <p className="no-users">Пользователи не найдены</p>
+          <p className="role-management-page__no-users">Пользователи не найдены</p>
         ) : (
           users.map(user => (
             <div key={user.id} className="user-card">
-              <div className="user-info">
-                <div className="user-main">
+              <div className="user-card__user-info">
+                <div className="user-card__user-info__user-main">
                   <h3>{user.username}</h3>
                   <p>{user.email}</p>
                 </div>
-                <div className="user-details">
+                <div className="user-card__user-info__user-details">
                   <p>Имя: {user.first_name || 'Не указано'}</p>
                   <p>Фамилия: {user.last_name || 'Не указано'}</p>
                 </div>
               </div>
               
-              <div className="user-role">
-                <div className="role-selector">
+              <div className="user-card__user-role">
+                <div className="user-card__role-selector">
                   <span>Роль: </span>
                   <select 
                     value={user.user_type}
                     onChange={(e) => handleRoleChange(user.id, e.target.value as TUserType)}
-                    className="role-select"
+                    className="user-card__role-select"
                   >
                     <option value="User">Пользователь</option>
                     <option value="Manager">Менеджер</option>
@@ -117,7 +117,7 @@ function RoleManagementPage() {
         )}
       </div>
       
-      <div className="page-actions">
+      <div className="role-management-page__page-actions">
         <Button 
           text="Обновить список"
           onClick={loadUsers}

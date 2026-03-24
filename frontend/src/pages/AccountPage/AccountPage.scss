@@ -215,7 +215,10 @@
             &__link {
                 justify-content: center;
                 width: 100%;
-
+                padding: 4px 4px;
+            }
+            &__text {
+                font-size: 14px;
             }
         }
     }

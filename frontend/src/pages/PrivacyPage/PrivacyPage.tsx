@@ -1,12 +1,12 @@
 import React from 'react';
-import './PrivacyPage.css';
+import './PrivacyPage.scss';
 
 function PrivacyPage() {
   return (
     <div className="privacy-page">
       <h1>Политика конфиденциальности</h1>
       
-      <div className="privacy-content">
+      <div className="privacy-page__privacy-content">
         <section>
           <h2>1. Сбор информации</h2>
           <p>Мы собираем информацию, которую вы предоставляете при регистрации на сайте, оформлении заказа или заполнении форм.</p>
@@ -37,7 +37,7 @@ function PrivacyPage() {
           <p>Мы оставляем за собой право вносить изменения в настоящую политику конфиденциальности. Актуальная версия всегда доступна на этой странице.</p>
         </section>
 
-        <div className="contact-info">
+        <div className="privacy-page__contact-info">
           <p>Обращаться по вопросам политики конфиденциальности:</p>
           <p>Email: techshop@info.com</p>
           <p>Дата последнего обновления: 18.12.2025</p>

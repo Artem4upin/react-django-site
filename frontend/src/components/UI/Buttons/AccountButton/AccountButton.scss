@@ -9,8 +9,8 @@
     text-decoration: none;
     gap: 4px;
     cursor: pointer;
-    span {
-      max-width: 50px;
+    & span {
+      max-width: 80px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -25,6 +25,11 @@
       width: 24px;
       height: 24px;
       flex-shrink: 0;
+    }
+  }
+  @media (max-width: $desktop-sm) {
+    & span {
+      max-width: 50px;
     }
   }
 }
