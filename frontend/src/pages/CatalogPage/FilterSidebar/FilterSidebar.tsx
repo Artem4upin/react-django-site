@@ -52,12 +52,12 @@ function FilterSidebar({
                 <div className="filter-sidebar__overlay" onClick={onFilterClose}>
                     <div className="filter-sidebar__panel" onClick={(e) => e.stopPropagation()}>
                         <div className="filter-sidebar__header">
-                            <h3>Выберите фильтры</h3>
                             <Button
-                                text="✕"
-                                className="exit-btn"
+                                text="<- Выйти"
+                                className="back-btn"
                                 onClick={onFilterClose}
                             />
+                            <h3>Выберите фильтры</h3>
                         </div>
                         <div className="filter-sidebar__content">
                             <Category

@@ -1,45 +1,64 @@
 import { useState } from 'react';
 import './Category.scss';
 import Button from '../UI/Buttons/Button';
-import {ICategory, ISubcategory} from "../../types/product";
+import { ICategory, ISubcategory } from "../../types/product";
 
 interface ICategoryProps {
     onFilterChange: (category: ICategory | null, subcategory: ISubcategory | null) => void;
     categories: ICategory[];
 }
 
-function Category({
-        onFilterChange,
-        categories
-}:ICategoryProps) {
-
+function Category({ onFilterChange, categories }: ICategoryProps) {
     const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
     const [selectedSubcategory, setSelectedSubcategory] = useState<ISubcategory | null>(null);
+    const [selectedGroups, setSelectedGroups] = useState<number[]>([]);
+
+    const groups: { [key: string]: { id: number; name: string; categories: ICategory[] } } = {};
+    categories.forEach(category => {
+        const group = category.category_group;
+        const groupId = group ? group.id : 3;
+        const groupName = group ? group.name : 'Другое';
+        if (!groups[groupId]) {
+            groups[groupId] = { id: groupId, name: groupName, categories: [] };
+        }
+        groups[groupId].categories.push(category);
+    });
+    const groupsArray = Object.values(groups)
+        .sort((prevGroup, nextGroup) => prevGroup.id - nextGroup.id);
+
+    const handleGroupClick = (groupId: number) => {
+        if (selectedGroups.includes(groupId)) {
+            setSelectedGroups(selectedGroups.filter(id => id !== groupId));
+        } else {
+            setSelectedGroups([...selectedGroups, groupId]);
+        }
+    };
 
     const handleCategoryClick = (category: ICategory) => {
         if (selectedCategory?.id === category.id) {
-            resetFilters()
+            resetFilters();
         } else {
-            setSelectedCategory(category)
-            setSelectedSubcategory(null)
-            onFilterChange(category, null)
+            setSelectedCategory(category);
+            setSelectedSubcategory(null);
+            onFilterChange(category, null);
         }
     };
 
     const handleSubcategoryClick = (subcategory: ISubcategory) => {
         if (selectedSubcategory?.id === subcategory.id) {
-            setSelectedSubcategory(null)
-            onFilterChange(selectedCategory, null)
+            setSelectedSubcategory(null);
+            onFilterChange(selectedCategory, null);
         } else {
-            setSelectedSubcategory(subcategory)
-            onFilterChange(selectedCategory, subcategory)
+            setSelectedSubcategory(subcategory);
+            onFilterChange(selectedCategory, subcategory);
         }
     };
 
     const resetFilters = () => {
-        setSelectedCategory(null)
-        setSelectedSubcategory(null)
-        onFilterChange(null, null)
+        setSelectedGroups([])
+        setSelectedCategory(null);
+        setSelectedSubcategory(null);
+        onFilterChange(null, null);
     };
 
     return (
@@ -47,29 +66,46 @@ function Category({
             <header className="category__header">
                 <h3 className="category__title">Категории</h3>
                 {(selectedCategory || selectedSubcategory) && (
-                    <Button className="submit-btn" onClick={resetFilters} text={'Сбросить'}></Button>
+                    <Button className="submit-btn" onClick={resetFilters} text={'Сбросить'} />
                 )}
             </header>
-            
+
             <div className="category__list">
-                {categories.map(category => (
-                    <div key={category.id} className="category__item">
-                        <div 
-                            className={`category__category`}
-                            onClick={() => handleCategoryClick(category)}
+                {groupsArray.map(group => (
+                    <div key={group.id} className="category__group">
+                        <div
+                            className="category__group-item"
+                            onClick={() => handleGroupClick(group.id)}
                         >
-                            {category.name}
+                            <span className="category__group-name">{group.name}</span>
                         </div>
-                        
-                        {selectedCategory?.id === category.id && (
-                            <div className="category__subcategories">
-                                {category.subcategories?.map(subcategory => (
-                                    <div 
-                                        key={subcategory.id}
-                                        className={`category__subcategories__subcategory`}
-                                        onClick={() => handleSubcategoryClick(subcategory)}
-                                    >
-                                        {subcategory.name}
+                        {selectedGroups.includes(group.id) && (
+                            <div className="category__group-content">
+                                {group.categories.map(category => (
+                                    <div key={category.id} className="category__item">
+                                        <div
+                                            className={`category__category ${
+                                                selectedCategory?.id === category.id ? 'selected' : ''
+                                            }`}
+                                            onClick={() => handleCategoryClick(category)}
+                                        >
+                                            {category.name}
+                                        </div>
+                                        {selectedCategory?.id === category.id && (
+                                            <div className="category__subcategories">
+                                                {category.subcategories?.map(subcategory => (
+                                                    <div
+                                                        key={subcategory.id}
+                                                        className={`category__subcategories__subcategory ${
+                                                            selectedSubcategory?.id === subcategory.id ? 'selected' : ''
+                                                        }`}
+                                                        onClick={() => handleSubcategoryClick(subcategory)}
+                                                    >
+                                                        {subcategory.name}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
                                 ))}
                             </div>

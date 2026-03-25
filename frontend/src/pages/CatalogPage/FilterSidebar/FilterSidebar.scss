@@ -27,18 +27,20 @@
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid $border-main-color;
-    h3 {
-      margin: 10%;
+    & h3 {
       font-size: 20px;
       max-width: 200px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    & button {
+      margin: 0;
+    }
   }
   &__content {
     flex: 1;
-    padding: 20px;
+    padding: 10px;
   }
 }
 

@@ -21,7 +21,13 @@ class ProductSerializer(serializers.ModelSerializer):
                     'value': i.value
                 })
 
-        return result 
+        return result
+
+class CategoryGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CategoryGroup
+        fields = ['id', 'name']
+
 class SubcategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Subcategory
@@ -29,10 +35,11 @@ class SubcategorySerializer(serializers.ModelSerializer):
 
 class CategorySerializer(serializers.ModelSerializer):
     subcategories = serializers.SerializerMethodField()
-    
+    category_group = CategoryGroupSerializer(read_only=True)
+
     class Meta:
         model = Category
-        fields = ['id', 'name', 'subcategories']
+        fields = ['id', 'name', 'subcategories', 'category_group']
     
     def get_subcategories(self, obj):
         subcategories = obj.subcategory_set.all()

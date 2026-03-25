@@ -1,12 +1,17 @@
 from datetime import date
 from django.db import models
 
-class Category(models.Model):
+class CategoryGroup(models.Model):
     name = models.CharField(max_length=50)
-
     def __str__(self):
         return self.name
-    
+
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+    category_group = models.ForeignKey(CategoryGroup, on_delete=models.PROTECT, null=True, blank=True)
+    def __str__(self):
+        return self.name
+
 class Subcategory(models.Model):
     name = models.CharField(max_length=50)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)

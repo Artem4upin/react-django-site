@@ -9,7 +9,6 @@
         align-items: center;
         margin: 30px;
         padding-bottom: 10px;
-        border-bottom: 1px solid $border-main-color;
     }
     &__title {
         font-size: 28px;
@@ -70,20 +69,20 @@
     &__section {
         background-color: $bg-main-color;
         border-radius: 8px;
-        padding: 16px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border: 1px solid $border-main-color;
         &__title {
             font-size: 20px;
             font-weight: 600;
-            margin: 0 0 20px 0;
-            padding-bottom: 10px;
-            border-bottom: 1px solid $border-main-color;
+            margin: 10px;
+
         }
     }
     &__profile-form {
+        border-top: 1px solid $border-main-color;
         margin-top: 10px;
         &__form-section {
             margin-bottom: 30px;
+            padding: 10px;
         }
         &__form-section__title {
             font-size: 16px;
@@ -102,11 +101,9 @@
         }
         &__form-actions {
             display: flex;
-            justify-content: space-between;
             align-items: center;
             margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid $border-main-color;
+            padding: 10px;
         }
         &__form-success {
             color: $success-color;
@@ -117,13 +114,13 @@
         background-color: $bg-main-color;
         border-radius: 8px;
         padding: 16px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border: 1px solid $border-main-color;
         &__section__title {
             font-size: 20px;
             font-weight: 600;
             margin: 0 0 20px 0;
             padding-bottom: 10px;
-            border-bottom: 1px solid $border-main-color;
+
         }
         &__security-actions,
         &__session-actions {

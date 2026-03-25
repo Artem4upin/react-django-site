@@ -28,6 +28,11 @@ export interface IProduct {
     parameters?: IProductParameter[];
 }
 
+export interface ICategoryGroup {
+    id: number;
+    name: string;
+}
+
 export interface ISubcategory {
     id: number;
     name: string;
@@ -37,6 +42,7 @@ export interface ICategory {
     id: number;
     name: string;
     subcategories?: ISubcategory[];
+    category_group: ICategoryGroup;
 }
 
 export interface IBrand {

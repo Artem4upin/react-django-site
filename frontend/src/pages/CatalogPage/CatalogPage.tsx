@@ -83,8 +83,10 @@ function CatalogPage() {
             ]);
 
             setProducts(productsRes.data.results);
+            console.log(productsRes.data.results);
             setNextPage(productsRes.data.next);
             setCategories(categoriesRes.data)
+            console.log('Категории', categoriesRes.data);
             setFilterData({
                 brands: brandsRes.data,
                 params: paramsRes.data

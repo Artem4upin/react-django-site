@@ -15,6 +15,7 @@ function Header(){
     <header className="header">
         <div className="header__container">
             <h1 className="header__logo" >TechShop</h1>
+            <NavigationLinks />
             <SearchContainer
                 searchResult={searchResult}
                 setSearchResult={setSearchResult}
@@ -23,7 +24,6 @@ function Header(){
                 hasSearching={hasSearching}
                 setHasSearching={setHasSearching}
             />
-            <NavigationLinks />
             <div className='account-container'>
                 <CartButton />
                 <AccountButton />
