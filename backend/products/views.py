@@ -15,11 +15,41 @@ class ProductList(APIView):
     permission_classes = []
 
     def get(self, request):
+        category_id = request.query_params.get('category_id')
+        subcategory_id = request.query_params.get('subcategory_id')
+        min_price = request.query_params.get('min_price')
+        max_price = request.query_params.get('max_price')
+        brand_id = request.query_params.get('brand_id')
+        param_id = request.query_params.get('param_id')
+        param_value = request.query_params.get('param_value')
+        in_stock = request.query_params.get('in_stock')
         is_new = request.query_params.get('new', '').lower() == 'true'
+
         if is_new:
             products = Product.objects.all().order_by('-creation_date')[:2]
         else:
             products = Product.objects.all()
+
+        if category_id:
+            products = products.filter(category_id=category_id)
+        if subcategory_id:
+            products = products.filter(subcategory_id=subcategory_id)
+        if min_price:
+            products = products.filter(price__gte=min_price)
+        if max_price:
+            products = products.filter(price__lte=max_price)
+        if brand_id:
+            products = products.filter(brand_id=brand_id)
+        if in_stock is not None:
+            if in_stock == 'false':
+                pass
+            elif in_stock == 'true':
+                products = products.filter(quantity__gt=0)
+        if param_id and param_value:
+            products = products.filter(
+                product_parameters__parameter_id=param_id,
+                product_parameters__value=param_value
+            ).distinct()
 
         pagination = PageNumberPagination()
         pagination.page_size = PRODUCT_PAGE_SIZE

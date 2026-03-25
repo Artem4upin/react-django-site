@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './Category.scss';
-import Button from '../UI/Buttons/Button';
 import { ICategory, ISubcategory } from "../../types/product";
+import Button from "../UI/Buttons/Button";
 
 interface ICategoryProps {
     onFilterChange: (category: ICategory | null, subcategory: ISubcategory | null) => void;
@@ -13,18 +13,18 @@ function Category({ onFilterChange, categories }: ICategoryProps) {
     const [selectedSubcategory, setSelectedSubcategory] = useState<ISubcategory | null>(null);
     const [selectedGroups, setSelectedGroups] = useState<number[]>([]);
 
-    const groups: { [key: string]: { id: number; name: string; categories: ICategory[] } } = {};
+    const groups: { [key: string]: { id: number; name: string; categories: ICategory[] } } = {}
     categories.forEach(category => {
         const group = category.category_group;
         const groupId = group ? group.id : 3;
         const groupName = group ? group.name : 'Другое';
         if (!groups[groupId]) {
-            groups[groupId] = { id: groupId, name: groupName, categories: [] };
+            groups[groupId] = { id: groupId, name: groupName, categories: [] }
         }
         groups[groupId].categories.push(category);
-    });
+    })
     const groupsArray = Object.values(groups)
-        .sort((prevGroup, nextGroup) => prevGroup.id - nextGroup.id);
+        .sort((prevGroup, nextGroup) => prevGroup.id - nextGroup.id)
 
     const handleGroupClick = (groupId: number) => {
         if (selectedGroups.includes(groupId)) {
@@ -32,7 +32,7 @@ function Category({ onFilterChange, categories }: ICategoryProps) {
         } else {
             setSelectedGroups([...selectedGroups, groupId]);
         }
-    };
+    }
 
     const handleCategoryClick = (category: ICategory) => {
         if (selectedCategory?.id === category.id) {
@@ -42,7 +42,7 @@ function Category({ onFilterChange, categories }: ICategoryProps) {
             setSelectedSubcategory(null);
             onFilterChange(category, null);
         }
-    };
+    }
 
     const handleSubcategoryClick = (subcategory: ISubcategory) => {
         if (selectedSubcategory?.id === subcategory.id) {
@@ -55,18 +55,21 @@ function Category({ onFilterChange, categories }: ICategoryProps) {
     };
 
     const resetFilters = () => {
-        setSelectedGroups([])
         setSelectedCategory(null);
         setSelectedSubcategory(null);
         onFilterChange(null, null);
-    };
+    }
+    const resetFiltersAndGroups = () => {
+        setSelectedGroups([]);
+        resetFilters();
+    }
 
     return (
         <div className="category">
             <header className="category__header">
                 <h3 className="category__title">Категории</h3>
-                {(selectedCategory || selectedSubcategory) && (
-                    <Button className="submit-btn" onClick={resetFilters} text={'Сбросить'} />
+                {selectedCategory && (
+                <Button className="submit-btn" text={'Сбросить'} onClick={resetFiltersAndGroups}/>
                 )}
             </header>
 
@@ -114,7 +117,7 @@ function Category({ onFilterChange, categories }: ICategoryProps) {
                 ))}
             </div>
         </div>
-    );
+    )
 }
 
 export default Category

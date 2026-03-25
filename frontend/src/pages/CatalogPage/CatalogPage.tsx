@@ -29,20 +29,20 @@ interface IFilters {
 function CatalogPage() {
     const [products, setProducts] = useState<IProduct[]>([])
     const [loading, setLoading] = useState(true)
-    const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([])
     const [selectedCategoryName, setSelectedCategoryName] = useState('')
     const [selectedSubcategoryName, setSelectedSubcategoryName] = useState('')
     const [loadingMore, setLoadingMore] = useState(false)
-    const [nextPage, setNextPage] = useState('');
-    const [loadingError, setLoadingError] = useState('');
-    const [categories, setCategories] = useState<ICategory[]>([]);
-    const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
+    const [nextPage, setNextPage] = useState('')
+    const [loadingError, setLoadingError] = useState('')
+    const [categories, setCategories] = useState<ICategory[]>([])
+    const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false)
     const [filterData, setFilterData] = useState<{brands: IBrand[], params: IParameter[]}>({
         brands: [],
         params: []
-    });
-    const observerRef = useRef<IntersectionObserver | null>(null);
+    })
+    const observerRef = useRef<IntersectionObserver | null>(null)
     const { user } = useContext(AuthContext)
+
     const [currentFilters, setCurrentFilters] = useState<IFilters>({
         category: null,
         subcategory: null,
@@ -53,96 +53,140 @@ function CatalogPage() {
         paramValue: null,
         inStock: true
     })
-    const navigate = useNavigate();
+    const [appliedFilters, setAppliedFilters] = useState<IFilters>(currentFilters)
+
+    const hasAnyFilters =
+        currentFilters.minPrice !== null ||
+        currentFilters.maxPrice !== null ||
+        currentFilters.brandId !== null ||
+        currentFilters.paramId !== null ||
+        currentFilters.paramValue !== null ||
+        currentFilters.inStock === false;
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         loadData()
     }, [])
 
     useEffect(() => {
-        if (products.length > 0) {
-        applyFilters()
-        }
-    }, [products, currentFilters])
+        loadProducts(1, appliedFilters)
+    }, [])
 
-    const loadData = async (page: number = 1) => {
-        setLoading(true);
-        setLoadingError('');
-
-        const timeout = setTimeout(() => {
-            setLoading(false);
-            setLoadingError("Превышено время ожидания. Попробуйте перезагрузить страницу")
-        }, 5000);
-
+    const loadData = async () => {
         try {
-            const [productsRes, categoriesRes, brandsRes, paramsRes] = await Promise.all([
-                api.get(`/products/?page=${page}`),
+            const [categoriesRes, brandsRes, paramsRes] = await Promise.all([
                 api.get<ICategory[]>('/categories/'),
                 api.get<IBrand[]>('/brands/'),
                 api.get<IParameter[]>('/parameters/')
-            ]);
-
-            setProducts(productsRes.data.results);
-            console.log(productsRes.data.results);
-            setNextPage(productsRes.data.next);
+            ])
             setCategories(categoriesRes.data)
-            console.log('Категории', categoriesRes.data);
             setFilterData({
                 brands: brandsRes.data,
                 params: paramsRes.data
-            });
-            clearTimeout(timeout);
+            })
+        } catch (error) {
+            console.error('Ошибка загрузки метаданных:', error)
+        }
+    }
+
+    const loadProducts = async (page: number = 1, filters: IFilters = appliedFilters) => {
+        setLoading(page === 1)
+        setLoadingError('')
+
+        const timeout = setTimeout(() => {
+            setLoading(false)
+            setLoadingError("Превышено время ожидания. Попробуйте перезагрузить страницу")
+        }, 5000)
+
+        try {
+            const params: any = { page }
+            if (filters.category?.id) params.category_id = filters.category.id
+            if (filters.subcategory?.id) params.subcategory_id = filters.subcategory.id
+            if (filters.minPrice !== null) params.min_price = filters.minPrice
+            if (filters.maxPrice !== null) params.max_price = filters.maxPrice
+            if (filters.brandId !== null) params.brand_id = filters.brandId
+            if (filters.paramId !== null && filters.paramValue !== null) {
+                params.param_id = filters.paramId
+                params.param_value = filters.paramValue
+            }
+            if (!filters.inStock) params.in_stock = false
+
+            const response = await api.get('/products/', { params })
+            setProducts(response.data.results)
+            setNextPage(response.data.next)
+            clearTimeout(timeout)
         } catch (error: any) {
-            setLoadingError(getErrorMsg(error));
-            setProducts([]);
-            clearTimeout(timeout);
+            clearTimeout(timeout)
+            setLoadingError(getErrorMsg(error))
+            setProducts([])
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
     }
 
     const loadingMoreProducts = async () => {
-        if (loadingMore || !nextPage) return;
-        setLoadingMore(true);
-        setLoadingError('');
+        if (loadingMore || !nextPage) return
+        setLoadingMore(true)
+        setLoadingError('')
 
         const timeout = setTimeout(() => {
-            setLoadingMore(false);
+            setLoadingMore(false)
             setLoadingError("Превышено время ожидания. Попробуйте перезагрузить страницу")
-        }, 5000);
+        }, 5000)
 
         try {
-            const response = await axios.get(nextPage);
-            clearTimeout(timeout);
-            setProducts(currentProducts => [...currentProducts, ...response.data.results]);
-            setNextPage(response.data.next);
+            const response = await axios.get(nextPage)
+            clearTimeout(timeout)
+            setProducts(prev => [...prev, ...response.data.results])
+            setNextPage(response.data.next)
         } catch (error: any) {
-            clearTimeout(timeout);
-            setLoadingError(getErrorMsg(error));
-            console.error('Ошибка загрузки товаров', error);
+            clearTimeout(timeout)
+            setLoadingError(getErrorMsg(error))
+            console.error('Ошибка загрузки товаров', error)
         } finally {
-            setLoadingMore(false);
+            setLoadingMore(false)
         }
     }
 
     const lastProduct = (div: HTMLDivElement | null) => {
-        if (loadingMore) return;
+        if (loadingMore) return
 
         if (observerRef.current) {
-            observerRef.current.disconnect();
+            observerRef.current.disconnect()
         }
 
         observerRef.current = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
             if (entries[0].isIntersecting && nextPage && !loadingError) {
-                loadingMoreProducts();
+                loadingMoreProducts()
             }
         })
         if (div) {
-            observerRef.current.observe(div);
+            observerRef.current.observe(div)
         }
     }
 
+    const handleLocalFilterReset = () => {
+        setCurrentFilters(prev => ({
+            ...prev,
+            minPrice: null,
+            maxPrice: null,
+            brandId: null,
+            paramId: null,
+            paramValue: null,
+            inStock: true
+        }));
+    }
+
     const handleCategoryFilterChange = (category: ICategory | null, subcategory: ISubcategory | null) => {
+        setCurrentFilters(prev => ({
+            ...prev,
+            category,
+            subcategory,
+            paramId: null,
+            paramValue: null
+        }))
+
         if (category && !subcategory) {
             setSelectedCategoryName(category.name)
             setSelectedSubcategoryName('')
@@ -153,176 +197,119 @@ function CatalogPage() {
             setSelectedCategoryName('')
             setSelectedSubcategoryName('')
         }
-
-        setCurrentFilters(filters => ({
-            ...filters,
-            category,
-            subcategory,
-            paramId: null,
-            paramValue: null
-        }))
     }
 
     const handleFilterChange = (type: string, value: string | number | boolean) => {
-        if (type === 'reset') {
-            setCurrentFilters({
-                category: null,
-                subcategory: null,
-                minPrice: null,
-                maxPrice: null,
-                brandId: null,
-                paramId: null,
-                paramValue: null,
-                inStock: true
-            })
-            setSelectedCategoryName('')
-            setSelectedSubcategoryName('')
-            return
-        }
-
-        setCurrentFilters(filters => ({
-            ...filters,
+        setCurrentFilters(prev => ({
+            ...prev,
             [type]: value === '' ? null : value
         }))
     }
 
-    const handleResetProductFilters = () => {
-        setCurrentFilters(filters => ({
-            ...filters,
+    const applyFilters = () => {
+        setAppliedFilters(currentFilters)
+        loadProducts(1, currentFilters)
+        setIsMobileFilterOpen(false)
+    }
+
+    const resetAllFilters = () => {
+        const emptyFilters = {
+            category: null,
+            subcategory: null,
             minPrice: null,
             maxPrice: null,
             brandId: null,
             paramId: null,
             paramValue: null,
             inStock: true
-        }))
+        }
+        setCurrentFilters(emptyFilters)
+        setAppliedFilters(emptyFilters)
+        setSelectedCategoryName('')
+        setSelectedSubcategoryName('')
+        loadProducts(1, emptyFilters)
+        setIsMobileFilterOpen(false)
     }
 
-    const applyFilters = () => {
-        let filtered = [...products]
-
-        if (currentFilters.category && !currentFilters.subcategory) {
-            filtered = filtered.filter(product =>
-                product.category_id === currentFilters.category?.id
-            )
-        } else if (currentFilters.category && currentFilters.subcategory) {
-            filtered = filtered.filter(product =>
-                product.subcategory_id === currentFilters.subcategory?.id
-            )
-        }
-
-        if (currentFilters.minPrice !== null) {
-            filtered = filtered.filter(product =>
-                Number(product.price) >= Number(currentFilters.minPrice)
-            )
-        }
-
-        if (currentFilters.maxPrice !== null) {
-            filtered = filtered.filter(product =>
-                Number(product.price) <= Number(currentFilters.maxPrice)
-            )
-        }
-
-        if (currentFilters.brandId !== null) {
-            filtered = filtered.filter(product =>
-                product.brand && product.brand === Number(currentFilters.brandId)
-            )
-        }
-
-        if (currentFilters.paramId !== null && currentFilters.paramValue !== null) {
-            filtered = filtered.filter(product => {
-                return product.parameters?.some(param =>
-                    param.param_id == currentFilters.paramId &&
-                    param.value === currentFilters.paramValue
-                )
-            })
-        }
-
-        if (currentFilters.inStock) {
-            filtered = filtered.filter(product =>
-                product.quantity > 0
-            )
-        }
-
-        setFilteredProducts(filtered)
+    const goToCreateProduct = () => {
+        navigate('/create-product')
     }
 
-    const createNewProduct = () => {
-        navigate('/create-product');
-    }
-
-    if (loading) {
+    if (loading && products.length === 0) {
         return <Loading fullPage={true} />
     }
 
     return (
-    <div className="catalog-page">
-        <div className='catalog-page__title-content'>
-            <h1 className='catalog-page__title'>Товары</h1>
-            <div className='catalog-page__title-right'>
-                <div className='catalog-page__mobile-filter-button'>
-                    <button
-                        onClick={() => setIsMobileFilterOpen(true)}
-                        className={'submit-btn'}
-                    >
-                        <FilterIcon />
-                    </button>
+        <div className="catalog-page">
+            <div className='catalog-page__title-content'>
+                <h1 className='catalog-page__title'>Товары</h1>
+                <div className='catalog-page__title-right'>
+                    <div className='catalog-page__mobile-filter-button'>
+                        <button onClick={() => setIsMobileFilterOpen(true)} className={'submit-btn'}>
+                            <FilterIcon />
+                        </button>
+                    </div>
+                    <div className='catalog-page__title-category'>
+                        <p>{selectedCategoryName}</p>
+                        {selectedSubcategoryName && (<p>-</p>)}
+                        <p>{selectedSubcategoryName}</p>
+                    </div>
                 </div>
-                <div className='catalog-page__title-category'>
-                    <p>{selectedCategoryName && (selectedCategoryName)}</p>
-                    {selectedSubcategoryName && (<p>-</p>)}
-                    <p>{selectedSubcategoryName && (selectedSubcategoryName)}</p>
-                </div>
+                {user?.user_type === 'Manager' && (
+                    <Button text={'Добавить товар'} className={'submit-btn'} onClick={goToCreateProduct}/>
+                )}
             </div>
-            {user?.user_type === 'Manager' && (
-                <Button text={'Добавить товар'} className={'submit-btn'} onClick={createNewProduct}/>
-            )}
-        </div>
-        <div className='catalog-page__content'>
-            <div className="catalog-page__filters-wrapper">
-                <Category
-                    onFilterChange={handleCategoryFilterChange}
-                    categories={categories}
-                />
-                <ProductFilter
-                    onFilterChange={handleFilterChange}
-                    onResetProductFilters={handleResetProductFilters}
-                    selectedCategory={currentFilters.category}
-                    parameters={filterData.params}
-                    brands={filterData.brands}
-                />
-            </div>
-            <main className='catalog-page__main-container'>
-            {filteredProducts.length > 0 ? (
-                <div className="catalog-page__product-list">
-                    <ProductList
-                        className='product-list_one-column'
-                        isCart={false}
-                        products={filteredProducts}
-                        loadingMore={loadingMore}
-                        nextPage={nextPage}
-                        lastProduct={lastProduct}
+            <div className='catalog-page__content'>
+                <div className="catalog-page__filters-wrapper">
+                    <Category
+                        onFilterChange={handleCategoryFilterChange}
+                        categories={categories}
+                    />
+                    <ProductFilter
+                        onFilterChange={handleFilterChange}
+                        selectedCategory={currentFilters.category}
+                        parameters={filterData.params}
+                        brands={filterData.brands}
+                        onResetAll={resetAllFilters}
+                        onApply={applyFilters}
+                        hasAnyFilters={hasAnyFilters}
+                        handleLocalFilterReset={handleLocalFilterReset}
                     />
                 </div>
-            ) : (
-                <h2 className='catalog-page__products-not-found'>Нет результатов</h2>
-            )}
-                {loadingError && <ErrorMessage errorMsg={loadingError}/>}
-            </main>
+                <main className='catalog-page__main-container'>
+                    {products.length > 0 ? (
+                        <div className="catalog-page__product-list">
+                            <ProductList
+                                className='product-list_one-column'
+                                isCart={false}
+                                products={products}
+                                loadingMore={loadingMore}
+                                nextPage={nextPage}
+                                lastProduct={lastProduct}
+                            />
+                        </div>
+                    ) : (
+                        <h2 className='catalog-page__products-not-found'>Нет результатов</h2>
+                    )}
+                    {loadingError && <ErrorMessage errorMsg={loadingError}/>}
+                </main>
+            </div>
+            <FilterSidebar
+                isMobileFilterOpen={isMobileFilterOpen}
+                setIsMobileFilterOpen={setIsMobileFilterOpen}
+                onCategoryChange={handleCategoryFilterChange}
+                categories={categories}
+                onFilterChange={handleFilterChange}
+                onResetAll={resetAllFilters}
+                onApply={applyFilters}
+                selectedCategory={currentFilters.category}
+                parameters={filterData.params}
+                brands={filterData.brands}
+                hasAnyFilters={hasAnyFilters}
+                handleLocalFilterReset={handleLocalFilterReset}
+            />
         </div>
-        <FilterSidebar
-            isMobileFilterOpen={isMobileFilterOpen}
-            setIsMobileFilterOpen={setIsMobileFilterOpen}
-            onCategoryChange={handleCategoryFilterChange}
-            categories={categories}
-            onFilterChange={handleFilterChange}
-            onResetProductFilters={handleResetProductFilters}
-            selectedCategory={currentFilters.category}
-            parameters={filterData.params}
-            brands={filterData.brands}
-        />
-    </div>
-    );
+    )
 }
 
 export default CatalogPage

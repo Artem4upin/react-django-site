@@ -9,28 +9,32 @@ interface IFilterSideBarProps {
     onCategoryChange: (category: ICategory | null, subcategory: ISubcategory | null) => void;
     categories: ICategory[];
     onFilterChange: (key: string, value: string | number | boolean) => void;
-    onResetProductFilters: () => void;
+    onResetAll: () => void;
+    onApply: () => void;
     selectedCategory: ICategory | null;
     parameters: IParameter[];
     brands: IBrand[];
     isMobileFilterOpen: boolean;
     setIsMobileFilterOpen: (isMobileFilterOpen: boolean) => void;
+    hasAnyFilters: boolean;
+    handleLocalFilterReset: () => void;
 }
 
 function FilterSidebar({
-    onCategoryChange,
-    onFilterChange,
-    categories,
-    onResetProductFilters,
-    selectedCategory,
-    parameters,
-    brands,
-    isMobileFilterOpen,
-    setIsMobileFilterOpen,
-    }: IFilterSideBarProps) {
+        onCategoryChange,
+        onFilterChange,
+        categories,
+        onResetAll,
+        onApply,
+        selectedCategory,
+        parameters,
+        brands,
+        isMobileFilterOpen,
+        setIsMobileFilterOpen,
+        hasAnyFilters,
+        handleLocalFilterReset
+                       }: IFilterSideBarProps) {
 
-
-    // Блокирует прокрутку каталога если открыт бар
     useEffect(() => {
         if (isMobileFilterOpen) {
             document.body.style.overflow = 'hidden';
@@ -39,11 +43,11 @@ function FilterSidebar({
         }
         return () => {
             document.body.style.overflow = '';
-        };
-    }, [isMobileFilterOpen]);
+        }
+    }, [isMobileFilterOpen])
 
     const onFilterClose = () => {
-        setIsMobileFilterOpen(false);
+        setIsMobileFilterOpen(false)
     }
 
     return (
@@ -53,11 +57,11 @@ function FilterSidebar({
                     <div className="filter-sidebar__panel" onClick={(e) => e.stopPropagation()}>
                         <div className="filter-sidebar__header">
                             <Button
-                                text="<- Выйти"
+                                text="<- Закрыть"
                                 className="back-btn"
                                 onClick={onFilterClose}
                             />
-                            <h3>Выберите фильтры</h3>
+                            <h3>Фильтры</h3>
                         </div>
                         <div className="filter-sidebar__content">
                             <Category
@@ -66,10 +70,13 @@ function FilterSidebar({
                             />
                             <ProductFilter
                                 onFilterChange={onFilterChange}
-                                onResetProductFilters={onResetProductFilters}
                                 selectedCategory={selectedCategory}
                                 parameters={parameters}
                                 brands={brands}
+                                hasAnyFilters={hasAnyFilters}
+                                onResetAll={onResetAll}
+                                onApply={onApply}
+                                handleLocalFilterReset={handleLocalFilterReset}
                             />
                         </div>
                     </div>
@@ -78,4 +85,5 @@ function FilterSidebar({
         </div>
     )
 }
+
 export default FilterSidebar

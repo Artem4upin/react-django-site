@@ -6,18 +6,24 @@ import {IBrand, ICategory, IParameter} from "../../types/product";
 
 interface ProductFilterProps {
     onFilterChange: (key: string, value: string | number | boolean) => void;
-    onResetProductFilters: () => void;
     selectedCategory: ICategory | null;
     parameters: IParameter[];
     brands: IBrand[];
+    hasAnyFilters: boolean;
+    onResetAll: () => void;
+    onApply: () => void;
+    handleLocalFilterReset: () => void;
 }
 
 function ProductFilter({
         onFilterChange,
-        onResetProductFilters,
         selectedCategory,
         parameters,
         brands,
+        hasAnyFilters,
+        onResetAll,
+        onApply,
+        handleLocalFilterReset
     }: ProductFilterProps) {
 
     const [selectedParamId, setSelectedParamId] = useState<string>('');
@@ -32,29 +38,30 @@ function ProductFilter({
         setSelectedParamId(id);
         onFilterChange('paramId', id);
         onFilterChange('paramValue', '');
-    };
+    }
 
     const handleReset = () => {
         if (minPriceRef.current) minPriceRef.current.value = '';
         if (maxPriceRef.current) maxPriceRef.current.value = '';
         if (brandSelectRef.current) brandSelectRef.current.value = '';
         if (inStockCheckboxRef.current) inStockCheckboxRef.current.checked = true;
-
-        setSelectedParamId('');
-        onResetProductFilters();
+        setSelectedParamId('')
+        handleLocalFilterReset()
     };
 
     const getParamValues = (): string[] => {
         if (!selectedParamId) return [];
         const parameter = parameters.find(p => String(p.id) === selectedParamId);
         return parameter ? parameter.values : [];
-    };
+    }
 
     return (
         <div className="product-filter">
             <header className="product-filter__header">
                 <h3 className="product-filter__title">Фильтры</h3>
-                <Button className="submit-btn" onClick={handleReset} text={'Сбросить фильтры'} />
+                { hasAnyFilters && (
+                <Button className="submit-btn" onClick={handleReset} text={'Сбросить значения'} />
+                )}
             </header>
 
             <div className="product-filter__list">
@@ -112,7 +119,6 @@ function ProductFilter({
                     </div>
                 </div>
 
-                {/* Наличие */}
                 <div className="product-filter__item">
                     <label className="product-filter__checkbox">
                         <input ref={inStockCheckboxRef} type="checkbox" defaultChecked onChange={(e) => onFilterChange('inStock', e.target.checked)} />
@@ -120,8 +126,12 @@ function ProductFilter({
                     </label>
                 </div>
             </div>
+            <div className="product-filter__footer">
+                <Button text="Сбросить все" className="submit-btn" onClick={onResetAll} />
+                <Button text="Применить" className="submit-btn" onClick={onApply} />
+            </div>
         </div>
-    );
+    )
 }
 
-export default ProductFilter;
+export default ProductFilter

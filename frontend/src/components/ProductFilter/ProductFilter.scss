@@ -78,6 +78,16 @@
             color: $secondary-color;
         }
     }
+    &__footer {
+        display: flex;
+        margin: 16px;
+        gap: 10px;
+        justify-content: space-between;
+        & button {
+            font-size: 14px;
+            height: 100%;
+        }
+    }
 }
 
 .product-filter__price-inputs input,
