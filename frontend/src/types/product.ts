@@ -49,3 +49,14 @@ export interface IBrand {
     id: number;
     name: string;
 }
+
+export interface IFilters {
+    category: ICategory | null;
+    subcategory: ISubcategory | null;
+    minPrice: number | null;
+    maxPrice: number | null;
+    brandId: number | null;
+    paramId: number | null;
+    paramValue: string | null;
+    inStock: boolean;
+}

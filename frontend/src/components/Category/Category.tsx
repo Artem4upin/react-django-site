@@ -2,13 +2,11 @@ import { useState } from 'react';
 import './Category.scss';
 import { ICategory, ISubcategory } from "../../types/product";
 import Button from "../UI/Buttons/Button";
+import {useCategories, useHandleCategoryFilterChange} from "../../store/useCatalogStore";
 
-interface ICategoryProps {
-    onFilterChange: (category: ICategory | null, subcategory: ISubcategory | null) => void;
-    categories: ICategory[];
-}
-
-function Category({ onFilterChange, categories }: ICategoryProps) {
+function Category() {
+    const onFilterChange = useHandleCategoryFilterChange();
+    const categories = useCategories();
     const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
     const [selectedSubcategory, setSelectedSubcategory] = useState<ISubcategory | null>(null);
     const [selectedGroups, setSelectedGroups] = useState<number[]>([]);

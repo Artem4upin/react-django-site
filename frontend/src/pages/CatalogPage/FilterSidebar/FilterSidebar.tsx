@@ -1,40 +1,13 @@
 import React, {useEffect} from 'react';
 import Category from "../../../components/Category/Category";
 import ProductFilter from "../../../components/ProductFilter/ProductFilter";
-import {IBrand, ICategory, IParameter, ISubcategory} from "../../../types/product";
 import Button from "../../../components/UI/Buttons/Button";
 import './FilterSidebar.scss'
+import {useIsMobileFilterOpen, useSetIsMobileFilterOpen} from "../../../store/useCatalogStore";
 
-interface IFilterSideBarProps {
-    onCategoryChange: (category: ICategory | null, subcategory: ISubcategory | null) => void;
-    categories: ICategory[];
-    onFilterChange: (key: string, value: string | number | boolean) => void;
-    onResetAll: () => void;
-    onApply: () => void;
-    selectedCategory: ICategory | null;
-    parameters: IParameter[];
-    brands: IBrand[];
-    isMobileFilterOpen: boolean;
-    setIsMobileFilterOpen: (isMobileFilterOpen: boolean) => void;
-    hasAnyFilters: boolean;
-    handleLocalFilterReset: () => void;
-}
-
-function FilterSidebar({
-        onCategoryChange,
-        onFilterChange,
-        categories,
-        onResetAll,
-        onApply,
-        selectedCategory,
-        parameters,
-        brands,
-        isMobileFilterOpen,
-        setIsMobileFilterOpen,
-        hasAnyFilters,
-        handleLocalFilterReset
-                       }: IFilterSideBarProps) {
-
+function FilterSidebar() {
+    const isMobileFilterOpen = useIsMobileFilterOpen();
+    const setIsMobileFilterOpen = useSetIsMobileFilterOpen();
     useEffect(() => {
         if (isMobileFilterOpen) {
             document.body.style.overflow = 'hidden';
@@ -64,20 +37,8 @@ function FilterSidebar({
                             <h3>Фильтры</h3>
                         </div>
                         <div className="filter-sidebar__content">
-                            <Category
-                                onFilterChange={onCategoryChange}
-                                categories={categories}
-                            />
-                            <ProductFilter
-                                onFilterChange={onFilterChange}
-                                selectedCategory={selectedCategory}
-                                parameters={parameters}
-                                brands={brands}
-                                hasAnyFilters={hasAnyFilters}
-                                onResetAll={onResetAll}
-                                onApply={onApply}
-                                handleLocalFilterReset={handleLocalFilterReset}
-                            />
+                            <Category />
+                            <ProductFilter />
                         </div>
                     </div>
                 </div>

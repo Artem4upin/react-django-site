@@ -1,33 +1,26 @@
 import { useState, useRef, ChangeEvent} from 'react';
 import './ProductFilter.scss';
-
 import Button from '../UI/Buttons/Button';
-import {IBrand, ICategory, IParameter} from "../../types/product";
+import {
+    useApplyFilters,
+    useCurrentFilters,
+    useFilterData,
+    useHandleFilterChange, useHandleLocalFilterReset, useHasAnyFilters,
+    useResetAllFilters
+} from "../../store/useCatalogStore";
 
-interface ProductFilterProps {
-    onFilterChange: (key: string, value: string | number | boolean) => void;
-    selectedCategory: ICategory | null;
-    parameters: IParameter[];
-    brands: IBrand[];
-    hasAnyFilters: boolean;
-    onResetAll: () => void;
-    onApply: () => void;
-    handleLocalFilterReset: () => void;
-}
+function ProductFilter() {
 
-function ProductFilter({
-        onFilterChange,
-        selectedCategory,
-        parameters,
-        brands,
-        hasAnyFilters,
-        onResetAll,
-        onApply,
-        handleLocalFilterReset
-    }: ProductFilterProps) {
+    const onFilterChange = useHandleFilterChange();
+    const selectedCategory = useCurrentFilters().category;
+    const parameters = useFilterData().params;
+    const brands = useFilterData().brands;
+    const onResetAll = useResetAllFilters();
+    const onApply = useApplyFilters();
+    const handleLocalFilterReset = useHandleLocalFilterReset();
+    const hasAnyFilters = useHasAnyFilters();
 
     const [selectedParamId, setSelectedParamId] = useState<string>('');
-
     const minPriceRef = useRef<HTMLInputElement>(null);
     const maxPriceRef = useRef<HTMLInputElement>(null);
     const brandSelectRef = useRef<HTMLSelectElement>(null);
