@@ -3,6 +3,8 @@ import './Category.scss';
 import { ICategory, ISubcategory } from "../../types/product";
 import Button from "../UI/Buttons/Button";
 import {useCategories, useHandleCategoryFilterChange} from "../../store/useCatalogStore";
+import ArrowOpenIcon from "../icons/ArrowOpenIcon";
+import ArrowClosedIcon from "../icons/ArrowClosedIcon";
 
 function Category() {
     const onFilterChange = useHandleCategoryFilterChange();
@@ -79,6 +81,12 @@ function Category() {
                             onClick={() => handleGroupClick(group.id)}
                         >
                             <span className="category__group-name">{group.name}</span>
+                            {selectedGroups.includes(group.id) ? (
+                                <ArrowOpenIcon />
+                            ):
+                                <ArrowClosedIcon />
+                            }
+
                         </div>
                         {selectedGroups.includes(group.id) && (
                             <div className="category__group-content">

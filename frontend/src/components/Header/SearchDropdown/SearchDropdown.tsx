@@ -33,8 +33,8 @@ function SearchDropdown({
                             return (
                                 <div key={product.id} className="search-dropdown__item" onClick={handleClick}>
                                     <div className="search-dropdown__item__image-container">
-                                        {product.image_pass ? (
-                                            <img src={product.image_pass} alt={product.name}
+                                        {product.image_path ? (
+                                            <img src={product.image_path} alt={product.name}
                                                  className="search-dropdown__item__image-container__image"/>
                                         ) : (
                                             <p className="search-dropdown__item__image-container__image--no-image">Нет изображения</p>

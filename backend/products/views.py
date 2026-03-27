@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from .models import Category, Product
 from .serializers import *
 from django.contrib.postgres.search import SearchVector
-from .premissions import IsManager
+from .permissions import IsManager
 from rest_framework.pagination import PageNumberPagination
 from backend.config import PRODUCT_PAGE_SIZE
 
@@ -47,8 +47,8 @@ class ProductList(APIView):
                 products = products.filter(quantity__gt=0)
         if param_id and param_value:
             products = products.filter(
-                product_parameters__parameter_id=param_id,
-                product_parameters__value=param_value
+                productparameter__parameter_id=param_id,
+                productparameter__value=param_value
             ).distinct()
 
         pagination = PageNumberPagination()
@@ -71,7 +71,7 @@ class ProductDetail(APIView):
     def patch(self, request, pk):
         product = get_object_or_404(Product, pk=pk)
 
-        allowed_fields = ['name', 'price', 'quantity', 'description']
+        allowed_fields = ['id', 'name', 'price', 'quantity', 'description']
         data = request.data
         
         for field in allowed_fields:
@@ -116,7 +116,7 @@ class BrandList(APIView):
         serializer = BrandSerializer(brands, many=True)
         return Response(serializer.data)
     
-class ParametersView(APIView):
+class Parameters(APIView):
     authentication_classes = []
     permission_classes = []
     
@@ -126,7 +126,7 @@ class ParametersView(APIView):
         parameters = Parameter.objects.all()
         
         for param in parameters:
-            values = Product_parameters.objects.filter(
+            values = ProductParameter.objects.filter(
                 parameter=param
             ).values_list('value', flat=True).distinct()
             
@@ -159,7 +159,7 @@ class ProductCreate(APIView):
             )
             
             if 'image' in request.FILES:
-                product.image_pass = request.FILES['image']
+                product.image_path = request.FILES['image']
                 product.save()
             
             parameters_json = data.get('parameters')
@@ -168,7 +168,7 @@ class ProductCreate(APIView):
                     parameters_data = json.loads(parameters_json)
                     for param_data in parameters_data:
                         if isinstance(param_data, dict) and 'parameter' in param_data and 'value' in param_data:
-                            Product_parameters.objects.create(
+                            ProductParameter.objects.create(
                                 product=product,
                                 parameter_id=param_data['parameter'],
                                 value=param_data['value']
@@ -182,3 +182,12 @@ class ProductCreate(APIView):
         except Exception as e:
             print(f"Общая ошибка создания товара: {e}")
             return Response({"error": str(e)}, status=400)
+
+class ProductReviews(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request, product_id):
+        reviews = Review.objects.filter(product_id=product_id).order_by('-created_at')
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data)

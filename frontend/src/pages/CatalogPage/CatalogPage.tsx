@@ -18,7 +18,7 @@ import {
     useLoadingMore, useLoadMoreProducts, useLoadProducts,
     useNextPage,
     useProducts,
-    useSelectedCategoryName, useSelectedSubcategoryName, useSetIsMobileFilterOpen
+    useSelectedCategoryName, useSelectedSubcategoryName, useSetIsMobileFilterSidebarOpen
 } from "../../store/useCatalogStore";
 
 function CatalogPage() {
@@ -39,7 +39,7 @@ function CatalogPage() {
     const loadProducts = useLoadProducts();
     const loadFilterData = useLoadFilterData();
     const loadMoreProducts = useLoadMoreProducts();
-    const setIsMobileFilterOpen = useSetIsMobileFilterOpen();
+    const setIsMobileFilterOpen = useSetIsMobileFilterSidebarOpen();
 
     useEffect(() => {
         loadFilterData()

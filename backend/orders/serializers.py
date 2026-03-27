@@ -8,7 +8,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class OrderSerializer(serializers.ModelSerializer):
-    orderitem_set = OrderItemSerializer(many=True, read_only=True)
+    order_items = OrderItemSerializer(many=True, read_only=True)
 
     user_id = serializers.IntegerField(source='user.id', read_only=True)
     username = serializers.CharField(source='user.username', read_only=True)
@@ -26,6 +26,6 @@ class OrderSerializer(serializers.ModelSerializer):
             'price_sum',
             'delivery_date',
             'delivery_address',
-            'orderitem_set',
+            'order_items',
             'is_deleted',
         ]

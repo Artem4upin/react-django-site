@@ -24,7 +24,7 @@ function OrderCard({ order }:IOrderCardProps) {
             <p>Дата доставки: <strong>{new Date (order.delivery_date).toLocaleDateString('ru')}</strong></p>
             <p>Итого: <strong>{order.price_sum}₽</strong></p>
             {
-            // <OrderItems orderitem_set = {order.orderitem_set}/>
+            // <OrderItems order_items = {order.order_items}/>
             }
         </div>
     );

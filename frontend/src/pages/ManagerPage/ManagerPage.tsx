@@ -6,6 +6,12 @@ import ModalConfirm from '../../components/modal/ModalConfirm/ModalConfirm';
 import Input from '../../components/UI/Inputs/Input';
 import Button from '../../components/UI/Buttons/Button';
 import {IOrder, TStatusOrder} from "../../types/order";
+import {
+  useEndDate,
+  useOrderNumber,
+  useResetManagerPageFilter, useSetEndDate, useSetOrderNumber, useSetStartDate,
+  useStartDate
+} from "../../store/useManagerPageFilterStore";
 
 interface IPaginatedResponse<T> {
   count: number;
@@ -14,7 +20,7 @@ interface IPaginatedResponse<T> {
   results: T[];
 }
 
-interface IFetchParams {
+interface ILoadOrdersParams {
   start_date: string;
   end_date: string;
   order_number?: string;
@@ -23,36 +29,40 @@ interface IFetchParams {
 function ManagerPage() {
   const [orders, setOrders] = useState<IOrder[]>([])
   const [loading, setLoading] = useState(true)
-  const [showModal, setShowModal] = useState(false)
+  const [showModalChangeStatus, setShowModalChangeStatus] = useState(false)
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null)
   const [selectedNewStatus, setSelectedNewStatus] = useState<TStatusOrder | ''>('')
 
-  const today = new Date().toISOString().split('T')[0]
-  const [startDate, setStartDate] = useState<string>(today)
-  const [endDate, setEndDate] = useState<string>(today)
-  const [orderNumberFilter, setOrderNumberFilter] = useState('')
+  const startDate = useStartDate();
+  const endDate = useEndDate();
+  const orderNumber = useOrderNumber();
+  const setStartDate = useSetStartDate();
+  const setEndDate = useSetEndDate();
+  const setOrderNumber = useSetOrderNumber();
+
+  const resetManagerPageFilter = useResetManagerPageFilter()
 
   const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
   const [prevPageUrl, setPrevPageUrl] = useState<string | null>(null);
-  const [totalCount, setTotalCount] = useState(0);
+  const [totalOrdersCount, setTotalOrdersCount] = useState(0);
 
   useEffect(() => {
-    fetchFilteredOrders()
+    loadFilteredOrders()
   }, [])
 
-  const fetchFilteredOrders = async (url: string | null = null) => {
+  const loadFilteredOrders = async (url: string | null = null) => {
     setLoading(true)
     try {
       let response;
       if (url) {
         response = await api.get<IPaginatedResponse<IOrder>>(url);
       } else {
-        const params: IFetchParams = {
+        const params: ILoadOrdersParams = {
           start_date: startDate,
           end_date: endDate,
         }
-        if (orderNumberFilter) {
-          params.order_number = orderNumberFilter
+        if (orderNumber) {
+          params.order_number = orderNumber
         }
         response = await api.get<IPaginatedResponse<IOrder>>('/orders/manager-orders/', { params })
       }
@@ -60,7 +70,7 @@ function ManagerPage() {
       setOrders(response.data.results);
       setNextPageUrl(response.data.next);
       setPrevPageUrl(response.data.previous);
-      setTotalCount(response.data.count);
+      setTotalOrdersCount(response.data.count);
     } catch (error: any) {
       console.error('Ошибка загрузки заказов:', error)
       alert('Ошибка загрузки заказов: ' + (error.response?.data?.error || error.message))
@@ -70,37 +80,35 @@ function ManagerPage() {
   }
 
   const applyFilter = () => {
-    fetchFilteredOrders()
+    loadFilteredOrders()
   }
 
-  const resetToToday = () => {
-    setStartDate(today)
-    setEndDate(today)
-    setOrderNumberFilter('')
-    fetchFilteredOrders()
+  const resetFilter = () => {
+    resetManagerPageFilter()
+    loadFilteredOrders()
   }
 
   const handleStatusChangeClick = (orderId: number, newStatus: TStatusOrder) => {
     setSelectedOrderId(orderId)
     setSelectedNewStatus(newStatus)
-    setShowModal(true)
+    setShowModalChangeStatus(true)
   }
 
-  const confirmStatusChange = async () => {
+  const changeOrderStatus = async () => {
     try {
       await api.patch(`/orders/manager-orders/${selectedOrderId}/`, {
         status: selectedNewStatus
       })
-      fetchFilteredOrders()
-      setShowModal(false)
+      loadFilteredOrders()
+      setShowModalChangeStatus(false)
     } catch (error: any) {
       alert('Ошибка обновления статуса: ' + (error.response?.data?.error || error.message))
-      setShowModal(false)
+      setShowModalChangeStatus(false)
     }
   }
 
-  const cancelStatusChange = () => {
-    setShowModal(false)
+  const cancelChangeStatus = () => {
+    setShowModalChangeStatus(false)
   }
 
   if (loading) {
@@ -113,7 +121,7 @@ function ManagerPage() {
 
         <div className="manager-page__sum-container">
           <div className="manager-page__sum-container__order-sum">
-            <h3>Всего заказов: {totalCount}</h3>
+            <h3>Всего заказов: {totalOrdersCount}</h3>
           </div>
         </div>
 
@@ -146,8 +154,8 @@ function ManagerPage() {
               <p className="manager-page__filter-container__filter-block__label-text">Номер заказа</p>
               <Input
                   type='text'
-                  value={orderNumberFilter}
-                  onChange={(e) => setOrderNumberFilter(e.target.value)}
+                  value={orderNumber}
+                  onChange={(e) => setOrderNumber(e.target.value)}
                   placeholder="Поиск по номеру заказа"
               />
             </div>
@@ -155,7 +163,7 @@ function ManagerPage() {
 
           <div className='manager-page__filter-container__buttons'>
             <Button text={'Применить'} className={'btn'} onClick={applyFilter} />
-            <Button text={'Сбросить'} className={'btn'} onClick={resetToToday} />
+            <Button text={'Сбросить'} className={'btn'} onClick={resetFilter} />
           </div>
         </div>
 
@@ -194,18 +202,18 @@ function ManagerPage() {
                         </div>
                         <div>
                           <span>Товаров: </span>
-                          <span>{order.orderitem_set?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0} шт.</span>
+                          <span>{order.order_items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0} шт.</span>
                         </div>
                         <div>
                           <span>Адрес: </span>
                           <span>{order.delivery_address}</span>
                         </div>
                       </div>
-                      {order.orderitem_set && order.orderitem_set.length > 0 && (
+                      {order.order_items && order.order_items.length > 0 && (
                           <div className="manager-page__orders__card__items">
                             <h4>Товары:</h4>
                             <ul>
-                              {order.orderitem_set.map(item => (
+                              {order.order_items.map(item => (
                                   <li key={item.id}>
                                     <span>{item.product_name}</span>
                                     <span>{item.quantity} шт.</span>
@@ -223,13 +231,13 @@ function ManagerPage() {
                   <div className="manager-page__pagination-buttons">
                     <Button
                         text="<"
-                        onClick={() => fetchFilteredOrders(prevPageUrl)}
+                        onClick={() => loadFilteredOrders(prevPageUrl)}
                         disabled={!prevPageUrl}
                         className="btn"
                     />
                     <Button
                         text=">"
-                        onClick={() => fetchFilteredOrders(nextPageUrl)}
+                        onClick={() => loadFilteredOrders(nextPageUrl)}
                         disabled={!nextPageUrl}
                         className="btn"
                     />
@@ -238,14 +246,14 @@ function ManagerPage() {
             </>
         )}
         <ModalConfirm
-            showModal={showModal}
-            setShowModal={setShowModal}
-            onConfirm={confirmStatusChange}
-            onCancel={cancelStatusChange}
+            showModal={showModalChangeStatus}
+            setShowModal={setShowModalChangeStatus}
+            onConfirm={changeOrderStatus}
+            onCancel={cancelChangeStatus}
             newStatus={selectedNewStatus}
         />
       </main>
   )
-  }
+}
 
 export default ManagerPage

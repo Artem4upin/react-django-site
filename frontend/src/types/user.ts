@@ -9,3 +9,8 @@ export interface IUser {
 }
 
 export type TUserType = "User" | "Admin" | "Manager"
+
+export interface IUserShort {
+    id: number;
+    username: string;
+}

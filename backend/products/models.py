@@ -1,5 +1,5 @@
-from datetime import date
 from django.db import models
+from users.models import User
 
 class CategoryGroup(models.Model):
     name = models.CharField(max_length=50)
@@ -34,7 +34,7 @@ class Product(models.Model):
     subcategory = models.ForeignKey(Subcategory, on_delete=models.PROTECT, null=True, blank=True)
     description = models.TextField(blank=True)
     creation_date = models.DateTimeField(auto_now_add=True)
-    image_pass = models.ImageField(upload_to='images/', blank=True)
+    image_path = models.ImageField(upload_to='images/', blank=True)
     
     def __str__(self):
         return self.name
@@ -47,11 +47,33 @@ class Parameter(models.Model):
     def __str__(self):
         return f"{self.category.name}: {self.name}"
  
-class Product_parameters(models.Model):
+class ProductParameter(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     parameter = models.ForeignKey(Parameter, on_delete=models.CASCADE, null=True)
-    value = models.CharField(max_length=50, default='')
+    value = models.CharField(max_length=500, default='')
 
 
     def __str__(self):
         return f"{self.product.name} - {self.parameter.name}: {self.value}"
+
+class Review(models.Model):
+
+    RATING_CHOICES = [
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+    ]
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField(choices=RATING_CHOICES)
+    comment = models.TextField(max_length=500,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['user', 'product']
+
+    def __str__(self):
+        return f'{self.user} - {self.product.name}'

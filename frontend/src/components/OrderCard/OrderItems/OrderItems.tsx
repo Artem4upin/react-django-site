@@ -3,15 +3,15 @@ import './OrderItems.scss'
 import {IOrderItemSet} from "../../../types/order";
 
 interface IOrderItemProps {
-    orderitem_set: IOrderItemSet[];
+    order_items: IOrderItemSet[];
 }
 
-function OrderItems ({orderitem_set}:IOrderItemProps) {
+function OrderItems ({order_items}:IOrderItemProps) {
     return(
 
     <div className="order-items">
-                <h4>Товары {orderitem_set?.length || 0}:</h4>
-                {orderitem_set?.map(item => (
+                <h4>Товары {order_items?.length || 0}:</h4>
+                {order_items?.map(item => (
                     <div key={item.id} className="order-items__item">
                         <p>{item.product_name} {item.quantity} шт. {item.product_price}₽</p>
                     </div>

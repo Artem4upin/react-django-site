@@ -1,3 +1,5 @@
+import {IUserShort} from "./user";
+
 export interface IParameter {
     id: number;
     name: string;
@@ -24,7 +26,7 @@ export interface IProduct {
     category_id?: number;
     subcategory_id?: number;
     creation_date?: string | Date;
-    image_pass?: string;
+    image_path?: string;
     parameters?: IProductParameter[];
 }
 
@@ -59,4 +61,15 @@ export interface IFilters {
     paramId: number | null;
     paramValue: string | null;
     inStock: boolean;
+}
+
+type TRating = 1 | 2 | 3 | 4 | 5;
+
+export interface IReview {
+    id: number;
+    product: number;
+    user: IUserShort;
+    rating: TRating;
+    comment: string;
+    created_at: string;
 }

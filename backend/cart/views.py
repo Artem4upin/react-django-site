@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .models import Cart_item
+from .models import CartItem
 from .serializers import CartItemSerializer
 
 class CartItems(APIView):
@@ -12,14 +12,14 @@ class CartItems(APIView):
     
     def get(self, request, pk=None):
         if pk is not None:
-            cart_item = get_object_or_404(Cart_item, id=pk, user=request.user)
-            serializer = CartItemSerializer(cart_item, context={'request': request})
+            cartItem = get_object_or_404(CartItem, id=pk, user=request.user)
+            serializer = CartItemSerializer(cartItem, context={'request': request})
             return Response(serializer.data)
         else:
-            orders = Cart_item.objects.filter(user=request.user)
+            orders = CartItem.objects.filter(user=request.user)
             serializer = CartItemSerializer(orders, many=True, context={'request': request})
             return Response(serializer.data)
-    
+
     def post(self, request):
         serializer = CartItemSerializer(data=request.data)
         if serializer.is_valid():
@@ -27,10 +27,11 @@ class CartItems(APIView):
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
 
+
     def delete(self, request, pk=None):
         try:
-            cart_item = Cart_item.objects.get(id=pk, user=request.user)
-            cart_item.delete()
+            cartItem = CartItem.objects.get(id=pk, user=request.user)
+            cartItem.delete()
             return Response({'success': True, 'message': 'Товар удален из корзины'}, status=200)
-        except Cart_item.DoesNotExist:
+        except CartItem.DoesNotExist:
             return Response({'error': 'Товар не найден в корзине'}, status=404)

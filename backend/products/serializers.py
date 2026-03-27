@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from users.serializers import UserSerializer
 
 class ProductSerializer(serializers.ModelSerializer):
     parameters = serializers.SerializerMethodField()
@@ -7,10 +8,10 @@ class ProductSerializer(serializers.ModelSerializer):
     subcategory_id = serializers.IntegerField(source='subcategory.id', read_only=True)
     class Meta:
         model = Product
-        fields = ['id', 'name', 'price', 'quantity', 'brand', 'description', 'creation_date', 'parameters', 'category_id', 'subcategory_id', 'image_pass']
+        fields = ['id', 'name', 'price', 'quantity', 'brand', 'description', 'creation_date', 'parameters', 'category_id', 'subcategory_id', 'image_path']
 
     def get_parameters(self, product_obj):
-        product_params = Product_parameters.objects.filter(product=product_obj)
+        product_params = ProductParameter.objects.filter(product=product_obj)
 
         result = []
         for i in product_params:
@@ -49,3 +50,10 @@ class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
         fields = ['id', 'name']
+
+class ReviewSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Review
+        fields = ['id', 'product', 'user', 'rating', 'comment', 'created_at']

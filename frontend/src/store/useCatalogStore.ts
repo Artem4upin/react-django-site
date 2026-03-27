@@ -19,7 +19,7 @@ interface IInitialState {
     selectedCategoryName: string;
     selectedSubcategoryName: string;
     categories: ICategory[];
-    isMobileFilterOpen: boolean;
+    isMobileFilterSidebarOpen: boolean;
     filterData: {brands: IBrand[], params: IParameter[]}
     currentFilters: IFilters;
     appliedFilters: IFilters;
@@ -34,7 +34,7 @@ interface IActions {
     setSelectedCategoryName: (name: string) => void;
     setSelectedSubcategoryName: (name: string) => void;
     setCategories: (categories: ICategory[]) => void;
-    setIsMobileFilterOpen: (isMobileFilterOpen: boolean) => void;
+    setIsMobileFilterSidebarOpen: (isMobileFilterOpen: boolean) => void;
     setFilterData: (filterData: {brands: IBrand[], params: IParameter[]}) => void;
     setCurrentFilters: (currentFilters: IFilters) => void;
     setAppliedFilters: (appliedFilters: IFilters) => void;
@@ -60,7 +60,7 @@ export const useCatalogStore = create<ICatalogStore> ((set, get) => ({
     selectedCategoryName: '',
     selectedSubcategoryName: '',
     categories: [],
-    isMobileFilterOpen: false,
+    isMobileFilterSidebarOpen: false,
     filterData: {brands: [], params: []},
     currentFilters: defaultFilters,
     appliedFilters: defaultFilters,
@@ -73,7 +73,7 @@ export const useCatalogStore = create<ICatalogStore> ((set, get) => ({
     setSelectedCategoryName: (name) => set({selectedCategoryName: name}),
     setSelectedSubcategoryName: (name) => set({selectedSubcategoryName: name}),
     setCategories: (categories) => set({categories}),
-    setIsMobileFilterOpen: (isMobileFilterOpen) => set({isMobileFilterOpen}),
+    setIsMobileFilterSidebarOpen: (isMobileFilterSidebarOpen) => set({isMobileFilterSidebarOpen: isMobileFilterSidebarOpen}),
     setFilterData: (filterData) => set({filterData}),
     setCurrentFilters: (currentFilters) => set({currentFilters}),
     setAppliedFilters: (appliedFilters) => set({appliedFilters}),
@@ -154,7 +154,7 @@ export const useCatalogStore = create<ICatalogStore> ((set, get) => ({
         const {currentFilters, loadProducts} = get()
         set((state) => ({
             appliedFilters: state.currentFilters,
-            isMobileFilterOpen: false,
+            isMobileFilterSidebarOpen: false,
         }))
         loadProducts(1, currentFilters)
     },
@@ -165,7 +165,7 @@ export const useCatalogStore = create<ICatalogStore> ((set, get) => ({
             appliedFilters: {...defaultFilters},
             selectedCategoryName: '',
             selectedSubcategoryName: '',
-            isMobileFilterOpen: false
+            isMobileFilterSidebarOpen: false
         })
          loadProducts(1, defaultFilters)
     },
@@ -246,7 +246,7 @@ export const useCatalogStore = create<ICatalogStore> ((set, get) => ({
 export const useSelectedCategoryName = () => useCatalogStore((state) => state.selectedCategoryName);
 export const useSelectedSubcategoryName = () => useCatalogStore((state) => state.selectedSubcategoryName);
 export const useCategories = () => useCatalogStore((state) => state.categories);
-export const useIsMobileFilterOpen = () => useCatalogStore((state) => state.isMobileFilterOpen);
+export const useIsMobileFilterSidebarOpen = () => useCatalogStore((state) => state.isMobileFilterSidebarOpen);
 export const useFilterData = () => useCatalogStore((state) => state.filterData);
 export const useCurrentFilters = () => useCatalogStore((state) => state.currentFilters);
 export const useLoading = () => useCatalogStore((state) => state.loading);
@@ -260,7 +260,7 @@ export const useHandleFilterChange = () => useCatalogStore((state) => state.hand
 export const useApplyFilters = () => useCatalogStore((state) => state.applyFilters);
 export const useResetAllFilters =  () => useCatalogStore((state) => state.resetAllFilters);
 export const useHandleLocalFilterReset = () => useCatalogStore((state) => state.handleLocalFilterReset);
-export const useSetIsMobileFilterOpen = () => useCatalogStore((state) => state.setIsMobileFilterOpen);
+export const useSetIsMobileFilterSidebarOpen = () => useCatalogStore((state) => state.setIsMobileFilterSidebarOpen);
 export const useLoadFilterData = () => useCatalogStore((state) => state.loadFilterData);
 export const useLoadProducts = () => useCatalogStore((state) => state.loadProducts);
 export const useLoadMoreProducts = () => useCatalogStore((state) => state.loadMoreProducts);

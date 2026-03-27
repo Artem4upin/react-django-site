@@ -42,3 +42,5 @@ export const calculateTotalPrice = (items: ICartItem[]) => {
         return sum + (item.product_price * (item.quantity || 1))
     }, 0).toFixed(2)
 }
+
+export const today = new Date().toISOString().split('T')[0]

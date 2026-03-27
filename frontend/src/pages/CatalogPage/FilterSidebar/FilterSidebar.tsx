@@ -1,13 +1,15 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Category from "../../../components/Category/Category";
 import ProductFilter from "../../../components/ProductFilter/ProductFilter";
-import Button from "../../../components/UI/Buttons/Button";
 import './FilterSidebar.scss'
-import {useIsMobileFilterOpen, useSetIsMobileFilterOpen} from "../../../store/useCatalogStore";
+import {useIsMobileFilterSidebarOpen, useSetIsMobileFilterSidebarOpen} from "../../../store/useCatalogStore";
+import ArrowLeftIcon from "../../../components/icons/ArrowLeftIcon";
 
 function FilterSidebar() {
-    const isMobileFilterOpen = useIsMobileFilterOpen();
-    const setIsMobileFilterOpen = useSetIsMobileFilterOpen();
+    const isMobileFilterOpen = useIsMobileFilterSidebarOpen();
+    const setIsMobileFilterOpen = useSetIsMobileFilterSidebarOpen();
+    const [isClosing, setIsClosing] = useState(false);
+
     useEffect(() => {
         if (isMobileFilterOpen) {
             document.body.style.overflow = 'hidden';
@@ -20,20 +22,23 @@ function FilterSidebar() {
     }, [isMobileFilterOpen])
 
     const onFilterClose = () => {
-        setIsMobileFilterOpen(false)
+        setIsClosing(true);
+        setTimeout(() => {
+            setIsMobileFilterOpen(false)
+            setIsClosing(false);
+        }, 350)
     }
+
+    if (!isMobileFilterOpen && !isClosing) return null;
 
     return (
         <div className="filter-sidebar">
-            {isMobileFilterOpen && (
-                <div className="filter-sidebar__overlay" onClick={onFilterClose}>
-                    <div className="filter-sidebar__panel" onClick={(e) => e.stopPropagation()}>
+                <div className={`filter-sidebar__overlay ${isClosing ? 'filter-sidebar__overlay--closing' : ''}`} onClick={onFilterClose}>
+                    <div className={`filter-sidebar__panel ${isClosing ? 'filter-sidebar__panel--closing' : ''}`} onClick={(e) => e.stopPropagation()}>
                         <div className="filter-sidebar__header">
-                            <Button
-                                text="<- Закрыть"
-                                className="back-btn"
-                                onClick={onFilterClose}
-                            />
+                            <button className={'back-btn'} onClick={onFilterClose}>
+                                <ArrowLeftIcon />
+                            </button>
                             <h3>Фильтры</h3>
                         </div>
                         <div className="filter-sidebar__content">
@@ -42,7 +47,6 @@ function FilterSidebar() {
                         </div>
                     </div>
                 </div>
-            )}
         </div>
     )
 }

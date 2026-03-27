@@ -14,7 +14,7 @@ export interface IOrder {
     id: number;
     is_deleted: boolean;
     order_number: string;
-    orderitem_set: IOrderItemSet[]
+    order_items: IOrderItemSet[]
     price_sum: number;
     status: TStatusOrder;
     user_id: number;

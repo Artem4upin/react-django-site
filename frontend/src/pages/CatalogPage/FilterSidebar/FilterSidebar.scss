@@ -10,6 +10,9 @@
     display: flex;
     justify-content: flex-start;
     animation: fadeIn 0.35s ease;
+    &--closing {
+      animation: fadeOut 0.35s forwards;
+    }
   }
 
   &__panel {
@@ -21,6 +24,9 @@
     display: flex;
     flex-direction: column;
     animation: slideIn 0.35s ease;
+    &--closing {
+      animation: slideOut 0.35s forwards;
+    }
   }
 
   &__header {
@@ -41,12 +47,11 @@
       font-size: 20px;
       cursor: pointer;
       padding: 0;
-      margin: 0
+      margin: 0;
+      color: $secondary-text-color;
     }
   }
-
   &__content {
-    flex: 1;
     padding: 16px;
   }
 }
@@ -66,5 +71,22 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }

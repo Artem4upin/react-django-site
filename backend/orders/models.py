@@ -44,7 +44,7 @@ class Order(SoftDeleteModel):
         super().save(*args, **kwargs)
 
     def calculate_total(self):
-        items = self.orderitem_set.all()
+        items = self.order_items.all()
         total = sum(item.product_price * item.quantity for item in items)
         self.price_sum = total
 
@@ -53,7 +53,7 @@ class Order(SoftDeleteModel):
     
         
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
     product_name = models.CharField(max_length=100, blank=True)
     product_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True)

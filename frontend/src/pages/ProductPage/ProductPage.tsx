@@ -7,26 +7,28 @@ import Loading from '../../components/UI/Loading/Loading';
 import Input from '../../components/UI/Inputs/Input';
 import { addToCart } from '../../utils/functions';
 import { AuthContext } from '../../hooks/AuthContext';
-import {IProduct} from "../../types/product";
+import {IProduct, IReview} from "../../types/product";
+import ProductReviewList from "../../components/ProductReviewList/ProductReviewList";
 
 function ProductPage() {
     const { id } = useParams()
     const navigate = useNavigate()
-    
+
     const { user } = useContext(AuthContext)
-    const [product, setProduct] = useState<IProduct | null>(null)
+    const [product, setProduct] = useState<IProduct>()
     const [quantity, setQuantity] = useState(1)
     const [loading, setLoading] = useState(true)
     const [isEdit, setIsEdit] = useState(false)
     const [isSaving, setIsSaving] = useState(false)
-    
+    const [reviews, setReviews] = useState<IReview[]>([])
+
     const [editName, setEditName] = useState('')
     const [editPrice, setEditPrice] = useState(0)
     const [editQuantity, setEditQuantity] = useState(0)
     const [editDescription, setEditDescription] = useState('')
 
     useEffect(() => {
-        loadProduct()
+        if (id) loadProduct();
     }, [id])
 
     useEffect(() => {
@@ -42,13 +44,26 @@ function ProductPage() {
         try {
             const response = await api.get<IProduct>(`/products/${id}/`)
             setProduct(response.data)
+            await loadReviews(response.data.id);
         } catch (error) {
             console.error('Ошибка загрузки товара:', error)
         } finally {
             setLoading(false)
-            
+
         }
     };
+
+    const loadReviews = async (productId: number) => {
+        try {
+            const response = await api.get<IReview[]>(`/products/reviews/${productId}`)
+            setReviews(response.data)
+            console.log(response.data)
+        } catch (error) {
+            console.log("Ошибка загрузки отзывов", error)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     const switchEdit = () => {
         setIsEdit(!isEdit)
@@ -117,9 +132,9 @@ function ProductPage() {
             {!isEdit? (
             <div className="product-page__content">
                 <div className="product-page__image-container">
-                    {product.image_pass ? (
+                    {product.image_path ? (
                         <img 
-                            src={product.image_pass} 
+                            src={product.image_path}
                             alt={product.name}
                             className="product-page__image-container__image"
                         />
@@ -242,8 +257,8 @@ function ProductPage() {
                 {user && user.user_type === 'Manager' && !isEdit && (
                     <div className='product-page__manager-buttons'>
                         <Button text={'Редактировать товар'} className={'submit-btn'} onClick={switchEdit}/>
-                    </div>
-            )}
+                    </div>)}
+            <ProductReviewList reviews={reviews}/>
             </div>
     )
 }

@@ -3,11 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from django.db.models import Q
 from datetime import datetime, date
-from .premissions import IsManager
+from .permissions import IsManager
 from .models import Order, OrderItem
-from cart.models import Cart_item
+from cart.models import CartItem
 from .serializers import OrderSerializer
 from rest_framework.pagination import PageNumberPagination
 from backend.config import PRODUCT_PAGE_SIZE
@@ -17,7 +16,7 @@ class UserOrders(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        orders = Order.objects.filter(user=request.user).prefetch_related('orderitem_set')
+        orders = Order.objects.filter(user=request.user).prefetch_related('order_items')
         serializer = OrderSerializer(orders, many=True)
 
         return Response(serializer.data)
@@ -44,7 +43,7 @@ class UserOrders(APIView):
             status='Created'
         )
         
-        cart_items = Cart_item.objects.filter(
+        cart_items = CartItem.objects.filter(
             id__in=cart_items_id,
             user=request.user
         )
@@ -85,7 +84,7 @@ class ManagerOrders(APIView):
             order_number = request.GET.get('order_number')
             
             orders = Order.objects.filter(is_deleted=False)\
-                                 .prefetch_related('orderitem_set')\
+                                 .prefetch_related('order_items')\
                                  .select_related('user')\
                                  .order_by('-created_at')
             
@@ -146,7 +145,7 @@ class ManagerOrders(APIView):
         order.save()
         
         if new_status == 'Completed':
-            for item in order.orderitem_set.all():
+            for item in order.order_items.all():
                  if item.product:
                     item.product.quantity -= item.quantity
                     item.product.save()
