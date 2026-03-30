@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import {today} from "../utils/functions";
+import {Today} from "../utils/functions";
 
 interface IInitialState {
     startDate: string,
@@ -18,8 +18,8 @@ interface IActions {
 interface IManagerPageFilterStore extends IInitialState, IActions {}
 
 export const useManagerPageFilterStore = create<IManagerPageFilterStore>((set, get) => ({
-    startDate: today,
-    endDate: today,
+    startDate: Today,
+    endDate: Today,
     orderNumber: '',
 
     setStartDate: (date) => set({startDate: date}),
@@ -27,8 +27,8 @@ export const useManagerPageFilterStore = create<IManagerPageFilterStore>((set, g
     setOrderNumber: (order) => set({orderNumber: order}),
 
     resetManagerPageFilters: () => set({
-        startDate: today,
-        endDate: today,
+        startDate: Today,
+        endDate: Today,
         orderNumber: ''}),
 }))
 

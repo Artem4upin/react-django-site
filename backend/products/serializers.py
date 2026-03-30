@@ -8,7 +8,20 @@ class ProductSerializer(serializers.ModelSerializer):
     subcategory_id = serializers.IntegerField(source='subcategory.id', read_only=True)
     class Meta:
         model = Product
-        fields = ['id', 'name', 'price', 'quantity', 'brand', 'description', 'creation_date', 'parameters', 'category_id', 'subcategory_id', 'image_path']
+        fields = [
+            'id',
+            'name',
+            'price',
+            'quantity',
+            'brand',
+            'description',
+            'creation_date',
+            'parameters',
+            'category_id',
+            'subcategory_id',
+            'image_path',
+            'rating_avg'
+        ]
 
     def get_parameters(self, product_obj):
         product_params = ProductParameter.objects.filter(product=product_obj)
@@ -56,4 +69,11 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ['id', 'product', 'user', 'rating', 'comment', 'created_at']
+        fields = ['id',
+                  'product',
+                  'user',
+                  'rating',
+                  'comment',
+                  'created_at',
+                  'image_path'
+                  ]

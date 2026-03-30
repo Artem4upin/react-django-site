@@ -75,4 +75,9 @@
         flex-direction: column;
         gap: 10px;
     }
+    @media (max-width: $desktop-sm) {
+        &__group-name {
+            font-size: 14px;
+        }
+    }
 }

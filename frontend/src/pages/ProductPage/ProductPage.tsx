@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Rating } from '@mui/material';
 import { api } from '../../api';
 import './ProductPage.scss';
 import Button from '../../components/UI/Buttons/Button';
@@ -143,6 +144,8 @@ function ProductPage() {
                     )}
                 </div>
                 <div className="product-page__info">
+                    <p className="product-page__info-rating">{product.rating_avg}</p>
+                    <Rating size='large' value={product.rating_avg} readOnly/>
                     <h3>{product.name}</h3>
                     <div className="product-page__info__price">Цена: <strong>{product.price} ₽</strong></div>
                     
@@ -258,7 +261,8 @@ function ProductPage() {
                     <div className='product-page__manager-buttons'>
                         <Button text={'Редактировать товар'} className={'submit-btn'} onClick={switchEdit}/>
                     </div>)}
-            <ProductReviewList reviews={reviews}/>
+
+            <ProductReviewList reviews={reviews} productId={product.id} />
             </div>
     )
 }

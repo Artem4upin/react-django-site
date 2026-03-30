@@ -28,6 +28,7 @@ export interface IProduct {
     creation_date?: string | Date;
     image_path?: string;
     parameters?: IProductParameter[];
+    rating_avg: number;
 }
 
 export interface ICategoryGroup {
@@ -63,7 +64,7 @@ export interface IFilters {
     inStock: boolean;
 }
 
-type TRating = 1 | 2 | 3 | 4 | 5;
+export type TRating = 1 | 2 | 3 | 4 | 5 | null;
 
 export interface IReview {
     id: number;
@@ -72,4 +73,5 @@ export interface IReview {
     rating: TRating;
     comment: string;
     created_at: string;
+    image_path?: string;
 }

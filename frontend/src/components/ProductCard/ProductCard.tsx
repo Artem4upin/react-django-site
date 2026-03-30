@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
 import {IProduct} from "../../types/product";
 import {AuthContext} from "../../hooks/AuthContext";
+import { Rating } from '@mui/material';
 
 interface ProductCardProps {
     data: IProduct | ICartItem;
@@ -28,6 +29,7 @@ function ProductCard({
     const image = isCart ? (data as ICartItem).image_path : (data as IProduct).image_path;
     const quantity = isCart ? (data as ICartItem).quantity : undefined;
     const parameters = !isCart ? (data as IProduct).parameters : undefined;
+    const rating = isCart ? (0) : (data as IProduct).rating_avg;
 
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
@@ -62,9 +64,17 @@ function ProductCard({
             </div>
 
             <div className="product-card__info-container">
-                <h3 className="product-card__title" onClick={handleProductClick}>
-                    {name}
-                </h3>
+                <div className="product-card__info-container__title-container">
+                    <h3 className="product-card__info-container__title-container__title" onClick={handleProductClick}>
+                        {name}
+                    </h3>
+                    {!isCart && (
+                        <div className="product-card__info-container__title-container__rating">
+                            <p>{rating}</p>
+                            <Rating size='medium' readOnly value={rating} />
+                        </div>
+                    )}
+                </div>
                 <p className="product-card__price">{price} ₽</p>
 
                 <div className="product-card__parameters">

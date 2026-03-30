@@ -43,4 +43,4 @@ export const calculateTotalPrice = (items: ICartItem[]) => {
     }, 0).toFixed(2)
 }
 
-export const today = new Date().toISOString().split('T')[0]
+export const Today = new Date().toLocaleDateString("ru-RU", {})

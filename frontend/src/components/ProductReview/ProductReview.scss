@@ -1,6 +1,4 @@
 .product-review {
-  justify-self: center;
-  width: 80%;
   border: 1px $border-main-color solid;
   &__content {
     &__header {
@@ -23,7 +21,4 @@
     }
   }
   margin-bottom: 10px;
-  @media (max-width: $tablet) {
-    width: 100%;
-  }
 }

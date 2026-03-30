@@ -1,8 +1,12 @@
 import json
+from django.template.context_processors import request
+from django.template.defaulttags import comment
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response  
-from .models import Category, Product
+from .models import Category, Product, Review
 from .serializers import *
 from django.contrib.postgres.search import SearchVector
 from .permissions import IsManager
@@ -184,10 +188,53 @@ class ProductCreate(APIView):
             return Response({"error": str(e)}, status=400)
 
 class ProductReviews(APIView):
-    authentication_classes = []
-    permission_classes = []
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request, product_id):
+
+        if not product_id:
+            return Response({'error': 'Не указан id товара'}, status=400)
+
         reviews = Review.objects.filter(product_id=product_id).order_by('-created_at')
-        serializer = ReviewSerializer(reviews, many=True)
+        serializer = ReviewSerializer(reviews, many=True, context={'request': request})
         return Response(serializer.data)
+
+    def post (self, request, product_id):
+
+        if not request.user.is_authenticated:
+            return Response({"error": "Необходимо войти в аккаунт"}, status=401)
+
+        product = get_object_or_404(Product, id=product_id)
+
+        is_not_first_review = Review.objects.filter(
+            product=product,
+            user=request.user
+        ).first()
+
+        if is_not_first_review:
+            return Response({"error": "Вы уже оставили отзыв на этот товар"},status=400)
+
+        rating = request.data.get('rating')
+        comment = request.data.get('comment', '')
+        image_path = request.FILES.get('image_path')
+
+        if image_path:
+            if image_path.size > 2 * 1024 * 1024:
+                return Response({"error": "Размер изображения не должен привышать 2MB"}, status=400)
+
+        if not rating:
+            return Response({"error": "Не указан рейтинг товара"}, status=400)
+
+        review = Review.objects.create(
+            product=product,
+            user=request.user,
+            rating=rating,
+            comment=comment,
+            image_path=image_path
+        )
+
+        product.update_rating()
+
+        serializer = ReviewSerializer(review)
+        return Response(serializer.data, status=201)

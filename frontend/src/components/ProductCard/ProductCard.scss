@@ -22,13 +22,31 @@
   &__info-container {
     flex: 1;
     min-width: 100px;
+    &__title-container {
+      display: flex;
+      justify-content: space-between;
+      &__title {
+        cursor: pointer;
+      }
+      &__title:hover {
+        color: $link-color;
+      }
+      &__rating {
+        display: flex;
+        gap: 10px;
+      }
+      @media (max-width: $tablet) {
+      display: block;
+        &__title {
+          font-size: 14px;
+        }
+        & svg {
+          width: 14px;
+        }
+      }
+    }
   }
-  &__title {
-    cursor: pointer;
-  }
-  &__title:hover {
-    color: $link-color;
-  }
+
   &__price {
     font-size: 22px;
     font-weight: bold;

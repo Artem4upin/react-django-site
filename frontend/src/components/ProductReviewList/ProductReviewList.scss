@@ -1,8 +1,13 @@
 .product-review-list {
-
+  justify-self: center;
+  width: 80%;
+  margin-bottom: 10px;
   &__title {
       font-size: 42px;
     justify-self: center;
     margin: 10px;
+  }
+  @media (max-width: $tablet) {
+    width: 100%;
   }
 }

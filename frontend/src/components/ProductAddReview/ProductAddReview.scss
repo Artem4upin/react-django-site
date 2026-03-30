@@ -1,0 +1,31 @@
+.product-add-review {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid $border-main-color;
+  &__title {
+  }
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    &__rating {
+    }
+    &__comment {
+    }
+    &__image-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      &__image {
+        display: inline-block;
+        position: relative;
+      }
+    }
+    &__button {
+      width: 50%;
+      align-self: center;
+    }
+  }
+
+}

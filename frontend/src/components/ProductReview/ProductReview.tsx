@@ -22,7 +22,8 @@ function ProductReview({ review }: IProductReviewProps) {
                     </Box>
                     <Rating
                         value={review.rating}
-                        readOnly size="small"
+                        readOnly
+                        size="small"
                         className={'product-review__content__header__rating'}
                     />
                 </Box>
@@ -30,6 +31,23 @@ function ProductReview({ review }: IProductReviewProps) {
                 <Typography variant="body2" component="div" className={'product-review__content__comment'}>
                     {review.comment}
                 </Typography>
+                {review.image_path &&(
+                <Box className='product-review__content__content__image'
+                     justifySelf='center'
+                     marginTop="10px"
+                     maxWidth='400px'
+                     maxHeight='400px'>
+                    <img
+                    src={review.image_path}
+                    alt={'Изображение'}
+                    style={{
+                        width: '100%',
+                        objectFit: 'contain',
+                        borderRadius: '2px'
+                    }}
+                    />
+                </Box>
+                )}
             </CardContent>
         </Card>
     )
