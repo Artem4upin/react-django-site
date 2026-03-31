@@ -36,8 +36,8 @@ function HomePage() {
           <h3>Магазин компьютерных комплектующих</h3>
         </div>
         <Banner />
-        <div className='new-products'>
-          <label className='new-products__label'>Новинки</label>
+        <div className='home-page__new-products'>
+          <label className='home-page__products-label'>Новинки</label>
             <ProductList products={newProducts} isCart={false} />
         </div>
       </div>

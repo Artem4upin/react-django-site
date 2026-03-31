@@ -86,25 +86,25 @@ function RoleManagementPage() {
           <p className="role-management-page__no-users">Пользователи не найдены</p>
         ) : (
           users.map(user => (
-            <div key={user.id} className="user-card">
-              <div className="user-card__user-info">
-                <div className="user-card__user-info__user-main">
+            <div key={user.id} className="role-management-page__user-card">
+              <div className="role-management-page__user-info">
+                <div className="role-management-page__user-main">
                   <h3>{user.username}</h3>
                   <p>{user.email}</p>
                 </div>
-                <div className="user-card__user-info__user-details">
+                <div className="role-management-page__user-details">
                   <p>Имя: {user.first_name || 'Не указано'}</p>
                   <p>Фамилия: {user.last_name || 'Не указано'}</p>
                 </div>
               </div>
               
-              <div className="user-card__user-role">
-                <div className="user-card__role-selector">
+              <div className="role-management-page__user-role">
+                <div className="role-management-page__role-selector">
                   <span>Роль: </span>
                   <select 
                     value={user.user_type}
                     onChange={(e) => handleRoleChange(user.id, e.target.value as TUserType)}
-                    className="user-card__role-select"
+                    className="role-management-page__role-select"
                   >
                     <option value="User">Пользователь</option>
                     <option value="Manager">Менеджер</option>

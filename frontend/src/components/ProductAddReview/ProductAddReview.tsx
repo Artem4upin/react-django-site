@@ -8,6 +8,7 @@ import {AuthContext} from "../../hooks/AuthContext";
 import {TRating} from "../../types/product";
 import {getErrorMsg} from "../../utils/errorMassages";
 import XIcon from "../icons/XIcon";
+import UploadIcon from "../icons/UploadIcon";
 
 interface IProductAddReviewProps {
     productId: number;
@@ -42,21 +43,23 @@ function ProductAddReview({
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null)
+    const [isDragging, setIsDragging] = useState<boolean>(false)
+
+    const checkAndSetImage = (file: File) => {
+        if (file.size > 2 * 1024 * 1024) {
+            setSubmitError('Размер изображения не должен превышать 2MB');
+            return;
+        }
+
+        setSelectedImage(file);
+        setImagePreview(URL.createObjectURL(file));
+        setSubmitError('');
+    };
 
     const handleImageChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            if (file.size > 2 * 1024 * 1024) {
-                setSubmitError('Размер изображения не должен превышать 2MB');
-                removeImage();
-                return;
-            }
-            setSelectedImage(file);
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result as string);
-            }
-            reader.readAsDataURL(file);
+            checkAndSetImage(file);
         }
     }
 
@@ -65,6 +68,30 @@ function ProductAddReview({
         setImagePreview(null);
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
+        }
+    }
+
+    const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setIsDragging(true);
+    }
+
+    const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setIsDragging(false);
+    }
+
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+    }
+
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setIsDragging(false);
+
+        const file = e.dataTransfer.files?.[0];
+        if (file) {
+            checkAndSetImage(file);
         }
     }
 
@@ -99,7 +126,7 @@ function ProductAddReview({
 
     if (!user) {
         return (
-            <Card className='product-add-review--not-auth'>
+            <Card >
                 <Typography>
                     Войдите в аккаунт чтобы оставить отзыв
                 </Typography>
@@ -109,12 +136,12 @@ function ProductAddReview({
 
     return (
         <Card className="product-add-review">
-            <Typography className="product-add-review__title" variant="subtitle1" color="textPrimary">
+            <Typography variant="subtitle1" color="textPrimary">
                 Оставить отзыв
             </Typography>
 
             <Box component='form' onSubmit={handleSubmit(onSubmit)} className='product-add-review__form'>
-                <Box className='product-add-review__form__rating'>
+                <Box>
                     <Controller
                         control={control}
                         name='rating'
@@ -128,12 +155,12 @@ function ProductAddReview({
                     )}
                     />
                     {errors.rating && (
-                        <Typography variant="caption" color="error" sx={{ display: 'block', mt: 1 }}>
+                        <Typography className='product-add-review__rating-error' variant="caption" color="error" >
                             {errors.rating.message}
                         </Typography>
                     )}
                 </Box>
-                <Box className='product-add-review__form__comment'>
+                <Box >
                     <Controller
                         control={control}
                         name='comment'
@@ -157,54 +184,52 @@ function ProductAddReview({
                     />
                 </Box>
 
-                <Box className='product-add-review__form__image-container'>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        ref={fileInputRef}
-                        disabled={isSubmitting}
-                    />
-                    {imagePreview && (
-                        <Box
-                            className='product-add-review__image-container__image'
-                            style={{ position: 'relative', display: 'inline-block' }}
-                        >
-                            <img
-                                src={imagePreview}
-                                alt="Изображение"
-                                style={{
-                                    maxWidth: '200px',
-                                    maxHeight: '200px',
-                                    width: 'auto',
-                                    height: 'auto',
-                                    objectFit: 'contain',
-                                    borderRadius: '8px'
-                                }}
-                            />
-                            <Button
-                                className='product-add-review__image-container__image__button'
-                                size="small"
-                                variant="contained"
-                                color="error"
-                                onClick={removeImage}
-                                style={{
-                                    position: 'absolute',
-                                    top: '-10px',
-                                    right: '-10px',
-                                    minHeight: '20px',
-                                    minWidth: '20px',
-                                    padding: '0',
-                                    }}
-                            >
-                            <XIcon />
-                            </Button>
-                        </Box>
-                    )}
-                    <Typography variant="caption" color="textSecondary">
-                        Максимальный размер изображения 2MB
+                <Box className='product-add-review__dropzone'
+                     onDragEnter={handleDragEnter}
+                     onDragLeave={handleDragLeave}
+                     onDragOver={handleDragOver}
+                     onDrop={handleDrop}
+                     onClick={() => fileInputRef.current?.click()}
+                >
+                    <UploadIcon />
+                    <Typography className='product-add-review__dropzone-title' variant="body2" align="center">
+                        {isDragging
+                            ? "Отпустите изображение здесь"
+                            : "Перетащите изображение сюда\nили нажмите для выбора"}
+                    </Typography>
+                    <Typography className='product-add-review__dropzone-description' variant="caption" color="textSecondary">
+                        Максимальный размер изображения 2 МБ
                     </Typography>
                 </Box>
+
+                <input
+                    className='product-add-review__review-input'
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    onChange={handleImageChange}
+                    disabled={isSubmitting}
+                />
+
+                {imagePreview && (
+                    <Box className='product-add-review__image-container'
+                         >
+                        <img
+                            className='product-add-review__image'
+                            src={imagePreview}
+                            alt="Изображение"
+                        />
+                        <Button
+                            className='product-add-review__delete-button'
+                            size="small"
+                            variant="contained"
+                            color="error"
+                            onClick={removeImage}
+                        >
+                            <XIcon />
+                        </Button>
+                    </Box>
+                )}
 
                 {submitError && (
                     <Alert severity="error" onClose={() => setSubmitError('')}>
@@ -214,17 +239,17 @@ function ProductAddReview({
 
                 {submitSuccess && (
                     <Alert severity="success" onClose={() => setSubmitSuccess(false)}>
-                        Отзыв успешно добавлен!
+                        Отзыв добавлен
                     </Alert>
                 )}
 
                 <Button
-                    className="product-add-review__form__button"
+                    className="product-add-review__submit-button"
                     type='submit'
                     variant='contained'
                     disabled={isSubmitting}
                 >
-                {isSubmitting ? ('Отправка') : ('Отправить отзыв')}
+                    {isSubmitting ? 'Отправка...' : 'Отправить отзыв'}
                 </Button>
             </Box>
         </Card>

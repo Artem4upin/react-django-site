@@ -13,8 +13,6 @@ import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 import ProductPage from './pages/ProductPage/ProductPage'
 import AboutPage from './pages/AboutPage/AboutPage'
-import PrivacyPage from './pages/PrivacyPage/PrivacyPage'
-import TermsPage from './pages/TermsPage/TermsPage'
 import FaqPage from './pages/FaqPage/FaqPage'
 import CreateProductPage from './pages/CreateProductPage/CreateProductPage'
 import RoleManagementPage from './pages/RoleManagmentPage/RoleManagementPage'
@@ -61,8 +59,6 @@ function App() {
           <Route path='/orders' element={<OrdersPage />} />
           <Route path='/manager-page' element={<ManagerPage />} />
           <Route path="/role-management" element={<RoleManagementPage />} />
-          <Route path='/privacy' element={<PrivacyPage />} />
-          <Route path='/terms' element={<TermsPage />} />
           <Route path='/faq' element={<FaqPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

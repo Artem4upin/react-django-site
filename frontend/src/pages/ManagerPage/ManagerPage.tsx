@@ -120,18 +120,18 @@ function ManagerPage() {
         <h1>Управление заказами</h1>
 
         <div className="manager-page__sum-container">
-          <div className="manager-page__sum-container__order-sum">
+          <div className="manager-page__order-sum">
             <h3>Всего заказов: {totalOrdersCount}</h3>
           </div>
         </div>
 
         <div className='manager-page__filter-container'>
-          <div className="manager-page__filter-container__main-row">
+          <div className="manager-page__main-row">
 
-            <div className="manager-page__filter-container__filter-block">
+            <div className="manager-page__filter-block">
               <h4>Фильтр за период</h4>
-              <div className="manager-page__filter-container__filter-block__inputs">
-                <div className="manager-page__filter-container__filter-block__inputs__input-group">
+              <div className="manager-page__inputs">
+                <div className="manager-page__input-group">
                   <p>От</p>
                   <Input
                       type='date'
@@ -139,7 +139,7 @@ function ManagerPage() {
                       onChange={(e) => setStartDate(e.target.value)}
                   />
                 </div>
-                <div className="manager-page__filter-container__filter-block__inputs__input-group">
+                <div className="manager-page__input-group">
                   <p>До</p>
                   <Input
                       type='date'
@@ -150,8 +150,8 @@ function ManagerPage() {
               </div>
             </div>
 
-            <div className="manager-page__filter-container__filter-block">
-              <p className="manager-page__filter-container__filter-block__label-text">Номер заказа</p>
+            <div className="manager-page__filter-block">
+              <p className="manager-page__label-text">Номер заказа</p>
               <Input
                   type='text'
                   value={orderNumber}
@@ -161,7 +161,7 @@ function ManagerPage() {
             </div>
           </div>
 
-          <div className='manager-page__filter-container__buttons'>
+          <div className='manager-page__buttons'>
             <Button text={'Применить'} className={'btn'} onClick={applyFilter} />
             <Button text={'Сбросить'} className={'btn'} onClick={resetFilter} />
           </div>
@@ -173,15 +173,15 @@ function ManagerPage() {
             <>
               <div className="manager-page__orders">
                 {orders.map((order: IOrder) => (
-                    <div key={order.id} className="manager-page__orders__card">
-                      <header className="manager-page__orders__card__header">
+                    <div key={order.id} className="manager-page__card">
+                      <header className="manager-page__card-header">
                         <div>
                           <h3>Заказ № {order.order_number}</h3>
                           <p>{order.username}</p>
                         </div>
                         <span>{new Date(order.created_at).toLocaleDateString('ru')}</span>
                       </header>
-                      <div className="manager-page__orders__card__info">
+                      <div className="manager-page__card-info">
                         <div>
                           <span>Статус: </span>
                           <select
@@ -210,7 +210,7 @@ function ManagerPage() {
                         </div>
                       </div>
                       {order.order_items && order.order_items.length > 0 && (
-                          <div className="manager-page__orders__card__items">
+                          <div className="manager-page__card-items">
                             <h4>Товары:</h4>
                             <ul>
                               {order.order_items.map(item => (

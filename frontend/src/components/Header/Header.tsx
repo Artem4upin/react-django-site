@@ -24,7 +24,7 @@ function Header(){
                 hasSearching={hasSearching}
                 setHasSearching={setHasSearching}
             />
-            <div className='account-container'>
+            <div className='header__account-container'>
                 <CartButton />
                 <AccountButton />
             </div>

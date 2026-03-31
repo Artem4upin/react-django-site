@@ -1,24 +1,24 @@
 .product-review {
-  border: 1px $border-main-color solid;
-  &__content {
-    &__header {
-      margin-bottom: 10px;
-      align-items: center;
-      &__user {
-        &__name {
-        }
-        &__date {
-        }
-      }
-      &__rating {
-      }
-    }
-
-    &__comment {
-    padding: 10px;
-      background-color: $bg-light-gray;
-
-    }
-  }
   margin-bottom: 10px;
+  border: 1px $border-main-color solid;
+  &__header {
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  &__comment {
+    padding: 10px;
+    background-color: $bg-light-gray;
+  }
+  &__image-container {
+    justify-self : center;
+    margin-top: 10px;
+    max-width: 400px;
+    max-height: 400px;
+  }
+  &__image {
+    width: 100%;
+    object-fit: contain;
+    border-radius: 2px;
+  }
+
 }

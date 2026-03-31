@@ -35,7 +35,7 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     creation_date = models.DateTimeField(auto_now_add=True)
     image_path = models.ImageField(upload_to='images/', blank=True)
-    rating_avg = models.DecimalField(max_digits=3, decimal_places=2, default=0, null=True)
+    rating_avg = models.DecimalField(max_digits=2, decimal_places=1, default=0, null=True)
 
     def update_rating(self):
         reviews = self.review_set.all()

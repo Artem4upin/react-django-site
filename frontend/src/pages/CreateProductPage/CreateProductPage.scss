@@ -8,13 +8,12 @@
         text-align: center;
         color: #333;
     }
-}
-
-.create-product-form {
-    background: $bg-main-color;
-    padding: 30px;
-    border: 2px solid $border-main-color;
-    border-radius: 8px;
+    &__create-product-form {
+        background: $bg-main-color;
+        padding: 30px;
+        border: 2px solid $border-main-color;
+        border-radius: 8px;
+    }
     &__form-group {
         margin-bottom: 20px;
     }
@@ -79,11 +78,7 @@
         gap: 15px;
         margin-top: 30px;
     }
-    @media (max-width: $mobile) {
-        
-    }
 }
-
 .form-buttons .submit-btn {
     flex: 1;
     text-align: center;

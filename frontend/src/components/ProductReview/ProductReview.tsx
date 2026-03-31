@@ -10,13 +10,13 @@ function ProductReview({ review }: IProductReviewProps) {
 
     return (
         <Card className="product-review">
-            <CardContent className="product-review__content">
-                <Box className={'product-review__content__header'} display="flex" justifyContent="space-between">
-                    <Box className={'product-review__content__header__user'}>
-                        <Typography variant="body1" component="div" className={'product-review__content__header__user__name'}>
+            <CardContent >
+                <Box className='product-review__header' display="flex" justifyContent="space-between">
+                    <Box>
+                        <Typography variant="body1" component="div" >
                             {review.user.username}
                         </Typography>
-                        <Typography variant="caption" component="div" className={'product-review__content__user__date'}>
+                        <Typography variant="caption" component="div" >
                             {new Date(review.created_at).toLocaleDateString()}
                         </Typography>
                     </Box>
@@ -24,27 +24,20 @@ function ProductReview({ review }: IProductReviewProps) {
                         value={review.rating}
                         readOnly
                         size="small"
-                        className={'product-review__content__header__rating'}
+                        precision={0.1}
                     />
                 </Box>
 
-                <Typography variant="body2" component="div" className={'product-review__content__comment'}>
+                <Typography variant="body2" component="div" className='product-review__comment'>
                     {review.comment}
                 </Typography>
                 {review.image_path &&(
-                <Box className='product-review__content__content__image'
-                     justifySelf='center'
-                     marginTop="10px"
-                     maxWidth='400px'
-                     maxHeight='400px'>
+                <Box className='product-review__image-container'
+                >
                     <img
-                    src={review.image_path}
-                    alt={'Изображение'}
-                    style={{
-                        width: '100%',
-                        objectFit: 'contain',
-                        borderRadius: '2px'
-                    }}
+                        className='product-review__image'
+                        src={review.image_path}
+                        alt='Изображение'
                     />
                 </Box>
                 )}

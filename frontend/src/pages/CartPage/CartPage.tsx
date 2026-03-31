@@ -37,7 +37,6 @@ function CartPage() {
             setCartItems(response.data)
             setSelectedCartItems(response.data.map(item => item.id))
             setLoading(false);
-            console.log(response.data)
         } catch (error) {
             console.error('Ошибка', error)
         }
@@ -101,7 +100,7 @@ function CartPage() {
                 ) : (
                     <div>
                         <ProductList 
-                        className="products-list_one-column" 
+                        className={"products-list_one-column"}
                         products = {cartItems} 
                         isCart={true} 
                         onItemDelete={onItemDelete}
@@ -110,17 +109,17 @@ function CartPage() {
                          
                         />
 
-                         <div className="cart-total">
-                            <div className="cart-total__label">Всего в корзине: {calculateTotalPrice(cartItems)} ₽</div>
+                         <div className="cart-page__selected-total">
+                            <div className="cart-page__selected-total-label">Всего в корзине: {calculateTotalPrice(cartItems)} ₽</div>
                             {selectedItemsCount > 0 && (
-                            <div className="cart-selected-total">
-                                <div className="cart-selected-total__label">В заказе будет ({selectedItemsCount}) товаров:</div>
-                                <div className="cart-selected-total__sum">{selectedTotalPrice} ₽</div>
+                            <div className="cart-page__selected-total">
+                                <div className="cart-page__selected-total-label">В заказе будет ({selectedItemsCount}) товаров:</div>
+                                <div className="cart-page__selected-total-sum">{selectedTotalPrice} ₽</div>
                             </div>
                         )}
-                            <div className="cart-total__button-container">
+                            <div className="cart-page__button-container">
                                 <Button 
-                                className='submit-btn' 
+                                className={'submit-btn'}
                                 text={`Заказать (${selectedItemsCount})`} 
                                 onClick={handleOrderClick}
                                 disabled={selectedItemsCount === 0}/>

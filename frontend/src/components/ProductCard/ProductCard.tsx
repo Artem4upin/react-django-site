@@ -55,23 +55,23 @@ function ProductCard({
                     <img
                         src={image}
                         alt={name}
-                        className="image-container__image"
+                        className="product-card__image"
                         onClick={handleProductClick}
                     />
                 ) : (
-                    <p className="image-container_no-image">Нет изображения</p>
+                    <p className="product-card__image--no-image">Нет изображения</p>
                 )}
             </div>
 
             <div className="product-card__info-container">
-                <div className="product-card__info-container__title-container">
-                    <h3 className="product-card__info-container__title-container__title" onClick={handleProductClick}>
+                <div className="product-card__title-container">
+                    <h3 className="product-card__title" onClick={handleProductClick}>
                         {name}
                     </h3>
                     {!isCart && (
-                        <div className="product-card__info-container__title-container__rating">
+                        <div className="product-card__rating">
                             <p>{rating}</p>
-                            <Rating size='medium' readOnly value={rating} />
+                            <Rating size='medium' precision={0.1} readOnly value={rating} />
                         </div>
                     )}
                 </div>
@@ -92,14 +92,14 @@ function ProductCard({
                         )}
                 </div>
                 {isCart ? (
-                <div className="cart-actions">
+                <div className="product-card__cart-actions">
 
                     <Button className="exit-btn" text="Удалить" onClick={handleDelete} />
 
-                    <div className="cart-actions__checkbox">
-                        <p className="cart-actions__checkbox-title">В заказ</p>
+                    <div className="product-card__checkbox">
+                        <p className="product-card__checkbox-title">В заказ</p>
                         <input
-                            className="cart-actions__checkbox-input"
+                            className="product-card__checkbox-input"
                             type="checkbox"
                             checked={isSelected}
                             onChange={(e) => handleCheckboxChange(e.target.checked)}

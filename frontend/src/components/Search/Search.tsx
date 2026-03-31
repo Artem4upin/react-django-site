@@ -31,7 +31,6 @@ function Search ({
                 if ((response.data).length > 0) {
                     setSearchResult(response.data)
                     setHasSearching(true)
-                    console.log(response.data)
                 }
                 else {
                     setSearchResult([]);

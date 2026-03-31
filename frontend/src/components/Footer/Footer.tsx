@@ -11,8 +11,20 @@ function Footer() {
                 </div>
                 
                 <nav className="footer__nav">
-                    <Link to="/privacy" className="footer__link">Политика конфиденциальности</Link>
-                    <Link to="/terms" className="footer__link">Условия использования</Link>
+                    <a
+                        href="https://docs.yandex.ru/docs/view?url=ya-disk-public%3A%2F%2FkCZkIY1NK6uYdXHYPp3mBZxU1qfDfPfGfLsDCEpE8v32t9lJkXNDFC64Q5FU%2FzbPq%2FJ6bpmRyOJonT3VoXnDag%3D%3D&name=privacy.pdf&nosw=1"
+                        className="footer__link"
+                        target="_blank"
+                    >
+                        Политика конфиденциальности
+                    </a>
+                    <a
+                        href="https://docs.yandex.ru/docs/view?url=ya-disk-public%3A%2F%2FqZua%2B0Ud9Z0%2F9dCiQoNCSWRtA%2Fnsbfwde8%2FGW9l5slIiPyV8HgS5XMrNntzeB7jpq%2FJ6bpmRyOJonT3VoXnDag%3D%3D&name=terms.pdf&nosw=1"
+                        className="footer__link"
+                        target="_blank"
+                    >
+                        Условия использования
+                    </a>
                     <Link to="/faq" className="footer__link">FAQ</Link>
                 </nav>
                 

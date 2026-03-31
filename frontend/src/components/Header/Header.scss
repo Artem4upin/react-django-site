@@ -45,6 +45,18 @@
     }
 
   }
+  &__account-container {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    cursor: pointer;
+    @media (max-width: $desktop-sm) {
+      gap: 16px;
+    }
+    @media (max-width: $tablet) {
+      display: none;
+    }
+  }
   &__logo {
     font-size: 30px;
     font-weight:bold;
@@ -58,15 +70,3 @@
   }
 }
 
-.account-container {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  cursor: pointer;
-  @media (max-width: $desktop-sm) {
-    gap: 16px;
-  }
-  @media (max-width: $tablet) {
-    display: none;
-  }
-}

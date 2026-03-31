@@ -27,7 +27,6 @@ export const deleteFromCart = async (
     onItemDelete: (id: number) => void): Promise<void> => {
         try {
             const response = await api.delete(`/cart/cart-items/${productId}/`)
-            console.log('Товар удален:', response.data)
             if (onItemDelete) {
                 onItemDelete(productId)
             }
@@ -43,4 +42,4 @@ export const calculateTotalPrice = (items: ICartItem[]) => {
     }, 0).toFixed(2)
 }
 
-export const Today = new Date().toLocaleDateString("ru-RU", {})
+export const Today = new Date().toISOString().split('T')[0]

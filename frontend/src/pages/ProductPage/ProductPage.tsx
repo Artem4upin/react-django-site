@@ -58,9 +58,8 @@ function ProductPage() {
         try {
             const response = await api.get<IReview[]>(`/products/reviews/${productId}`)
             setReviews(response.data)
-            console.log(response.data)
         } catch (error) {
-            console.log("Ошибка загрузки отзывов", error)
+            console.error("Ошибка загрузки отзывов", error)
         } finally {
             setLoading(false)
         }
@@ -137,29 +136,29 @@ function ProductPage() {
                         <img 
                             src={product.image_path}
                             alt={product.name}
-                            className="product-page__image-container__image"
+                            className="product-page__image"
                         />
                     ) : (
-                        <p className="product-page__image-container__no-image">Нет изображения</p>
+                        <p className="product-page__no-image">Нет изображения</p>
                     )}
                 </div>
                 <div className="product-page__info">
-                    <p className="product-page__info-rating">{product.rating_avg}</p>
-                    <Rating size='large' value={product.rating_avg} readOnly/>
+                    <p className="product-page__rating">{product.rating_avg}</p>
+                    <Rating size='large' precision={0.1} value={product.rating_avg} readOnly/>
                     <h3>{product.name}</h3>
-                    <div className="product-page__info__price">Цена: <strong>{product.price} ₽</strong></div>
+                    <div className="product-page__price">Цена: <strong>{product.price} ₽</strong></div>
                     
-                    <div className="product-page__info__parameters">
+                    <div className="product-page__parameters">
                         <h3>Характеристики:</h3>
                         {product.parameters?.map((param, index) => (
-                            <div key={index} className="product-page__info__parameters__item">
+                            <div key={index} className="product-page__parameters-item">
                                 <span>{param.name}: </span>
                                 <span>{param.value}</span>
                             </div>
                         ))}
                     </div>
                     
-                    <div className="product-page__info__description">
+                    <div className="product-page__description">
                         <h3>Описание</h3>
                         <p>{product.description}</p>
                     </div>
@@ -183,7 +182,7 @@ function ProductPage() {
                             <input 
                             type="text" 
                             
-                            className='product-page__product-quantity' 
+                            className='product-page__quantity'
                             value={quantity}
                             readOnly
                             />
@@ -201,8 +200,8 @@ function ProductPage() {
                 <div className='product-page__edit-content'>
                     <h3>Редактировать товар</h3>
 
-                    <div className='product-page__edit-inputs'>    
-                        <div className="product-page__edit-inputs__edit-field">
+                    <div className='product-page__edit-inputs'>
+                        <div className="product-page__edit-field">
                             <label>Название товара:</label>
                             <Input 
                                 value={editName}
@@ -210,7 +209,7 @@ function ProductPage() {
                             />
                         </div>
 
-                        <div className="product-page__edit-inputs__edit-field">
+                        <div className="product-page__edit-field">
                             <label>Цена (₽):</label>
                             <Input 
                                 type="number"
@@ -219,7 +218,7 @@ function ProductPage() {
                             />
                         </div>
 
-                        <div className="product-page__edit-inputs__edit-field">
+                        <div className="product-page__edit-field">
                             <label>Количество на складе:</label>
                             <Input 
                                 type="number"
@@ -228,10 +227,10 @@ function ProductPage() {
                             />
                         </div>
 
-                        <div className="product-page__edit-inputs__edit-field">
+                        <div className="product-page__edit-field">
                             <label>Описание:</label>
                             <textarea
-                                className='product-page__edit-inputs__edit-description'
+                                className='product-page__edit-description'
                                 value={editDescription}
                                 onChange={(e) => setEditDescription(e.target.value)}
                                 rows={5}
@@ -261,8 +260,9 @@ function ProductPage() {
                     <div className='product-page__manager-buttons'>
                         <Button text={'Редактировать товар'} className={'submit-btn'} onClick={switchEdit}/>
                     </div>)}
-
+            {!isEdit && (
             <ProductReviewList reviews={reviews} productId={product.id} />
+            )}
             </div>
     )
 }

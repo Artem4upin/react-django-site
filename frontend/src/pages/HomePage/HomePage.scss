@@ -12,6 +12,14 @@
     text-align: center;
     gap: 30px;
   }
+  &__new-products {
+    margin-top: 10px;
+  }
+  &__products-label {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
   @media (max-width: $tablet) {
     &__shop-banner {
       padding: 50px;
@@ -19,18 +27,7 @@
         font-size: 16px;
       }
     }
-  }
-}
-
-.new-products {
-  margin-top: 10px;
-  &__label {
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 20px;
-  }
-  @media (max-width: $tablet) {
-    &__label {
+    &__products-label {
       display: flex;
       flex-direction: column;
       align-items: center;

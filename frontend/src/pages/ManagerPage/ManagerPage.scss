@@ -7,17 +7,17 @@
     }
     &__sum-container {
         margin-bottom: 20px;
-        &__order-sum {
-            & h3 {
-                margin: 0;
-                font-size: 16px;
-                color: $secondary-text-color;
-            }
-            & p {
-                font-size: 28px;
-                font-weight: bold;
-                margin: 5px 0 0 0;
-            }
+    }
+    &__order-sum {
+        & h3 {
+            margin: 0;
+            font-size: 16px;
+            color: $secondary-text-color;
+        }
+        & p {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 5px 0 0 0;
         }
     }
     &__filter-container {
@@ -30,83 +30,83 @@
         background-color: $bg-main-color;
         border: 2px solid $border-main-color;
         border-radius: 12px;
-        &__main-row {
+    }
+    &__main-row {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        gap: 40px;
+    }
+    &__filter-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    &__inputs {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 15px;
+        & p {
+            font-weight: normal;
+            color: $secondary-text-color;
             display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            align-items: flex-end;
-            gap: 40px;
-        }
-        &__filter-block {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            &__inputs {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 15px;
-                & p {
-                    font-weight: normal;
-                    color: $secondary-text-color;
-                    display: flex;
-                    justify-content: center;
-                }
-            }
-        }
-        &__buttons {
-            display: flex;
-            flex-direction: row;
             justify-content: center;
-            align-items: center;
-            gap: 15px;
-            padding-top: 10px;
         }
-        & button {
-            height: 38px;
-            padding: 0 25px;
-            cursor: pointer;
+    }
+    &__buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        padding-top: 10px;
+    }
+    & button {
+        height: 38px;
+        padding: 0 25px;
+        cursor: pointer;
+    }
+    &__card {
+        border: 1px solid $border-main-color;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: $bg-main-color;
+    }
+    &__card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+    }
+    &__card-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    &__card-items {
+        background-color: $bg-secondary-color;
+        padding: 15px;
+        border-radius: 6px;
+        & li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed $border-main-color;
         }
     }
     &__orders {
-        &__header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-        }
-        &__card {
+        & select {
+            padding: 6px;
             border: 1px solid $border-main-color;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            background-color: $bg-main-color;
-            &__info {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-                margin-bottom: 20px;
-                & select {
-                    padding: 6px;
-                    border: 1px solid $border-main-color;
-                    border-radius: 4px;
-                    width: 100%;
-                    max-width: 220px;
-                }
-            }
-            &__items {
-                background-color: $bg-secondary-color;
-                padding: 15px;
-                border-radius: 6px;
-                & li {
-                    display: flex;
-                    justify-content: space-between;
-                    padding: 10px 0;
-                    border-bottom: 1px dashed $border-main-color;
-                }
-            }
+            border-radius: 4px;
+            width: 100%;
+            max-width: 220px;
         }
     }
     &__pagination-buttons {
@@ -115,6 +115,7 @@
         align-items: center;
         gap: 15px;
         margin: 40px 0;
+
         & button {
             min-width: 45px;
             height: 45px;
@@ -124,6 +125,7 @@
             border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
+
             &:disabled {
                 background-color: $selected-gray-color;
                 color: $secondary-text-color;
@@ -147,17 +149,13 @@
             font-size: 30px;
             line-height: 24px;
         }
-        &__filter-container {
-            &__main-row {
-                justify-content: center;
-            }
-            &__filter-block {
-                &__inputs {
-                    gap: 5px;
-                    & .input {
-                        padding: 4px;
-                    }
-                }
+        &__main-row {
+            justify-content: center;
+        }
+        &__inputs {
+            gap: 5px;
+            & .input {
+                padding: 4px;
             }
         }
     }

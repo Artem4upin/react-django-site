@@ -32,20 +32,20 @@ function SearchDropdown({
 
                             return (
                                 <div key={product.id} className="search-dropdown__item" onClick={handleClick}>
-                                    <div className="search-dropdown__item__image-container">
+                                    <div className="search-dropdown__image-container">
                                         {product.image_path ? (
                                             <img src={product.image_path} alt={product.name}
-                                                 className="search-dropdown__item__image-container__image"/>
+                                                 className="search-dropdown__image"/>
                                         ) : (
-                                            <p className="search-dropdown__item__image-container__image--no-image">Нет изображения</p>
+                                            <p className="search-dropdown__image--no-image">Нет изображения</p>
                                         )}
                                     </div>
 
-                                    <div className="search-dropdown__item__info-container">
-                                        <h3 className="search-dropdown__item__title">
+                                    <div className="search-dropdown__info-container">
+                                        <h3 className="search-dropdown__title">
                                             {product.name}
                                         </h3>
-                                        <p className="search-dropdown__item__price">{product.price} ₽</p>
+                                        <p className="search-dropdown__price">{product.price} ₽</p>
                                     </div>
                                 </div>
                             )

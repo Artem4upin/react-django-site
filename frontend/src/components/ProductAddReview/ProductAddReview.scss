@@ -2,30 +2,62 @@
   margin-bottom: 20px;
   padding: 10px;
   border: 1px solid $border-main-color;
-  &__title {
-  }
   &__form {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    &__rating {
+  }
+  &__rating-error {
+    display: block;
+    margin-top: 8px;
+  }
+  &__dropzone {
+    border: 2px dashed $border-main-color;
+    border-radius: 8px;
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: $bg-secondary-color;
+    min-height: 100px;
+    &:hover {
+      border-color: $primary-color;
     }
-    &__comment {
-    }
-    &__image-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      &__image {
-        display: inline-block;
-        position: relative;
-      }
-    }
-    &__button {
-      width: 50%;
-      align-self: center;
+    & svg {
+      pointer-events: none;
     }
   }
-
+  &__dropzone-title {
+    pointer-events: none;
+  }
+  &__dropzone-description {
+    pointer-events: none;
+  }
+  &__review-input {
+    display: none;
+  }
+  &__image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  &__image {
+    max-width: 220px;
+    max-height: 220px;
+    border-radius: 8px;
+    object-fit: contain;
+  }
+  &__delete-button {
+    width: 24px;
+    height: 24px;
+  }
+  &__submit-button {
+    max-width: 180px;
+    @media (max-width: $tablet) {
+      align-self: center;
+      max-width: 80%;
+    }
+  }
 }

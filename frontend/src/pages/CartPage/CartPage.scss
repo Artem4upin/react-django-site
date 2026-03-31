@@ -1,9 +1,11 @@
 .cart-page {
     padding: 20px;
+
     &__content {
         display: flex;
         flex-direction: column;
     }
+
     &__label-container {
         display: flex;
         align-items: center;
@@ -11,10 +13,12 @@
         padding: 5px;
         background-color: $bg-main-color;
     }
+
     &__label {
         height: 30px;
         font-weight: bold;
     }
+
     &__not-found {
         font-size: 18px;
         color: $secondary-text-color;
@@ -24,30 +28,26 @@
         border-radius: 8px;
         margin-bottom: 200px;
     }
-    @media (max-width: $tablet) {
-        padding: 10px;
-        &__label-container {
-            align-items: center;
-            justify-content: center;
-            margin-top: 10px;
-            & h1 {
-                font-size: 50px;
-            }
-        }
-    }
-}
 
-.cart-total {
-    margin-top: 30px;
-    padding: 20px;
-    background-color: $bg-main-color;
-    border-radius: 8px;
-    border: 1px solid $border-main-color;
-    &__label {
+    &__selected-total {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: $bg-main-color;
+        border-radius: 8px;
+        border: 1px solid $border-main-color;
+    }
+
+    &__selected-total-label {
         font-size: 20px;
         font-weight: bold;
         margin-bottom: 10px;
     }
+
+    &__selected-total-sum {
+        font-size: 22px;
+        font-weight: bold;
+    }
+
     &__button-container {
         display: flex;
         justify-content: center;
@@ -55,31 +55,33 @@
         margin-top: 20px;
         padding: 5px;
         background-color: $bg-main-color;
-    }
 
-    &__button-container button {
-        min-width: 250px;
-    }
-}
-
-.cart-selected-total {
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    &__label {
-        font-size: 18px;
-    }
-    &__sum {
-        font-size: 22px;
-        font-weight: bold;
-    }
-    @media (max-width: $tablet) {
-        &__label {
-            font-size: 16px;
+        button {
+            min-width: 250px;
         }
-        &__sum {
-            display: none;
+    }
+
+    @media (max-width: $tablet) {
+        padding: 10px;
+
+        &__label-container {
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+
+            & h1 {
+                font-size: 50px;
+            }
+        }
+
+        &__selected-total {
+            &__label {
+                font-size: 16px;
+            }
+
+            &__sum {
+                display: none;
+            }
         }
     }
 }

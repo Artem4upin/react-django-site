@@ -80,10 +80,11 @@ function CatalogPage() {
                         <button onClick={() => setIsMobileFilterOpen(true)} className={'submit-btn'}>
                             <FilterIcon />
                         </button>
-                        {user?.user_type === 'Manager' && (
-                            <Button text={'Добавить'} className={'submit-btn'} onClick={goToCreateProduct}/>
-                        )}
+
                     </div>
+                    {user?.user_type === 'Manager' && (
+                        <Button text={'Добавить'} className={'submit-btn'} onClick={goToCreateProduct}/>
+                    )}
                     <div className='catalog-page__title-category'>
                         <p>{selectedCategoryName}</p>
                         {selectedSubcategoryName && (<p>-</p>)}
