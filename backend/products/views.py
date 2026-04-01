@@ -117,7 +117,7 @@ class BrandList(APIView):
 
     def get(self, request):
         brands = Brand.objects.all()
-        serializer = BrandSerializer(brands, many=True)
+        serializer = BrandSerializer(brands, many=True, context={'request': request})
         return Response(serializer.data)
     
 class Parameters(APIView):

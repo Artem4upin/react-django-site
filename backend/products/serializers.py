@@ -62,7 +62,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'image_path']
 
 class ReviewSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)

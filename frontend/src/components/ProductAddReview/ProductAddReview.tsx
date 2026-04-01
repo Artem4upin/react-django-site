@@ -8,7 +8,8 @@ import {AuthContext} from "../../hooks/AuthContext";
 import {TRating} from "../../types/product";
 import {getErrorMsg} from "../../utils/errorMassages";
 import XIcon from "../icons/XIcon";
-import UploadIcon from "../icons/UploadIcon";
+import Dropzone from "../Dropzone/Dropzone";
+
 
 interface IProductAddReviewProps {
     productId: number;
@@ -43,17 +44,18 @@ function ProductAddReview({
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null)
-    const [isDragging, setIsDragging] = useState<boolean>(false)
+
 
     const checkAndSetImage = (file: File) => {
         if (file.size > 2 * 1024 * 1024) {
             setSubmitError('Размер изображения не должен превышать 2MB');
-            return;
+            return false;
         }
 
         setSelectedImage(file);
         setImagePreview(URL.createObjectURL(file));
         setSubmitError('');
+        return true;
     };
 
     const handleImageChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -68,30 +70,6 @@ function ProductAddReview({
         setImagePreview(null);
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
-        }
-    }
-
-    const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragging(true);
-    }
-
-    const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragging(false);
-    }
-
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-    }
-
-    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragging(false);
-
-        const file = e.dataTransfer.files?.[0];
-        if (file) {
-            checkAndSetImage(file);
         }
     }
 
@@ -184,23 +162,12 @@ function ProductAddReview({
                     />
                 </Box>
 
-                <Box className='product-add-review__dropzone'
-                     onDragEnter={handleDragEnter}
-                     onDragLeave={handleDragLeave}
-                     onDragOver={handleDragOver}
-                     onDrop={handleDrop}
-                     onClick={() => fileInputRef.current?.click()}
-                >
-                    <UploadIcon />
-                    <Typography className='product-add-review__dropzone-title' variant="body2" align="center">
-                        {isDragging
-                            ? "Отпустите изображение здесь"
-                            : "Перетащите изображение сюда\nили нажмите для выбора"}
-                    </Typography>
-                    <Typography className='product-add-review__dropzone-description' variant="caption" color="textSecondary">
-                        Максимальный размер изображения 2 МБ
-                    </Typography>
-                </Box>
+                {!selectedImage && (
+                <Dropzone
+                    fileInputRef={fileInputRef}
+                    onSelectFile={checkAndSetImage}
+                />
+                )}
 
                 <input
                     className='product-add-review__review-input'

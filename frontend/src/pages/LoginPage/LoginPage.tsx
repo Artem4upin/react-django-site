@@ -12,6 +12,7 @@ interface ILoginFormData {
   email?: string;
   password: string;
   password_repeat?: string;
+  privacy_checkbox?: boolean;
 }
 
 function LoginPage() { 
@@ -33,6 +34,7 @@ function LoginPage() {
       email: '',
       password: '',
       password_repeat: '',
+      privacy_checkbox: false,
     }
   })
 
@@ -77,6 +79,7 @@ function LoginPage() {
       email: '',
       password: '',
       password_repeat: '',
+      privacy_checkbox: false,
     })
   }
 
@@ -150,6 +153,7 @@ function LoginPage() {
           />
           
           {isRegistration && (
+              <>
             <InputForm
               id="password_repeat"
               name="password_repeat"
@@ -163,6 +167,21 @@ function LoginPage() {
               error={errors.password_repeat}
               autoComplete="off"
             />
+                <div className='login-page__privacy-checkbox'
+                >
+                  <InputForm
+                  id="privacy_checkbox"
+                  name="privacy_checkbox"
+                  label='Я принимаю политику кониденциальности и условия использования'
+                  type="checkbox"
+                  register={register}
+                  validation={{
+                    required: 'Необходимо подтвердить согласие',
+                  }}
+                  error={errors.privacy_checkbox}
+                  />
+                </div>
+              </>
           )}
           
           <Button  

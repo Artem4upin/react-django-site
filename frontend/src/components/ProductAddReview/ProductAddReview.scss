@@ -11,29 +11,6 @@
     display: block;
     margin-top: 8px;
   }
-  &__dropzone {
-    border: 2px dashed $border-main-color;
-    border-radius: 8px;
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: $bg-secondary-color;
-    min-height: 100px;
-    &:hover {
-      border-color: $primary-color;
-    }
-    & svg {
-      pointer-events: none;
-    }
-  }
-  &__dropzone-title {
-    pointer-events: none;
-  }
-  &__dropzone-description {
-    pointer-events: none;
-  }
   &__review-input {
     display: none;
   }

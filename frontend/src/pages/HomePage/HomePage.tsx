@@ -4,6 +4,7 @@ import './HomePage.scss'
 import ProductList from '../../components/ProductList/ProductList'
 import Loading from '../../components/UI/Loading/Loading'
 import Banner from '../../components/UI/Banner/Banner'
+import BrandsSlider from "../../components/UI/BrandsSlider/BrandsSlider";
 
 function HomePage() {
   
@@ -35,7 +36,11 @@ function HomePage() {
           <h1>TechShop</h1>
           <h3>Магазин компьютерных комплектующих</h3>
         </div>
+
         <Banner />
+
+        <BrandsSlider />
+
         <div className='home-page__new-products'>
           <label className='home-page__products-label'>Новинки</label>
             <ProductList products={newProducts} isCart={false} />

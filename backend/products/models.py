@@ -21,6 +21,7 @@ class Subcategory(models.Model):
 
 class Brand(models.Model):
     name = models.CharField(max_length=50)
+    image_path = models.ImageField(upload_to='brands/', blank=True)
     
     def __str__(self):
         return self.name

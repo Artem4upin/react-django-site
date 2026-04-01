@@ -1,0 +1,45 @@
+.brands-slider {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  margin-top: 30px;
+  padding: 0 50px;
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 40px;
+    height: 40px;
+    color: $white-link-color;
+    background: $bg-overlay-color;
+    padding: 10px;
+    border-radius: 50%;
+    &:hover {
+      background: $primary-color;
+      color: white;
+    }
+  }
+  &__slide {
+    display: flex;
+    background: $bg-main-color;
+    border-radius: 16px;
+    border: 2px solid $border-main-color;
+    align-items: center;
+    padding: 4px;
+  }
+  &__image {
+    height: 50px;
+    width: 100%;
+    object-fit: contain;
+    padding: 2px;
+  }
+  @media (max-width: $mobile) {
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      padding: 6px;
+
+    }
+    &__image {
+      padding: 1px;
+    }
+  }
+}

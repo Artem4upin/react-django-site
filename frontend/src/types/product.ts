@@ -51,6 +51,7 @@ export interface ICategory {
 export interface IBrand {
     id: number;
     name: string;
+    image_path?: string;
 }
 
 export interface IFilters {

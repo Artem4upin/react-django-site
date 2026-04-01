@@ -1,0 +1,23 @@
+.dropzone {
+  border: 2px dashed $border-main-color;
+  border-radius: 8px;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: $bg-secondary-color;
+  min-height: 100px;
+  &:hover {
+    border-color: $primary-color;
+  }
+  & svg {
+    pointer-events: none;
+  }
+  &__title {
+    pointer-events: none;
+  }
+  &__description {
+    pointer-events: none;
+  }
+}

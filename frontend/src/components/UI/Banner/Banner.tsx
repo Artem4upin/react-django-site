@@ -19,13 +19,17 @@ function Banner() {
     return (
         <div className="banner">
             <Swiper
-            modules={[Navigation, Pagination]}
-            spaceBetween={10}
-            navigation
-            pagination
-            loop={true}
+                className='banner__swiper'
+                modules={[Navigation, Pagination]}
+                spaceBetween={10}
+                navigation
+                pagination
+                loop={true}
             >
-                <SwiperSlide onClick={() => navigate('/catalog')}>
+                <SwiperSlide
+                    className='banner__swiper-slide'
+                    onClick={() => navigate('/catalog')}
+                >
                     <div className="banner__slide-content">
                         <h3>Каталог товаров</h3>
                     </div>
@@ -37,7 +41,10 @@ function Banner() {
                     </div>
                 </SwiperSlide>
                 
-                <SwiperSlide onClick={user ? (() => navigate('/orders')): undefined}>
+                <SwiperSlide
+                    className='banner__swiper-slide'
+                    onClick={user ? (() => navigate('/orders')): undefined}
+                >
                     <div className="banner__slide-content">
                         <h3>Доставка</h3>
                     </div>
@@ -49,7 +56,10 @@ function Banner() {
                     </div>
                 </SwiperSlide>
                 
-                <SwiperSlide onClick={() => navigate('/about')}>
+                <SwiperSlide
+                    className='banner__swiper-slide'
+                    onClick={() => navigate('/about')}
+                >
                     <div className="banner__slide-content">
                         <h3>Наши контакты</h3>
                     </div>
