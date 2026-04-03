@@ -8,13 +8,13 @@
   .swiper-button-prev {
     width: 40px;
     height: 40px;
-    color: $white-link-color;
-    background: $bg-overlay-color;
+    color: $selected-gray-color;
+    background: $bg-gray-overlay-color;
     padding: 10px;
     border-radius: 50%;
     &:hover {
-      background: $primary-color;
-      color: white;
+      background: $bg-blue-overlay-color;
+      color: $white-link-color;
     }
   }
   &__slide {
@@ -32,12 +32,6 @@
     padding: 2px;
   }
   @media (max-width: $mobile) {
-
-    .swiper-button-next,
-    .swiper-button-prev {
-      padding: 6px;
-
-    }
     &__image {
       padding: 1px;
     }

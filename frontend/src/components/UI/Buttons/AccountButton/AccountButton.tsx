@@ -3,6 +3,7 @@ import {AuthContext} from "../../../../hooks/AuthContext";
 import {useContext} from "react";
 import {Link} from "react-router-dom";
 import './AccountButton.scss'
+import DoorIcon from "../../../icons/DoorIcon";
 
 function AccountButton() {
     const { user } = useContext(AuthContext)
@@ -13,7 +14,10 @@ function AccountButton() {
                         <AccountIcon />
                         <span>{user.username}</span>
                     </Link>)
-                : (<Link to='/login' className='account-button__account-link'>Войти</Link>)
+                : (<Link to='/login' className='account-button__account-link'>
+                    <DoorIcon />
+                    Войти
+                    </Link>)
             }
         </div>
     )

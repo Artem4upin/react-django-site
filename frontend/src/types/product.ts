@@ -27,7 +27,7 @@ export interface IProduct {
     subcategory_id?: number;
     creation_date?: string | Date;
     image_path?: string;
-    parameters?: IProductParameter[];
+    parameters: IProductParameter[];
     rating_avg: number;
 }
 

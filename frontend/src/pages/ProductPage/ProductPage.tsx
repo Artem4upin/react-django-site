@@ -10,6 +10,7 @@ import { addToCart } from '../../utils/functions';
 import { AuthContext } from '../../hooks/AuthContext';
 import {IProduct, IReview} from "../../types/product";
 import ProductReviewList from "../../components/ProductReviewList/ProductReviewList";
+import RecommendationList from "../../components/RecommendationList/RecommendationList";
 
 function ProductPage() {
     const { id } = useParams()
@@ -52,7 +53,7 @@ function ProductPage() {
             setLoading(false)
 
         }
-    };
+    }
 
     const loadReviews = async (productId: number) => {
         try {
@@ -60,8 +61,6 @@ function ProductPage() {
             setReviews(response.data)
         } catch (error) {
             console.error("Ошибка загрузки отзывов", error)
-        } finally {
-            setLoading(false)
         }
     }
 
@@ -143,20 +142,23 @@ function ProductPage() {
                     )}
                 </div>
                 <div className="product-page__info">
-                    <p className="product-page__rating">{product.rating_avg}</p>
-                    <Rating size='large' precision={0.1} value={product.rating_avg} readOnly/>
                     <h3>{product.name}</h3>
-                    <div className="product-page__price">Цена: <strong>{product.price} ₽</strong></div>
-                    
+                    <div className='product-page__rating-container'>
+                        <p className="product-page__rating">{product.rating_avg}</p>
+                        <Rating size='large' precision={0.1} value={product.rating_avg} readOnly/>
+                    </div>
+                    <div className="product-page__price">Цена: <strong>{Math.floor(product.price).toLocaleString('ru-RU')} ₽</strong></div>
+
+                    {product.parameters.length > 0  && (
                     <div className="product-page__parameters">
                         <h3>Характеристики:</h3>
                         {product.parameters?.map((param, index) => (
                             <div key={index} className="product-page__parameters-item">
-                                <span>{param.name}: </span>
-                                <span>{param.value}</span>
+                                <span>{param.name}: <strong>{param.value}</strong></span>
                             </div>
                         ))}
                     </div>
+                    )}
                     
                     <div className="product-page__description">
                         <h3>Описание</h3>
@@ -261,7 +263,10 @@ function ProductPage() {
                         <Button text={'Редактировать товар'} className={'submit-btn'} onClick={switchEdit}/>
                     </div>)}
             {!isEdit && (
-            <ProductReviewList reviews={reviews} productId={product.id} />
+                <>
+                    <RecommendationList productId={product.id} />
+                    <ProductReviewList reviews={reviews} productId={product.id} />
+                </>
             )}
             </div>
     )

@@ -8,7 +8,7 @@ $mobile: 375px;
 $primary-color: #095aac;
 $secondary-color: #218cff;
 $accent-color: #4587e8;
-$selected-gray-color: #ededed;
+$selected-gray-color: #e3e2e2;
 $dark-blue-color: #0b4177;
 $light-blue-color: #2c5aa0;
 
@@ -28,5 +28,8 @@ $success-color: #008000FF;
 $bg-main-color: #fdfdfd;
 $bg-secondary-color: #f4f8fd;
 $bg-white-blue: #F0F8FFFF;
-$bg-light-gray: #fdf9f9;
-$bg-overlay-color: rgba(0, 0, 0, 0.5)
+$bg-light-gray: rgb(253, 249, 249);
+$bg-overlay-color: rgba(0, 0, 0, 0.5);
+$bg-gray-overlay-color: rgba(253, 249, 249, 0.55);
+$bg-med-gray-overlay-color: rgb(244, 242, 242);
+$bg-blue-overlay-color: rgba(44, 90, 160, 0.56);

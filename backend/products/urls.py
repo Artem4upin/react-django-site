@@ -12,6 +12,7 @@ urlpatterns = [
     path('parameters/', Parameters.as_view(), name='parameters'),
     path('products/create/', ProductCreate.as_view(), name='product-create'),
     path('products/reviews/<int:product_id>/', ProductReviews.as_view(), name='product-reviews'),
+    path('products/recommendations/<int:product_id>/', ProductRecommendations.as_view(), name='product-recommendations'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

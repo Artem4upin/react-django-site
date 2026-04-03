@@ -172,8 +172,23 @@ function LoginPage() {
                   <InputForm
                   id="privacy_checkbox"
                   name="privacy_checkbox"
-                  label='Я принимаю политику кониденциальности и условия использования'
-                  type="checkbox"
+                  label={
+                    <>
+                      Я принимаю{' '}
+                      <a href='https://docs.yandex.ru/docs/view?url=ya-disk-public%3A%2F%2FkCZkIY1NK6uYdXHYPp3mBZxU1qfDfPfGfLsDCEpE8v32t9lJkXNDFC64Q5FU%2FzbPq%2FJ6bpmRyOJonT3VoXnDag%3D%3D&name=privacy.pdf&nosw=1'
+                      target="_blank"
+                      >
+                      политику конфиденциальности
+                      </a>
+                      {' '}и{' '}
+                      <a href='https://docs.yandex.ru/docs/view?url=ya-disk-public%3A%2F%2FqZua%2B0Ud9Z0%2F9dCiQoNCSWRtA%2Fnsbfwde8%2FGW9l5slIiPyV8HgS5XMrNntzeB7jpq%2FJ6bpmRyOJonT3VoXnDag%3D%3D&name=terms.pdf&nosw=1'
+                         target="_blank"
+                      >
+                      условия использования
+                      </a>
+                    </>
+                  }
+          type="checkbox"
                   register={register}
                   validation={{
                     required: 'Необходимо подтвердить согласие',
@@ -194,10 +209,10 @@ function LoginPage() {
             }
           />
         </form>
-        
+
         <div className="login-page__auth-links">
           <button 
-            className="switch-mode-btn"
+            className="login-page__switch-btn"
             onClick={switchMode}
             type="button"
           >
@@ -207,8 +222,6 @@ function LoginPage() {
             }
           </button>
         </div>
-
-        <Link to="/" className="login-page__back-link">На главную</Link>
       </div>
     </div>
   );

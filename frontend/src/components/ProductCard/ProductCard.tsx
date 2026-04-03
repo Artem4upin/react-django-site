@@ -70,26 +70,29 @@ function ProductCard({
                     </h3>
                     {!isCart && (
                         <div className="product-card__rating">
-                            <p>{rating}</p>
                             <Rating size='medium' precision={0.1} readOnly value={rating} />
                         </div>
                     )}
                 </div>
-                <p className="product-card__price">{price} ₽</p>
+                <p className="product-card__price">{Math.floor(price).toLocaleString('ru-RU')} ₽</p>
 
                 <div className="product-card__parameters">
-                    {isCart ? (
-                    <h4 className="product-card__quantity">Количество: {quantity}</h4>
-                    ) : (
-                        <>
-                        <h4>Характеристики</h4>
-                        <ul className="product-card__list">
-                        {parameters?.map((p, i) => (
-                            <li key={i}>{p.name}: {p.value}</li>
-                            ))}
-                        </ul>
-                        </>
-                        )}
+                    {!isCart && parameters && parameters.length > 0 && (
+                        <div className="product-card__parameters">
+                            <h4>Характеристики</h4>
+                            <ul className="product-card__parameters-list">
+                                {parameters.slice(0, 3).map((p, i) => (
+                                    <li key={i}>{p.name}: <strong>{p.value}</strong></li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {isCart && (
+                        <div className="product-card__parameters">
+                            <h4 className="product-card__quantity">Количество: {quantity}</h4>
+                        </div>
+                    )}
                 </div>
                 {isCart ? (
                 <div className="product-card__cart-actions">

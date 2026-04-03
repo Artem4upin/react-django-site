@@ -1,0 +1,67 @@
+.recommendation-list {
+  margin: 20px;
+  &__title {
+    margin-bottom: 16px;
+  }
+  &__swiper {
+
+  }
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    background: $bg-gray-overlay-color;
+    padding: 10px;
+    border-radius: 50%;
+    color: $secondary-text-color;
+    &:hover {
+      background: $bg-blue-overlay-color;
+      color: $white-link-color;
+    }
+
+  }
+  &__slide {
+    display: flex;
+    flex-direction: column;
+    border: 2px $border-main-color solid;
+    border-radius: 10px;
+    padding: 15px;
+    height: 100%;
+    min-height: 350px;
+    align-items: center;
+    justify-content: space-between;
+    &:hover {
+      cursor: pointer;
+      border-color: $accent-color;
+    }
+  }
+
+  &__image {
+    object-fit: contain;
+    width: 100%;
+    max-width: 200px;
+    height: 150px;
+    margin: 10px 0;
+  }
+
+  &__name {
+    text-align: center;
+    height: 30px;
+    width: 100%;
+    text-wrap: nowrap;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__price {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px;
+    strong {
+      color: $price-color;
+      font-weight: bold;
+    }
+  }
+}
