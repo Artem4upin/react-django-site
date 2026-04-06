@@ -60,12 +60,18 @@
       max-width: 300px;
     }
   }
+  &__quantity {
+    & strong {
+      color: $primary-color;
+    }
+  }
   &__cart-actions {
     display: flex;
     padding-top: 10px;
     align-items: center;
     margin-top: auto;
     margin-left: auto;
+    gap: 10px;
   }
   &__checkbox {
     display: flex;

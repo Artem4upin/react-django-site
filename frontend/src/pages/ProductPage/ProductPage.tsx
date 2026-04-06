@@ -110,7 +110,7 @@ function ProductPage() {
     const handleAddToCartClick = () => {
         if (!product) return
         if (quantity > product.quantity || quantity < 1) return;
-        addToCart(product.id, quantity, product.name);
+        addToCart(product.id, quantity);
     }
 
     if (loading) {

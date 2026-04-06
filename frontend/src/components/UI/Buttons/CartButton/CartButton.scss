@@ -19,4 +19,25 @@
       height: 24px;
     }
   }
+
+  &__count-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__count {
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 10px;
+    background-color: $error-color;
+    color: $white-link-color;
+    font-size: 12px;
+    text-align: center;
+  }
 }

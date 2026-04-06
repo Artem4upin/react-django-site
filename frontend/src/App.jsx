@@ -17,9 +17,18 @@ import FaqPage from './pages/FaqPage/FaqPage'
 import CreateProductPage from './pages/CreateProductPage/CreateProductPage'
 import RoleManagementPage from './pages/RoleManagmentPage/RoleManagementPage'
 import NavigationBar from "./components/NavigationBar/NavigationBar.tsx";
+import { useCartStore } from "./store/useCartStore";
 
 function App() {
   const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    if (user) {
+      useCartStore.getState().loadCart()
+    } else {
+      useCartStore.getState().clearCart()
+    }
+  }, [user])
 
    useEffect(() => {
       const checkAuth = async () => {

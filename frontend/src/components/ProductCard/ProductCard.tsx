@@ -45,7 +45,7 @@ function ProductCard({
         }
     }
 
-    const handleAddToCart = () => addToCart(id, 1, name);
+    const handleAddToCart = () => addToCart(id, 1);
     return (
 
 
@@ -90,14 +90,12 @@ function ProductCard({
 
                     {isCart && (
                         <div className="product-card__parameters">
-                            <h4 className="product-card__quantity">Количество: {quantity}</h4>
+                            <h4 className="product-card__quantity">Количество: <strong>{quantity}</strong></h4>
                         </div>
                     )}
                 </div>
                 {isCart ? (
                 <div className="product-card__cart-actions">
-
-                    <Button className="exit-btn" text="Удалить" onClick={handleDelete} />
 
                     <div className="product-card__checkbox">
                         <p className="product-card__checkbox-title">В заказ</p>
@@ -108,6 +106,9 @@ function ProductCard({
                             onChange={(e) => handleCheckboxChange(e.target.checked)}
                         />
                     </div>
+
+                    <Button className="exit-btn" text="Удалить" onClick={handleDelete} />
+
                 </div>
                 ) : (user && <Button className="add-to-cart-btn" text="В корзину" onClick={handleAddToCart} />
                 )}

@@ -7,43 +7,39 @@ import ModalCreateOrder from "../../components/modal/ModalCreateOrder/ModalCreat
 import { calculateTotalPrice } from "../../utils/functions";
 import { AuthContext } from "../../hooks/AuthContext";
 import Loading from "../../components/UI/Loading/Loading";
-import {ICartItem} from "../../types/cart";
+import { useCartStore } from "../../store/useCartStore";
+import { ICartItem } from "../../types/cart";
 
 
 function CartPage() {
 
     const { user } = useContext(AuthContext)
-    const [loading, setLoading] = useState(false);
-    const [ cartItems, setCartItems ] = useState<ICartItem[]>([])
+    const cartItems = useCartStore((state) => state.items)
+    const isLoading = useCartStore((state) => state.isLoading)
+
     const [selectedCartItems, setSelectedCartItems] = useState<number[]>([])
     const [showOrderModal, setShowOrderModal] = useState(false)
     const [selectedItemsCount, setSelectedItemsCount] = useState<number>(0)
     const [selectedTotalPrice, setSelectedTotalPrice] = useState<number>(0)
 
     useEffect(() => {
-        loadCart()
-    },[])
+        let cancelled = false;
+        (async () => {
+            await useCartStore.getState().loadCart()
+            if (cancelled) return
+            const items: ICartItem[] = useCartStore.getState().items
+            setSelectedCartItems(items.map((item: ICartItem) => item.id))
+        })()
+        return () => {
+            cancelled = true
+        }
+    }, [user])
 
     useEffect(() => {
-        const selected = getSelectedItems()
+        const selected: ICartItem[] = cartItems.filter(item => selectedCartItems.includes(item.id))
         setSelectedItemsCount(selected.length)
         setSelectedTotalPrice(Number(calculateTotalPrice(selected)))
     }, [selectedCartItems, cartItems])
-
-    const loadCart = async () => {
-        setLoading(true);
-        try {
-            const response = await api.get<ICartItem[]>('/cart/cart-items/')
-            setCartItems(response.data)
-            setSelectedCartItems(response.data.map(item => item.id))
-            setLoading(false);
-        } catch (error) {
-            console.error('Ошибка', error)
-        }
-        finally {
-            setLoading(false);
-        }
-    }
 
     const handleCheckboxChange = (cartItemId: number, isChecked: boolean) => {
         if (isChecked) {
@@ -51,10 +47,6 @@ function CartPage() {
         } else {
             setSelectedCartItems(prev => prev.filter(id => id != cartItemId))
         }
-    }
-
-     const getSelectedItems = (): ICartItem[] => {
-        return cartItems.filter(item => selectedCartItems.includes(item.id))
     }
 
     const handleOrderClick = () => {
@@ -65,7 +57,6 @@ function CartPage() {
     }
 
     const onItemDelete = (deletedItemId: number) => {
-        setCartItems(prev => prev.filter(item => item.id !== deletedItemId))
         setSelectedCartItems(prev => prev.filter(id => id !== deletedItemId))
     }
 
@@ -77,14 +68,16 @@ function CartPage() {
                 cart_items: selectedCartItems
             })
             setShowOrderModal(false)
-            setCartItems(prev => prev.filter(item => !selectedCartItems.includes(item.id)))
-            setSelectedCartItems([])
+            await useCartStore.getState().loadCart()
+            const itemsAfterOrder: ICartItem[] = useCartStore.getState().items
+            setSelectedCartItems(itemsAfterOrder.map((item: ICartItem) => item.id))
         } catch (error: any) {
             console.error('Ошибка:', error)
             alert(error.response?.data?.error || 'Не удалось создать заказ')
         }
     }
-    if (loading) {
+
+    if (isLoading && cartItems.length === 0) {
         return <Loading fullPage={true} />
     }
 
