@@ -1,13 +1,18 @@
 .order-items {
     margin-top: 15px;
     padding: 15px;
-    background-color: #f8f9fa;
+    background-color: $bg-secondary-color;
     border-radius: 5px;
+    margin-bottom: 10px;
     &__item {
         padding: 5px 0;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid $border-main-color;
         &:last-child {
             border-bottom: none;
+        }
+        &:hover {
+            color: $link-color;
+            background-color: $bg-white-blue;
         }
     }
 }

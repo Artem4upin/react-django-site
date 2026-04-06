@@ -4,9 +4,13 @@ import {IOrder} from "../../types/order";
 
 interface IOrderCardProps {
     order: IOrder;
+    onOrderClick: (order: IOrder) => void;
 }
 
-function OrderCard({ order }:IOrderCardProps) {
+function OrderCard({
+    order,
+    onOrderClick,
+}:IOrderCardProps) {
 
     const statusTranslations = {
         'Created': 'Создан',
@@ -17,7 +21,7 @@ function OrderCard({ order }:IOrderCardProps) {
         'Canceled': 'Отменен'
     }
     return (
-        <div className="order-card">
+        <div className="order-card" onClick={() => onOrderClick(order)}>
             <h3>Заказ №{order.order_number}</h3>
             <p>Статус: <strong>{statusTranslations[order.status] || order.status}</strong></p>
             <p>Дата создания: <strong>{new Date (order.created_at).toLocaleDateString('ru')}</strong></p>

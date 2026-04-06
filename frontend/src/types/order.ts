@@ -1,7 +1,7 @@
 export interface IOrderItemSet {
     id: number;
     order: number;
-    product_id : number;
+    product : number;
     product_name: string;
     product_price: number;
     quantity: number;

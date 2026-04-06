@@ -18,7 +18,9 @@
         cursor: pointer;
         transition: background-color 0.2s;
         border-bottom: 1px solid $border-main-color;
-
+        &:last-child {
+            border-bottom: none;
+        }
         &:hover {
             background-color: $selected-gray-color;
         }
