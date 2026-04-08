@@ -15,7 +15,7 @@ from .serializers import *
 from django.contrib.postgres.search import SearchVector
 from .permissions import IsManager
 from rest_framework.pagination import PageNumberPagination
-from backend.config import PRODUCT_PAGE_SIZE
+from backend.config import PRODUCT_PAGE_SIZE, RECOMMENDATIONS_DAYS_PERIOD, ONE_DAY
 from django.db.models import Count
 from datetime import timedelta
 from django.utils import timezone
@@ -258,17 +258,33 @@ class ProductRecommendations(APIView):
         product = get_object_or_404(Product, pk=product_id)
         user = request.user
 
-        two_weeks_ago = timezone.now() - timedelta(days=14)
+        days_ago = timezone.now() - timedelta(days=RECOMMENDATIONS_DAYS_PERIOD)
 
         cache_key = f"recommendations_{product_id}"
         recommended_products = cache.get(cache_key)
 
         if recommended_products is None:
+            top_users = Order.objects.filter(
+                status="Completed",
+                created_at__gte=days_ago,
+                order_items__product=product
+            ).values_list('user_id', flat=True).distinct()[:10]
+
+            top_users_orders = Order.objects.filter(
+                user_id__in=top_users,
+                status="Completed",
+                created_at__gte=days_ago
+            )
+
+            other_items = OrderItem.objects.filter(
+                order__in=top_users_orders
+            ).exclude(product=product)
+
             if user.is_authenticated:
                 user_orders = Order.objects.filter(
                     user=user,
                     status="Completed",
-                    created_at__gte=two_weeks_ago,
+                    created_at__gte=days_ago,
                     order_items__product=product
                 ).distinct()
 
@@ -276,38 +292,6 @@ class ProductRecommendations(APIView):
                     other_items = OrderItem.objects.filter(
                         order__in=user_orders
                     ).exclude(product=product)
-                else:
-                    top_users = Order.objects.filter(
-                        status="Completed",
-                        created_at__gte=two_weeks_ago,
-                        order_items__product=product
-                    ).values_list('user_id', flat=True).distinct()[:10]
-
-                    top_users_orders = Order.objects.filter(
-                        user_id__in=top_users,
-                        status="Completed",
-                        created_at__gte=two_weeks_ago
-                    )
-
-                    other_items = OrderItem.objects.filter(
-                        order__in=top_users_orders
-                    ).exclude(product=product)
-            else:
-                top_users = Order.objects.filter(
-                    status="Completed",
-                    created_at__gte=two_weeks_ago,
-                    order_items__product=product
-                ).values_list('user_id', flat=True).distinct()[:10]
-
-                top_users_orders = Order.objects.filter(
-                    user_id__in=top_users,
-                    status="Completed",
-                    created_at__gte=two_weeks_ago
-                )
-
-                other_items = OrderItem.objects.filter(
-                    order__in=top_users_orders
-                ).exclude(product=product)
 
             recommendations_count = other_items.values('product_id').annotate(
                 count=Count('product_id')
@@ -317,13 +301,9 @@ class ProductRecommendations(APIView):
             recommended_products = Product.objects.filter(id__in=rec_ids)
 
             product_order = {id: idx for idx, id in enumerate(rec_ids)}
+            recommended_products = sorted(recommended_products, key=lambda p: product_order.get(p.id, 99))
 
-            def get_product_order(product):
-                return product_order.get(product.id, 99)
-
-            recommended_products = sorted(recommended_products, key=get_product_order)
-
-            cache.set(cache_key, recommended_products, timeout=86400)
+            cache.set(cache_key, recommended_products, timeout=ONE_DAY)
 
         serializer = ProductSerializer(recommended_products, many=True, context={'request': request})
         return Response(serializer.data)

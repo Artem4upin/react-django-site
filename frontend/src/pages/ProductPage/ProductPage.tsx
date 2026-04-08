@@ -11,6 +11,7 @@ import { AuthContext } from '../../hooks/AuthContext';
 import {IProduct, IReview} from "../../types/product";
 import ProductReviewList from "../../components/ProductReviewList/ProductReviewList";
 import RecommendationList from "../../components/RecommendationList/RecommendationList";
+import {getErrorMsg} from "../../utils/errorMassages";
 
 function ProductPage() {
     const { id } = useParams()
@@ -28,6 +29,10 @@ function ProductPage() {
     const [editPrice, setEditPrice] = useState(0)
     const [editQuantity, setEditQuantity] = useState(0)
     const [editDescription, setEditDescription] = useState('')
+
+    const [added, setAdded] = useState(false);
+    const [addLoading, setAddLoading] = useState(false);
+    const [addError, setAddError] = useState<string | null>(null);
 
     useEffect(() => {
         if (id) loadProduct();
@@ -107,11 +112,31 @@ function ProductPage() {
         setIsEdit(false)
     }
 
-    const handleAddToCartClick = () => {
-        if (!product) return
-        if (quantity > product.quantity || quantity < 1) return;
-        addToCart(product.id, quantity);
-    }
+    const handleAddToCartClick = async () => {
+        if (!product) {
+            setAddError('Товар не найден');
+            return;
+        }
+        if (quantity > product.quantity || quantity < 1) {
+            setAddError('Не хватает товара на складе');
+            return;
+        }
+        if (addLoading) return;
+
+        setAddLoading(true);
+        setAddError(null);
+
+        try {
+            await addToCart(product.id, quantity);
+            setAdded(true);
+            setTimeout(() => setAdded(false), 2000);
+        } catch (error: any) {
+            setAddError(getErrorMsg(error) || 'Ошибка добавления в корзину');
+            setTimeout(() => setAddError(null), 3000);
+        } finally {
+            setAddLoading(false);
+        }
+    };
 
     if (loading) {
         return <Loading fullPage={true}/>
@@ -167,36 +192,39 @@ function ProductPage() {
 
                     
                 </div>
-                    {user && (
+                {user && (
                     <div className="product-page__button-container">
-                        <Button 
-                            text="Добавить в корзину" 
+                        <Button
+                            className={`add-to-cart-btn ${added ? "add-to-cart-btn--added" : ""} ${addError ? "add-to-cart-btn--error" : ""}`}
+                            text={addLoading ? "Добавление" : added ? "Добавлено" : addError ? "Ошибка" : "В корзину"}
                             onClick={handleAddToCartClick}
-                            className="add-to-cart-btn"
+                            disabled={addLoading || added || !!addError}
                         />
-                        
+                        {addError && (
+                            <span className="product-page__error">{addError}</span>
+                        )}
+
                         <div className='product-page__quantity-container'>
                             <Button className='quantity-btn'
-                            onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                            disabled={quantity <= 1}
-                            text={'-'}
+                                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                                    disabled={quantity <= 1 || addLoading}
+                                    text={'-'}
                             />
-                            <input 
-                            type="text" 
-                            
-                            className='product-page__quantity'
-                            value={quantity}
-                            readOnly
+                            <input
+                                type="text"
+                                className='product-page__quantity'
+                                value={quantity}
+                                readOnly
                             />
-                            <Button 
-                            className='quantity-btn'
-                            onClick={() => setQuantity(quantity + 1)}
-                            disabled={quantity >= product.quantity}
-                            text={'+'}
+                            <Button
+                                className='quantity-btn'
+                                onClick={() => setQuantity(quantity + 1)}
+                                disabled={quantity >= product.quantity || addLoading}
+                                text={'+'}
                             />
                         </div>
                     </div>
-                    )}
+                )}
                 </div>
             ) : (
                 <div className='product-page__edit-content'>
