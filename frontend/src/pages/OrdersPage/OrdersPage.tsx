@@ -51,13 +51,13 @@ if (loading) {
       )}
 
       <main className='orders-page__main-container'>
-        {orders.length === 0 && (
+        {orders.filter(order => isArchive ? order.is_deleted : !order.is_deleted).length === 0 && (
             <h2 className='orders-page__not-found'>
               {!isArchive ? 'Нет активных заказов' : 'Нет завершенных заказов'}
             </h2>
         )}
-        <OrderList 
-        orders={orders} 
+        <OrderList
+        orders={orders}
         isArchive={isArchive}
         onOrderClick={handleOrderClick}
         />

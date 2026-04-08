@@ -19,6 +19,7 @@ export const addToCart = async (
             await useCartStore.getState().loadCart()
         } catch (error) {
             console.error('Ошибка добавления в корзину')
+            throw error;
         }
 }
 

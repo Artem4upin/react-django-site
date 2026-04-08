@@ -1,6 +1,6 @@
 .orders-page {
-  max-width: 1000px;
-  margin: 0 auto;
+  max-width: 90%;
+  margin: 30px auto;
   & h1 {
     margin-top: 10px;
     margin-bottom: 30px;
@@ -8,6 +8,7 @@
   }
   &__not-found {
     display: flex;
+    background-color: $bg-light-gray;
     justify-content: center;
     padding-top: 30px;
     padding-bottom: 300px;

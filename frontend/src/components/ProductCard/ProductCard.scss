@@ -70,8 +70,17 @@
     padding-top: 10px;
     align-items: center;
     margin-top: auto;
-    margin-left: auto;
+    margin-right: auto;
     gap: 10px;
+    &--cart {
+      display: flex;
+      padding-top: 10px;
+      align-items: center;
+      margin-top: auto;
+      gap: 10px;
+      margin-left: auto;
+      margin-right: 0;
+    }
   }
   &__checkbox {
     display: flex;
@@ -110,6 +119,11 @@
         font-size: 12px;
       }
     }
+  }
+  &__error {
+    color: $error-color;
+    font-size: 12px;
+    text-align: center;
   }
   @media (max-width: $tablet) {
     &__title-container {

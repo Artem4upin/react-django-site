@@ -74,7 +74,7 @@ function CatalogPage() {
     return (
         <div className="catalog-page">
             <div className='catalog-page__title-content'>
-                <h1 className='catalog-page__title'>Товары</h1>
+                <h1 className='catalog-page__title'>Каталог</h1>
                 <div className='catalog-page__title-right'>
                     <div className='catalog-page__mobile-filter-button'>
                         <button onClick={() => setIsMobileFilterOpen(true)} className={'submit-btn'}>

@@ -3,10 +3,11 @@ import Button from "../UI/Buttons/Button"
 import {addToCart, deleteFromCart, goToProduct} from "../../utils/functions";
 import {ICartItem} from "../../types/cart";
 import {useNavigate} from "react-router-dom";
-import {useContext} from "react";
+import { useState, useContext } from "react";
 import {IProduct} from "../../types/product";
 import {AuthContext} from "../../hooks/AuthContext";
 import { Rating } from '@mui/material';
+import {getErrorMsg} from "../../utils/errorMassages";
 
 interface ProductCardProps {
     data: IProduct | ICartItem;
@@ -15,9 +16,10 @@ interface ProductCardProps {
     isSelected?: boolean;
     onCheckboxChange?: (id: number, checked: boolean) => void;
 }
+
 function ProductCard({
     data,
-    isCart=false,
+    isCart = false,
     onDelete,
     isSelected,
     onCheckboxChange
@@ -29,26 +31,47 @@ function ProductCard({
     const image = isCart ? (data as ICartItem).image_path : (data as IProduct).image_path;
     const quantity = isCart ? (data as ICartItem).quantity : undefined;
     const parameters = !isCart ? (data as IProduct).parameters : undefined;
-    const rating = isCart ? (0) : (data as IProduct).rating_avg;
+    const rating = isCart ? 0 : (data as IProduct).rating_avg;
 
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
+
+    const [added, setAdded] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<any>(null)
+
     const handleProductClick = () => goToProduct(navigate, id);
+
     const handleDelete = () => {
         if (isCart && onDelete) {
-        deleteFromCart(id, onDelete)
+            deleteFromCart(id, onDelete);
         }
     };
+
     const handleCheckboxChange = (checked: boolean) => {
         if (isCart && onCheckboxChange) {
-            onCheckboxChange(id, checked)
+            onCheckboxChange(id, checked);
         }
     }
 
-    const handleAddToCart = () => addToCart(id, 1);
+    const handleAddToCart = async () => {
+        if (loading) return;
+
+        setLoading(true);
+        setError(null);
+        try {
+            await addToCart(id, 1);
+            setAdded(true);
+            setTimeout(() => setAdded(false), 2000);
+        } catch (error: any) {
+            setError(getErrorMsg(error) || 'Ошибка добавления в корзину');
+            setTimeout(() => setError(null), 3000);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-
-
         <div className="product-card">
             <div className="product-card__image-container">
                 {image ? (
@@ -94,27 +117,38 @@ function ProductCard({
                         </div>
                     )}
                 </div>
+
                 {isCart ? (
-                <div className="product-card__cart-actions">
-
-                    <div className="product-card__checkbox">
-                        <p className="product-card__checkbox-title">В заказ</p>
-                        <input
-                            className="product-card__checkbox-input"
-                            type="checkbox"
-                            checked={isSelected}
-                            onChange={(e) => handleCheckboxChange(e.target.checked)}
-                        />
+                    <div className="product-card__cart-actions--cart">
+                        <div className="product-card__checkbox">
+                            <p className="product-card__checkbox-title">В заказ</p>
+                            <input
+                                className="product-card__checkbox-input"
+                                type="checkbox"
+                                checked={isSelected}
+                                onChange={(e) => handleCheckboxChange(e.target.checked)}
+                            />
+                        </div>
+                        <Button className="exit-btn" text="Удалить" onClick={handleDelete} />
                     </div>
-
-                    <Button className="exit-btn" text="Удалить" onClick={handleDelete} />
-
-                </div>
-                ) : (user && <Button className="add-to-cart-btn" text="В корзину" onClick={handleAddToCart} />
+                ) : (
+                    user && (
+                        <div className='product-card__cart-actions'>
+                            <Button
+                                className={`add-to-cart-btn ${added ? "add-to-cart-btn--added" : ""} ${error ? "add-to-cart-btn--error" : ""}`}
+                                text={loading ? "Добавление" : added ? "Добавлено" : error ? "Ошибка" : "В корзину"}
+                                onClick={handleAddToCart}
+                                disabled={added || loading || error}
+                            />
+                            {error && (
+                                <span className="product-card__error">{error}</span>
+                            )}
+                        </div>
+                    )
                 )}
             </div>
         </div>
     );
 }
 
-export default ProductCard
+export default ProductCard;

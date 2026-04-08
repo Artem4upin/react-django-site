@@ -3,15 +3,17 @@ import {FieldError, UseFormRegister} from "react-hook-form";
 
 interface IInputFormProps {
   id?: string;
-  name: string;
+  name?: string;
   label?: string | React.ReactNode;
   type?: string;
-  register: UseFormRegister<any>;
+  register?: UseFormRegister<any>;
   validation?: object;
   error?: FieldError;
   placeholder?: string;
   autoComplete?: string;
   className?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function InputForm({
@@ -24,7 +26,9 @@ function InputForm({
   error,
   placeholder = '',
   autoComplete = 'on',
-  className = 'input-form'
+  className = 'input-form',
+  value,
+  onChange,
 }: IInputFormProps) {
   if (type == 'checkbox') {
     return (
@@ -33,7 +37,7 @@ function InputForm({
               id={id}
               type={type}
               className={className}
-              {...register(name, validation)}
+              {...(register ? register(name, validation) : {})}
               placeholder={placeholder}
               autoComplete={autoComplete}
           />
@@ -49,6 +53,10 @@ function InputForm({
     )
   }
 
+  const inputProps = value !== undefined && onChange
+    ? { value, onChange }
+    : (register ? register(name, validation) : {});
+
   return (
     <div className='input-form'>
       {label && (
@@ -60,7 +68,7 @@ function InputForm({
         id={id}
         type={type}
         className={className}
-        {...register(name, validation)}
+        {...inputProps}
         placeholder={placeholder}
         autoComplete={autoComplete}
       />

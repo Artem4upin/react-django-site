@@ -23,10 +23,9 @@
         font-size: 18px;
         color: $secondary-text-color;
         text-align: center;
-        padding: 40px;
-        background-color: $bg-main-color;
+        padding: 40px 40px 300px;
         border-radius: 8px;
-        margin-bottom: 200px;
+        background-color: $bg-light-gray;
     }
 
     &__selected-total {

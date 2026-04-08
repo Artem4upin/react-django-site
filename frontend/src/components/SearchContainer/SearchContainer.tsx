@@ -33,6 +33,7 @@ function SearchContainer({
                 />
                 <SearchDropdown
                     results={searchResult}
+                    setResults={setSearchResult}
                     isDropdownOpen={isDropdownOpen}
                     setIsDropdownOpen={setIsDropdownOpen}
                     hasSearching={hasSearching}

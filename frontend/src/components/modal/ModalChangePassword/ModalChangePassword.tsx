@@ -63,8 +63,8 @@ function ModalChangePassword ({showModal = true, setShowModal}: ModalChangePassw
     if (!showModal) return
 
     return (
-        <div className="modal-change-password">
-            <div className="modal-change-password__main-container">
+        <div className="modal-change-password" onClick={() => { reset(); setShowModal(false) }}>
+            <div className="modal-change-password__main-container" onClick={(e) => e.stopPropagation()}>
                 <form className='modal-change-password__change-password-form' onSubmit={handleSubmit(onSubmit)}>
                     <span>Смена пароля</span>
 

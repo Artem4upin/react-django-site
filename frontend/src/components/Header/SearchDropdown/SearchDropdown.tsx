@@ -2,9 +2,11 @@ import {IProduct} from "../../../types/product";
 import "./SearchDropdown.scss"
 import {goToProduct} from "../../../utils/functions";
 import {useNavigate} from "react-router-dom";
+import {useEffect, useRef} from "react";
 
 interface SearchDropdownProps {
     results: IProduct[];
+    setResults: (results: IProduct[]) => void;
     isDropdownOpen?: boolean;
     setIsDropdownOpen: (isOpen: boolean) => void;
     hasSearching: boolean;
@@ -12,15 +14,35 @@ interface SearchDropdownProps {
 
 function SearchDropdown({
     results,
+    setResults,
     isDropdownOpen,
     setIsDropdownOpen,
     hasSearching,
     }: SearchDropdownProps) {
 
     const navigate = useNavigate();
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false);
+                setResults([])
+            }
+        };
+
+        if (isDropdownOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isDropdownOpen, setIsDropdownOpen]);
+
 
     return (
-        <div>
+        <div ref={dropdownRef}>
             {isDropdownOpen && hasSearching && (
                 <div className="search-dropdown">
                     {results.length > 0 ? (

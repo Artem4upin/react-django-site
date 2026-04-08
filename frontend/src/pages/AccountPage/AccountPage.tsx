@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { api } from "../../api"
 import './AccountPage.scss'
 import { AuthContext } from "../../hooks/AuthContext";
@@ -10,6 +10,7 @@ import Button from "../../components/UI/Buttons/Button";
 import InputForm from "../../components/UI/Inputs/InputForm";
 import {IUser} from "../../types/user";
 import {EMAIL_VALIDATION, PHONE_VALIDATION} from "../../utils/regular";
+import { formatPhone, parsePhone, extractDigit } from "../../utils/phone";
 import OrdersIcon from "../../components/icons/OrdersIcon";
 import OrderManagmentIcon from "../../components/icons/OrderManagmentIcon";
 import RoleIcon from "../../components/icons/RoleIcon";
@@ -32,6 +33,7 @@ function AccountPage() {
     const {
         register,
         handleSubmit,
+        control,
         formState: { errors, isSubmitting },
         reset,
     } = useForm<IFormData>({
@@ -58,7 +60,7 @@ function AccountPage() {
             reset({
                 username: userData.username || '',
                 email: userData.email || '',
-                phone: userData.phone || '',
+                phone: formatPhone(userData.phone || ''),
                 first_name: userData.first_name || '',
                 last_name: userData.last_name || '',
             })
@@ -70,6 +72,10 @@ function AccountPage() {
     };
 
     const updateUserData = async (data: IFormData) => {
+        const phoneDigits = extractDigit(data.phone)
+        if (phoneDigits) {
+            data.phone = parsePhone(data.phone)
+        }
         try {
             const response = await api.patch('/auth/update-user-data/', data)
             setSaveSuccess(true)
@@ -235,21 +241,28 @@ function AccountPage() {
                                     </div>
                                     
                                     <div className="account-page__form-group">
-                                        <InputForm
-                                            id="phone"
+                                        <Controller
                                             name="phone"
-                                            label="Номер телефона"
-                                            type="tel"
-                                            register={register}
-                                            validation={{
-                                                pattern: {
-                                                    value: PHONE_VALIDATION,
-                                                    message: 'Введите телефон в формате 79999999999'
+                                            control={control}
+                                            rules={{
+                                                validate: (value: string) => {
+                                                    if (!value) return true
+                                                    const digits = extractDigit(value)
+                                                    return PHONE_VALIDATION.test(digits) || 'Некорректный номер телефона'
                                                 }
                                             }}
-                                            error={errors.phone}
-                                            placeholder="79999999999"
-                                            autoComplete="tel"
+                                            render={({ field, fieldState }) => (
+                                                <InputForm
+                                                    id="phone"
+                                                    label="Номер телефона"
+                                                    type="tel"
+                                                    value={field.value || ''}
+                                                    onChange={(e) => field.onChange(formatPhone(e.target.value))}
+                                                    error={fieldState.error}
+                                                    placeholder="+7 (___) ___-__-__"
+                                                    autoComplete="tel"
+                                                />
+                                            )}
                                         />
                                     </div>
                                 </div>

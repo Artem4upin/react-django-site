@@ -5,11 +5,11 @@
     right: 0;
     max-height: 400px;
     overflow-y: auto;
-    background: $bg-main-color;
-    border: 1px solid $border-main-color;
+    background: $bg-light-gray;
+    border: 4px solid $border-main-color;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    color: #333;
+    color: $secondary-text-color;
     z-index: 1000;
     padding: 8px 0;
     &__item {
