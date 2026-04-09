@@ -25,7 +25,7 @@ function Input({
     onInput,
     placeholder = "",
     required = false,
-    pattern = "",
+    pattern,
     className = 'input',
     autoComplete = 'on'
 }: IInputProps) {
@@ -51,6 +51,7 @@ function Input({
         required={required}
         pattern={pattern}
         autoComplete={autoComplete}
+
       />
     </div>
   );

@@ -10,7 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import FilterSidebar from "./FilterSidebar/FilterSidebar";
 import FilterIcon from "../../components/icons/FilterIcon";
+import { useLocation } from 'react-router-dom';
 import {
+    useCatalogStore,
     useCurrentFilters,
     useLoadFilterData,
     useLoading,
@@ -36,15 +38,24 @@ function CatalogPage() {
     const { user } = useContext(AuthContext)
     const navigate = useNavigate()
 
+    const location = useLocation();
+    const searchResults = location.state?.searchResults;
+
     const loadProducts = useLoadProducts();
     const loadFilterData = useLoadFilterData();
     const loadMoreProducts = useLoadMoreProducts();
     const setIsMobileFilterOpen = useSetIsMobileFilterSidebarOpen();
 
     useEffect(() => {
-        loadFilterData()
-        loadProducts(1, currentFilters);
-    }, [])
+        loadFilterData();
+
+        if (searchResults) {
+            useCatalogStore.getState().setProducts(searchResults);
+            useCatalogStore.getState().setNextPage('');
+        } else {
+            loadProducts(1, currentFilters);
+        }
+    }, [searchResults]);
 
     const lastProduct = (div: HTMLDivElement | null) => {
         if (loadingMore) return

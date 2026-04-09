@@ -12,6 +12,10 @@
     color: $secondary-text-color;
     z-index: 1000;
     padding: 8px 0;
+    &__container {
+        display: flex;
+        flex-direction: column;
+    }
     &__item {
         display: flex;
         padding: 10px 16px;
@@ -66,6 +70,12 @@
         font-size: 14px;
         font-weight: 600;
         color: $primary-color;
+    }
+    &__show-more {
+        width: 50%;
+        font-size: 12px;
+        align-self: center;
+        margin-top: 10px;
     }
     &--empty {
         padding: 20px;

@@ -172,6 +172,7 @@ function CreateProductPage() {
                     <label>Название товара *</label>
                     <Input
                         value={name}
+                        type="text"
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Название"
                         required
