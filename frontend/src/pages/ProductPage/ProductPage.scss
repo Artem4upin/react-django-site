@@ -143,6 +143,11 @@
             justify-content: center;
         }
     }
+    @media (max-width: $tablet) {
+        &__edit-content {
+            width: 100%;
+        }
+    }
 }
 
 
