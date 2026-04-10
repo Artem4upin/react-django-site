@@ -12,6 +12,8 @@ import {IProduct, IReview} from "../../types/product";
 import ProductReviewList from "../../components/ProductReviewList/ProductReviewList";
 import RecommendationList from "../../components/RecommendationList/RecommendationList";
 import {getErrorMsg} from "../../utils/errorMassages";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import SuccessMessage from "../../components/SuccessMessage/SuccessMessage";
 
 function ProductPage() {
     const { id } = useParams()
@@ -30,9 +32,11 @@ function ProductPage() {
     const [editQuantity, setEditQuantity] = useState(0)
     const [editDescription, setEditDescription] = useState('')
 
-    const [added, setAdded] = useState(false);
+    const [addedToCart, setAddedToCart] = useState(false);
     const [addLoading, setAddLoading] = useState(false);
-    const [addError, setAddError] = useState<string | null>(null);
+    const [addToCartError, setAddToCartError] = useState<string | null>(null);
+    const [saveProductError, setSaveProductError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
     useEffect(() => {
         if (id) loadProduct();
@@ -75,7 +79,7 @@ function ProductPage() {
 
     const saveEdit = async () => {
         if (user?.user_type !== 'Manager') {
-            alert('Только менеджер может редактировать товары')
+            setSaveProductError('Ошибка сохранения изменений')
             return
         }
 
@@ -91,12 +95,13 @@ function ProductPage() {
             const response = await api.patch(`/products/${id}/`, dataToUpdate)
             
             setProduct(response.data)
-            setIsEdit(false)
-            alert('Товар успешно обновлен!')
+            setSuccessMessage('Товар успешно обновлен')
+            setTimeout(() => {setSuccessMessage(null) }, 5000)
             
         } catch (error: any) {
             console.error('Ошибка сохранения:', error)
-            alert('Ошибка сохранения: ' + (error.response?.data?.error || error.message))
+            setSaveProductError(`Ошибка сохранения: ${getErrorMsg(error)}`)
+            setTimeout(() => {setSaveProductError(null) }, 5000)
         } finally {
             setIsSaving(false)
         }
@@ -114,25 +119,25 @@ function ProductPage() {
 
     const handleAddToCartClick = async () => {
         if (!product) {
-            setAddError('Товар не найден');
+            setAddToCartError('Товар не найден');
             return;
         }
         if (quantity > product.quantity || quantity < 1) {
-            setAddError('Не хватает товара на складе');
+            setAddToCartError('Не хватает товара на складе');
             return;
         }
         if (addLoading) return;
 
         setAddLoading(true);
-        setAddError(null);
+        setAddToCartError(null);
 
         try {
             await addToCart(product.id, quantity);
-            setAdded(true);
-            setTimeout(() => setAdded(false), 2000);
+            setAddedToCart(true);
+            setTimeout(() => setAddedToCart(false), 2000);
         } catch (error: any) {
-            setAddError(getErrorMsg(error) || 'Ошибка добавления в корзину');
-            setTimeout(() => setAddError(null), 3000);
+            setAddToCartError(getErrorMsg(error) || 'Ошибка добавления в корзину');
+            setTimeout(() => setAddToCartError(null), 3000);
         } finally {
             setAddLoading(false);
         }
@@ -195,14 +200,12 @@ function ProductPage() {
                 {user && (
                     <div className="product-page__button-container">
                         <Button
-                            className={`add-to-cart-btn ${added ? "add-to-cart-btn--added" : ""} ${addError ? "add-to-cart-btn--error" : ""}`}
-                            text={addLoading ? "Добавление" : added ? "Добавлено" : addError ? "Ошибка" : "В корзину"}
+                            className={`add-to-cart-btn ${addedToCart ? "add-to-cart-btn--added" : ""} ${addToCartError ? "add-to-cart-btn--error" : ""}`}
+                            text={addLoading ? "Добавление" : addedToCart ? "Добавлено" : addToCartError ? "Ошибка" : "В корзину"}
                             onClick={handleAddToCartClick}
-                            disabled={addLoading || added || !!addError}
+                            disabled={addLoading || addedToCart || !!addToCartError}
                         />
-                        {addError && (
-                            <span className="product-page__error">{addError}</span>
-                        )}
+                        {addToCartError && (<ErrorMessage className="product-page__error-message" errorMsg={addToCartError} />)}
 
                         <div className='product-page__quantity-container'>
                             <Button className='quantity-btn'
@@ -284,6 +287,8 @@ function ProductPage() {
                             disabled={isSaving}
                         />
                     </div>
+                    {saveProductError && (<ErrorMessage errorMsg={saveProductError} />)}
+                    {successMessage && (<SuccessMessage successMsg={successMessage} />)}
                 </div>
                 )}
                 {user && user.user_type === 'Manager' && !isEdit && (

@@ -11,7 +11,7 @@
     color: $error-color;
     padding: 10px 15px;
     border-radius: 4px;
-    margin-bottom: 20px;
+    margin: 20px;
     border: 1px solid $border-main-color;
   }
   &__success-message {
@@ -55,12 +55,12 @@
     }
     & p {
       margin: 0;
-      color: #666;
+      color: $secondary-text-color;
     }
   }
   &__user-details {
     margin-top: 10px;
-    color: #777;
+    color: $secondary-text-color;
     font-size: 14px;
     & p {
       margin: 2px 0;
@@ -74,7 +74,7 @@
   }
   &__role-select {
     padding: 5px 10px;
-    border: 1px solid #ddd;
+    border: 1px solid $border-main-color;
     border-radius: 4px;
     background: white;
   }

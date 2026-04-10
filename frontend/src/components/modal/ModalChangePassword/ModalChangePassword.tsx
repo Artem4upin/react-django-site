@@ -4,6 +4,7 @@ import { api } from '../../../api'
 import InputForm from '../../UI/Inputs/InputForm';
 import Button from '../../UI/Buttons/Button';
 import './ModalChangePassword.scss'
+import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 
 interface IChangePasswordInputs {
     currentPassword: string;
@@ -71,7 +72,7 @@ function ModalChangePassword ({showModal = true, setShowModal}: ModalChangePassw
                     {errorPassword && (
                         errorPassword === 'Пароль изменен'
                             ? (null)
-                            : <p className='modal-change-password__error-message'>Ошибка: {errorPassword}</p>
+                            : <ErrorMessage className='modal-change-password__error-message' errorMsg={errorPassword} />
                     )}
                     
                     <InputForm

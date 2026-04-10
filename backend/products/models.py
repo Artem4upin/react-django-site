@@ -81,7 +81,7 @@ class Review(models.Model):
     rating = models.PositiveIntegerField(choices=RATING_CHOICES)
     comment = models.TextField(max_length=500,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    image_path = models.ImageField(upload_to='reviews/', blank=True, null=True)
+    image_path = models.ImageField(upload_to='reviews/', blank=True, null=True, max_length=500)
 
     class Meta:
         unique_together = ['user', 'product']

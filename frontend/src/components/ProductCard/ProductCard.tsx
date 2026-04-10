@@ -8,6 +8,7 @@ import {IProduct} from "../../types/product";
 import {AuthContext} from "../../hooks/AuthContext";
 import { Rating } from '@mui/material';
 import {getErrorMsg} from "../../utils/errorMassages";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 interface ProductCardProps {
     data: IProduct | ICartItem;
@@ -38,7 +39,7 @@ function ProductCard({
 
     const [added, setAdded] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<any>(null)
+    const [addToCartError, setAddToCartError] = useState<any>(null)
 
     const handleProductClick = () => goToProduct(navigate, id);
 
@@ -58,14 +59,14 @@ function ProductCard({
         if (loading) return;
 
         setLoading(true);
-        setError(null);
+        setAddToCartError(null);
         try {
             await addToCart(id, 1);
             setAdded(true);
             setTimeout(() => setAdded(false), 2000);
         } catch (error: any) {
-            setError(getErrorMsg(error) || 'Ошибка добавления в корзину');
-            setTimeout(() => setError(null), 3000);
+            setAddToCartError(getErrorMsg(error) || 'Ошибка добавления в корзину');
+            setTimeout(() => setAddToCartError(null), 3000);
         } finally {
             setLoading(false);
         }
@@ -135,13 +136,13 @@ function ProductCard({
                     user && (
                         <div className='product-card__cart-actions'>
                             <Button
-                                className={`add-to-cart-btn ${added ? "add-to-cart-btn--added" : ""} ${error ? "add-to-cart-btn--error" : ""}`}
-                                text={loading ? "Добавление" : added ? "Добавлено" : error ? "Ошибка" : "В корзину"}
+                                className={`add-to-cart-btn ${added ? "add-to-cart-btn--added" : ""} ${addToCartError ? "add-to-cart-btn--error" : ""}`}
+                                text={loading ? "Добавление" : added ? "Добавлено" : addToCartError ? "Ошибка" : "В корзину"}
                                 onClick={handleAddToCart}
-                                disabled={added || loading || error}
+                                disabled={added || loading || addToCartError}
                             />
-                            {error && (
-                                <span className="product-card__error">{error}</span>
+                            {addToCartError && (
+                                <ErrorMessage className="product-card__error" errorMsg={addToCartError} />
                             )}
                         </div>
                     )

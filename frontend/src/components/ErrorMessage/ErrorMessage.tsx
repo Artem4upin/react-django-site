@@ -1,10 +1,18 @@
 import "./ErrorMessage.scss"
 
-function ErrorMessage({ errorMsg }: { errorMsg: string }) {
+interface IErrorMessageProps {
+    errorMsg: string | null;
+    className?: string;
+}
+
+function ErrorMessage({
+    errorMsg,
+    className = 'error-message',
+}: IErrorMessageProps) {
 
     return (
         <div>
-            {errorMsg && <h2 className='error-message'>{errorMsg}</h2>}
+            {errorMsg && <h2 className={className}>{errorMsg}</h2>}
         </div>
     )
 }

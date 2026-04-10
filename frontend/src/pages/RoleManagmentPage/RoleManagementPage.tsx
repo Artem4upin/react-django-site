@@ -5,11 +5,13 @@ import Loading from '../../components/UI/Loading/Loading';
 import Button from '../../components/UI/Buttons/Button';
 import { AuthContext } from '../../hooks/AuthContext';
 import {IUser, TUserType} from "../../types/user";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import {getErrorMsg} from "../../utils/errorMassages";
 
 function RoleManagementPage() {
   const [users, setUsers] = useState<IUser[]>([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
   const { user } = useContext(AuthContext)
 
@@ -20,7 +22,7 @@ function RoleManagementPage() {
 
   const loadUsers = async () => {
     setLoading(true)
-    setError('')
+    setErrorMessage('')
     try {
       const response = await api.get<{users: IUser[]}>('/auth/users/')
         const filteredUsers = response.data.users.filter(
@@ -30,14 +32,14 @@ function RoleManagementPage() {
       setUsers(filteredUsers)
     } catch (error: any) {
       console.error('Ошибка загрузки пользователей:', error)
-      setError('Ошибка загрузки пользователей: ' + (error.response?.data?.error || error.message))
+      setErrorMessage(`Ошибка загрузки пользователей: ${(getErrorMsg(error))}`)
     } finally {
       setLoading(false)
     }
   }
 
   const handleRoleChange = async (userId: number, newRole: TUserType) => {
-    setError('')
+    setErrorMessage('')
     setSuccessMessage('')
     
     try {
@@ -58,7 +60,7 @@ function RoleManagementPage() {
       
     } catch (error: any) {
       console.error('Ошибка изменения роли:', error)
-      setError('Ошибка изменения роли: ' + (error.response?.data?.error || error.message))
+      setErrorMessage(`Ошибка изменения роли: ${(getErrorMsg(error))}`)
     }
   }
 
@@ -69,11 +71,9 @@ function RoleManagementPage() {
   return (
     <main className="role-management-page">
       <h1>Роли пользователей</h1>
-      
-      {error && (
-        <div className="role-management-page__error-message">
-          {error}
-        </div>
+
+      {errorMessage && (
+        <ErrorMessage className="role-management-page__error-message" errorMsg={errorMessage}/>
       )}
       {successMessage && (
         <div className="role-management-page__success-message">

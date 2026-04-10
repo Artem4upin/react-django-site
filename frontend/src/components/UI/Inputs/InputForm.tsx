@@ -1,5 +1,7 @@
 import React from 'react';
 import {FieldError, UseFormRegister} from "react-hook-form";
+import {getErrorMsg} from "../../../utils/errorMassages";
+import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 
 interface IInputFormProps {
   id?: string;
@@ -47,7 +49,7 @@ function InputForm({
               </label>
           )}
           {error && (
-              <div className="input-form__error">{error.message}</div>
+              <ErrorMessage className="input-form__error" errorMsg={error.message || 'Ошибка чекбокса формы'} />
           )}
         </div>
     )
@@ -73,7 +75,7 @@ function InputForm({
         autoComplete={autoComplete}
       />
       {error && (
-        <div className="input-form__error">{error.message}</div>
+          <ErrorMessage className="input-form__error" errorMsg={error.message || 'Ошибка поля формы'} />
       )}
     </div>
   );

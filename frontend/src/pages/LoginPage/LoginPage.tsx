@@ -6,6 +6,7 @@ import './LoginPage.scss'
 import { AuthContext } from '../../hooks/AuthContext'
 import Button from '../../components/UI/Buttons/Button'
 import InputForm from '../../components/UI/Inputs/InputForm'
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 interface ILoginFormData {
   username: string;
@@ -86,9 +87,9 @@ function LoginPage() {
   return (
     <div className="login-page">
       <div className="login-page__auth-container">
-        <h2>{isRegistration ? 'Регистрация' : 'Вход'}</h2>
+        <h2 className='login-page__title'>{isRegistration ? 'Регистрация' : 'Вход'}</h2>
         
-        {responseError && <div className="login-page__error-message">{responseError}</div>}
+        {responseError && <ErrorMessage className="login-page__error-message" errorMsg={responseError} />}
         
         <form className='login-page__auth-form' onSubmit={handleSubmit(onSubmit)}>
           {isRegistration && (
