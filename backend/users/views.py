@@ -152,6 +152,8 @@ def register_view(request):
         )
         
         user.user_type = 'Admin'
+        user.is_staff = True
+        user.is_superuser = True
         user.save()
 
         token, created = Token.objects.get_or_create(user=user)
