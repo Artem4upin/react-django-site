@@ -1,12 +1,15 @@
 {
   "builds": [
     {
+    {
       "src": "backend/wsgi.py",
       "use": "@vercel/python",
       "config": {
-        "maxDuration": 10
+        "maxDuration": 10,
+        "installCommand": "apt-get update && apt-get install -y libpq-dev && pip install -r requirements.txt"
       }
     }
+
   ],
   "routes": [
     {
