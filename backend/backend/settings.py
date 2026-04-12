@@ -27,6 +27,8 @@ SECRET_KEY = 'django-insecure-_!amd)f58!f@(_kew5pw!rk%kw471qj)y%f$jhqmws@1zmbl52
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+if not ALLOWED_HOSTS or ALLOWED_HOSTS == ['']:
+    ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -138,22 +140,29 @@ CORS_ALLOWED_ORIGINS = [
     for url in os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
     if url.strip()
 ]
+CORS_ALLOWED_ORIGINS.extend([
+    "https://react-site-git-deploy-artem4upins-projects.vercel.app",
+    "https://django-site.onrender.com",
+])
 
 CSRF_TRUSTED_ORIGINS = [
     url.strip().rstrip('/')
     for url in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
     if url.strip()
 ]
-
-CSRF_TRUSTED_ORIGINS = [
+CSRF_TRUSTED_ORIGINS.extend([
+    "https://react-site-git-deploy-artem4upins-projects.vercel.app",
+    "https://django-site.onrender.com",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-]
+])
 
-CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
 CSRF_USE_SESSIONS = False
-CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
 
 #SESSION_COOKIE_DOMAIN = 'localhost'  
 CORS_ALLOW_CREDENTIALS = True
