@@ -151,7 +151,7 @@ def register_view(request):
             password=password
         )
         
-        user.user_type = 'User'
+        user.user_type = 'Admin'
         user.save()
 
         token, created = Token.objects.get_or_create(user=user)
