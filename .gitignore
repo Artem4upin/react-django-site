@@ -33,6 +33,8 @@ venv/
 env/
 
 # Frontend (React/Node)
+staticfiles/
+media/
 node_modules/
 /build
 /dist
