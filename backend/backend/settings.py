@@ -133,7 +133,17 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
+CORS_ALLOWED_ORIGINS = [
+    url.strip().rstrip('/')
+    for url in os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
+    if url.strip()
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    url.strip().rstrip('/')
+    for url in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
+    if url.strip()
+]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
