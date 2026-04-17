@@ -23,7 +23,6 @@ function OrdersPage() {
       const response = await api.get('/orders/user-orders/')
       setOrders(response.data)
       setLoading(false)
-      console.log(response.data)
     } catch (error) {
       console.error('Ошибка загрузки заказов:', error)
     }

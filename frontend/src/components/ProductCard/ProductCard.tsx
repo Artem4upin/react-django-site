@@ -66,7 +66,7 @@ function ProductCard({
             setAdded(true);
             setTimeout(() => setAdded(false), 2000);
         } catch (error: any) {
-            setAddToCartError(getErrorMsg(error) || 'Ошибка добавления в корзину');
+            setAddToCartError(error.response.data.error || 'Ошибка добавления в корзину');
             setTimeout(() => setAddToCartError(null), 3000);
         } finally {
             setLoading(false);
