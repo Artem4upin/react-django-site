@@ -26,7 +26,8 @@ function ProductCard({
     onCheckboxChange
 }: ProductCardProps) {
 
-    const id = isCart ? (data as ICartItem).id : (data as IProduct).id;
+    const productId = isCart ? (data as ICartItem).product : (data as IProduct).id;
+    const cartItemId = isCart ? (data as ICartItem).id : undefined;
     const name = isCart ? (data as ICartItem).product_name : (data as IProduct).name;
     const price = isCart ? (data as ICartItem).product_price : (data as IProduct).price;
     const image = isCart ? (data as ICartItem).image_path : (data as IProduct).image_path;
@@ -41,17 +42,17 @@ function ProductCard({
     const [loading, setLoading] = useState(false);
     const [addToCartError, setAddToCartError] = useState<any>(null)
 
-    const handleProductClick = () => goToProduct(navigate, id);
+    const handleProductClick = () => goToProduct(navigate, productId);
 
     const handleDelete = () => {
-        if (isCart && onDelete) {
-            deleteFromCart(id, onDelete);
+        if (isCart && onDelete && cartItemId !== undefined) {
+            deleteFromCart(cartItemId, onDelete);
         }
     };
 
     const handleCheckboxChange = (checked: boolean) => {
-        if (isCart && onCheckboxChange) {
-            onCheckboxChange(id, checked);
+        if (isCart && onCheckboxChange && cartItemId !== undefined) {
+            onCheckboxChange(cartItemId, checked);
         }
     }
 
@@ -61,7 +62,7 @@ function ProductCard({
         setLoading(true);
         setAddToCartError(null);
         try {
-            await addToCart(id, 1);
+            await addToCart(productId, 1);
             setAdded(true);
             setTimeout(() => setAdded(false), 2000);
         } catch (error: any) {

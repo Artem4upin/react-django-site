@@ -205,6 +205,7 @@ function ProductPage() {
                             onClick={handleAddToCartClick}
                             disabled={addLoading || addedToCart || !!addToCartError}
                         />
+
                         {addToCartError && (<ErrorMessage className="product-page__error-message" errorMsg={addToCartError} />)}
 
                         <div className='product-page__quantity-container'>
@@ -226,6 +227,7 @@ function ProductPage() {
                                 text={'+'}
                             />
                         </div>
+                        <p>{`Всего: ${product.quantity}`}</p>
                     </div>
                 )}
                 </div>

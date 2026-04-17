@@ -94,7 +94,7 @@ function CartPage() {
                     <div>
                         <ProductList 
                         className={"products-list_one-column"}
-                        products = {cartItems} 
+                        products = {cartItems}
                         isCart={true} 
                         onItemDelete={onItemDelete}
                         selectedItems={selectedCartItems}

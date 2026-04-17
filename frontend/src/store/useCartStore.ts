@@ -31,6 +31,7 @@ export const useCartStore = create<ICartStore>((set) => ({
                 items: data,
                 isLoading: false
                 })
+            console.log(data)
         } catch (error) {
             set({ 
                 items: [],
