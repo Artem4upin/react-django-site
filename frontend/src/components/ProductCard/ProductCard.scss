@@ -98,6 +98,7 @@
     width: 25px;
     height: 25px;
     cursor: pointer;
+    accent-color: $primary-color;
   }
   @media (max-width: $desktop-sm) {
     min-height: 100px;

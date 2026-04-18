@@ -1,38 +1,106 @@
 .about-page {
+    min-height: calc(100vh - 200px);
     padding: 40px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+
     &__container {
-        max-width: 800px;
+        max-width: 900px;
         margin: 0 auto;
-        background-color: $bg-main-color ;
-        padding: 10px;
-        border: 2px solid $border-main-color;
-        border-radius: 10px;
+        background: $bg-main-color;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
+
     &__title {
-        font-size: 36px;
-        margin-bottom: 30px;
+        font-size: 42px;
+        font-weight: 700;
         text-align: center;
+        padding: 40px 20px 20px;
+        margin: 0;
+        color: $primary-color;
     }
+
     &__content {
+        padding: 20px 40px 40px;
+    }
+
+    &__description {
+        font-size: 18px;
+        line-height: 1.7;
+        color: $main-text-color;
+        margin-bottom: 30px;
+    }
+
+    &__section-title {
+        font-size: 28px;
+        font-weight: 600;
+        margin: 35px 0 20px;
+        padding-bottom: 10px;
+        border-bottom: 3px solid $primary-color;
+    }
+
+    &__advantages-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0 30px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+    }
+
+    &__advantage-item {
+        padding: 12px 20px;
+        background: rgba($primary-color, 0.08);
+        border-radius: 12px;
         font-size: 16px;
-        line-height: 1.6;
-        & h2 {
-            font-size: 24px;
-            margin-top: 30px;
-            margin-bottom: 15px;
+        font-weight: 500;
+        color: $secondary-text-color;
+        text-align: center;
+        position: relative;
+
+        &::before {
+            position: absolute;
+            left: 20px;
             color: $primary-color;
+            font-weight: bold;
+            font-size: 18px;
         }
-        & p {
-            margin-bottom: 15px;
+    }
+
+    &__contact-item {
+        margin: 10px 0;
+        padding: 10px 15px;
+        background: $bg-light-gray;
+        border-radius: 10px;
+        font-size: 16px;
+
+        strong {
+            color: $primary-color;
+            margin-right: 10px;
         }
-        & ul {
-            margin-left: 20px;
-            margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+        padding: 20px;
+
+        &__title {
+            font-size: 32px;
+            padding-top: 30px;
         }
-        & li {
-            margin-bottom: 8px;
+
+        &__content {
+            padding: 20px;
+        }
+
+        &__description {
+            font-size: 16px;
+        }
+
+        &__section-title {
+            font-size: 24px;
+        }
+
+        &__advantages-list {
+            grid-template-columns: 1fr;
         }
     }
 }
