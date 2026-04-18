@@ -9,9 +9,9 @@
     text-decoration: none;
     cursor: pointer;
     &:hover {
-      color: $secondary-color;
+      color: darken($bg-secondary-color, 20%);
       svg path {
-        fill: $secondary-color
+        fill: darken($bg-secondary-color, 20%);
       }
     }
     svg {

@@ -16,9 +16,9 @@
       text-overflow: ellipsis;
     }
     &:hover {
-      color: $secondary-color;
+      color: darken($bg-secondary-color, 20%);
       svg {
-        stroke: $secondary-color;
+        stroke: darken($bg-secondary-color, 20%);
       }
     }
     svg {

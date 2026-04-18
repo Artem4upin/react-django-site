@@ -61,6 +61,10 @@
     font-size: 30px;
     font-weight:bold;
     margin-right: 10px;
+    color: $white-link-color;
+    &:hover {
+      color: darken($bg-secondary-color, 10%);
+    }
     @media (max-width: $desktop-sm) {
       font-size: 18px;
     }

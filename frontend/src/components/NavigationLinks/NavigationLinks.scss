@@ -16,7 +16,7 @@
       margin: 0 10px;
       flex-wrap: nowrap;
       &:hover{
-        color: $secondary-color;
+        color: darken($bg-secondary-color, 20%);
       }
       & svg {
         display: none;

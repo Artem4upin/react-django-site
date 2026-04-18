@@ -5,6 +5,7 @@ import SearchContainer from "../SearchContainer/SearchContainer";
 import NavigationLinks from "../NavigationLinks/NavigationLinks";
 import AccountButton from "../UI/Buttons/AccountButton/AccountButton";
 import CartButton from "../UI/Buttons/CartButton/CartButton";
+import {Link} from "react-router-dom";
 
 function Header(){
 
@@ -14,7 +15,7 @@ function Header(){
     return (
     <header className="header">
         <div className="header__container">
-            <h1 className="header__logo" >TechShop</h1>
+            <Link className="header__logo" to="/">TechShop</Link>
             <NavigationLinks />
             <SearchContainer
                 searchResult={searchResult}
