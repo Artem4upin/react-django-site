@@ -44,9 +44,9 @@ if (loading) {
   return (
     <div className="orders-page">
       {!isArchive ? (
-      <h1>Заказы</h1>
+      <h1 className='orders-page__title'>Заказы</h1>
       ) : (
-      <h1>Архив заказов</h1>
+      <h1 className='orders-page__title'>Архив заказов</h1>
       )}
 
       <main className='orders-page__main-container'>

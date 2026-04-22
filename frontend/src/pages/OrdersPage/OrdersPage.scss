@@ -5,6 +5,9 @@
     margin-top: 10px;
     margin-bottom: 30px;
     justify-self: center;
+    @media (max-width: $tablet) {
+      font-size: 36px;
+    }
   }
   &__not-found {
     display: flex;
