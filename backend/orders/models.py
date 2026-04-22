@@ -26,7 +26,7 @@ class Order(SoftDeleteModel):
         ('Canceled', 'Отменен')
     ]
     
-    status = models.CharField(choices=STATUS_CHOICES, default='Created')
+    status = models.CharField(choices=STATUS_CHOICES, default='Created', max_length=20)
     order_number = models.CharField(max_length=50, unique=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     price_sum = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)

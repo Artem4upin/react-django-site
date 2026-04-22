@@ -1,0 +1,13 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools %}
+<div style="margin-bottom: 15px; display: flex; gap: 10px;">
+    <a href="{% url 'admin:load-fixtures' %}" class="button" style="background: #79aec8; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px;">
+        Загрузить JSON
+    </a>
+    <a href="{% url 'admin:load-sql' %}" class="button" style="background: #79aec8; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px;">
+        Загрузить SQL
+    </a>
+</div>
+{{ block.super }}
+{% endblock %}

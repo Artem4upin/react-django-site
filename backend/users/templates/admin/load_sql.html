@@ -1,0 +1,25 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Загрузка SQL файла</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div style="margin: 20px 0;">
+            <label style="display: block; margin-bottom: 10px;">Выберите SQL файл:</label>
+            <input type="file" name="sql_file" accept=".sql" required style="margin-bottom: 20px;">
+        </div>
+        <button type="submit" style="background: #79aec8; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+            Загрузить дамп SQL
+        </button>
+    </form>
+    <div style="margin-top: 30px; padding: 15px; background: #f8f8f8; border-radius: 5px;">
+        <h3>Инструкция:</h3>
+        <ol>
+            <li>Создайте SQL дамп: <code>docker exec -i backend-postgres-1 pg_dump -U postgres -d postgresdb --data-only --inserts --encoding=UTF8 &gt; data.sql</code></li>
+            <li>Выберите файл <code>data.sql</code> выше</li>
+            <li>Нажмите "Загрузить SQL"</li>
+        </ol>
+    </div>
+</div>
+{% endblock %}

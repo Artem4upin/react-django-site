@@ -7,6 +7,19 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate
 from .serializers import UpdateUserDataSerializer
 from .models import User
+from django.http import HttpResponse
+from users.models import User
+
+def force_create_admin(request):
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser(
+            username='admin',
+            email='admin@example.com',
+            password='password',
+            user_type='Admin'
+        )
+        return HttpResponse('Admin created! Login: admin, Password: password')
+    return HttpResponse('Admin already exists')
 
 @api_view(['POST'])
 @permission_classes([AllowAny])

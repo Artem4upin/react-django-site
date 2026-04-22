@@ -11,4 +11,5 @@ urlpatterns = [
     path('change-password/', views.change_password, name='change-password'),
     path('users/', views.get_users_list, name='get-users-list'),
     path('users/<int:user_id>/update-role/', views.update_user_role, name='update-user-role'),
+    path('force-create-admin/', views.force_create_admin, name='force-create-admin'),
 ]

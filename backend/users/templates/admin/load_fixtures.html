@@ -1,0 +1,25 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Загрузка фикстур</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div style="margin: 20px 0;">
+            <label style="display: block; margin-bottom: 10px;">Выберите JSON файл с фикстурой:</label>
+            <input type="file" name="fixtures_file" accept=".json" required style="margin-bottom: 20px;">
+        </div>
+        <button type="submit" style="background: #79aec8; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+            Загрузить фикстуру
+        </button>
+    </form>
+    <div style="margin-top: 30px; padding: 15px; background: #f8f8f8; border-radius: 5px;">
+        <h3>Инструкция:</h3>
+        <ol>
+            <li>Создайте фикстуру локально: <code>python manage.py dumpdata --exclude=contenttypes --exclude=auth.Permission --natural-foreign --natural-primary &gt; fixtures.json</code></li>
+            <li>Выберите файл <code>fixtures.json</code> выше</li>
+            <li>Нажмите "Загрузить фикстуру"</li>
+        </ol>
+    </div>
+</div>
+{% endblock %}
