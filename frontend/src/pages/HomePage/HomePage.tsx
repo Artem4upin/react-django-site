@@ -26,8 +26,6 @@ function HomePage() {
     } catch (error) {
       console.error('Ошибка:', error)
       setLoadingError(getErrorMsg(error))
-    }
-    finally {
       setLoading(false)
     }
   }
