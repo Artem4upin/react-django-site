@@ -7,7 +7,6 @@ import { useState, useContext } from "react";
 import {IProduct} from "../../types/product";
 import {AuthContext} from "../../hooks/AuthContext";
 import { Rating } from '@mui/material';
-import {getErrorMsg} from "../../utils/errorMassages";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 interface ProductCardProps {

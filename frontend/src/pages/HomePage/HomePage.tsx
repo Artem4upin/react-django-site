@@ -5,11 +5,14 @@ import ProductList from '../../components/ProductList/ProductList'
 import Loading from '../../components/UI/Loading/Loading'
 import Banner from '../../components/UI/Banner/Banner'
 import BrandsSlider from "../../components/UI/BrandsSlider/BrandsSlider";
+import {getErrorMsg} from "../../utils/errorMassages";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 function HomePage() {
   
   const [newProducts, setNewProducts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [loadingError, setLoadingError] = useState<string>('')
 
   useEffect(() => {
     loadNewProducts()
@@ -22,6 +25,10 @@ function HomePage() {
       setLoading(false)
     } catch (error) {
       console.error('Ошибка:', error)
+      setLoadingError(getErrorMsg(error))
+    }
+    finally {
+      setLoading(false)
     }
   }
 
@@ -37,8 +44,11 @@ function HomePage() {
           <h3>Магазин компьютерных комплектующих</h3>
         </div>
 
-        <Banner />
+        {loadingError && (
+            <ErrorMessage errorMsg={loadingError} />
+        )}
 
+        <Banner />
         <BrandsSlider />
 
         <div className='home-page__new-products'>
