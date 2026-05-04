@@ -91,6 +91,11 @@ function CreateProductPage() {
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
+    // Проверка чтобы файл изображения был выбран
+    if (!image) {
+        alert('Пожалуйста, выберите файл изображения.');
+        return;
+    }
         e.preventDefault()
         
         if (user?.user_type !== 'Manager') {

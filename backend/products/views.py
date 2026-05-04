@@ -162,7 +162,6 @@ class ProductCreate(APIView):
     def post(self, request):        
         try:
             data = request.data
-            
             product = Product.objects.create(
                 name=data.get('name'),
                 price=float(data.get('price', 0)),
@@ -173,7 +172,7 @@ class ProductCreate(APIView):
                 subcategory_id=data.get('subcategory'),
             )
             
-            if 'image' in request.FILES:
+            if 'image' in request.FILES and request.FILES['image'] is not None:
                 product.image_path = request.FILES['image']
                 product.save()
             
