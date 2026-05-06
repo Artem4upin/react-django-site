@@ -9,6 +9,7 @@ interface DropzoneProps {
     maxFileSize?: number;
     title?: string;
     description?: string;
+    selectedFile?: File | null;
 }
 
 function Dropzone (
@@ -16,8 +17,9 @@ function Dropzone (
         fileInputRef,
         onSelectFile,
         maxFileSize = 2 * 1024 * 1024,
-        title = 'Перетащите изображение сюда или нажмите для выбора',
-        description=`Максимальный размер изображения ${maxFileSize / 1024 / 1024} МБ`
+        title = 'Перетащите файл сюда или нажмите для выбора',
+        description=`Максимальный размер файла ${maxFileSize / 1024 / 1024} МБ`,
+        selectedFile = null
     }: DropzoneProps) {
 
     const [isDragging, setIsDragging] = useState<boolean>(false)
@@ -49,6 +51,20 @@ function Dropzone (
         }
     }
 
+    const getTitleText = () => {
+        if (isDragging) return "Отпустите файл здесь";
+        if (selectedFile) return `${selectedFile.name}`;
+        return title;
+    }
+
+    const getDescriptionText = () => {
+        if (selectedFile) {
+            return 'Нажмите или перетащите файл для замены';
+        }
+        return description;
+    }
+
+
     return (
         <Box className='dropzone'
              onDragEnter={handleDragEnter}
@@ -59,12 +75,10 @@ function Dropzone (
         >
             <UploadIcon />
             <Typography className='dropzone__title' variant="body2" align="center">
-                {isDragging
-                    ? "Отпустите файл здесь"
-                    : title}
+                {getTitleText()}
             </Typography>
             <Typography className='dropzone__description' variant="caption" color="textSecondary">
-                {description}
+                {getDescriptionText()}
             </Typography>
         </Box>
     )
