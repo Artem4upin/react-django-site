@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, ChangeEvent} from 'react'
+import React, {useState, useEffect, useContext, ChangeEvent, useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../../api'
 import { AuthContext } from '../../hooks/AuthContext'
@@ -7,14 +7,17 @@ import Input from '../../components/UI/Inputs/Input'
 import Loading from '../../components/UI/Loading/Loading'
 import './CreateProductPage.scss'
 import {IBrand, ICategory, IParameter, ISubcategory} from "../../types/product";
+import Dropzone from "../../components/Dropzone/Dropzone";
+import XIcon from "../../components/icons/XIcon";
+import { Box, Button as Btn } from '@mui/material'
 
 function CreateProductPage() {
     const navigate = useNavigate()
     const { user } = useContext(AuthContext)
-    
+
     const [loading, setLoading] = useState(false)
     const [loadingData, setLoadingData] = useState(true)
-    
+
     const [name, setName] = useState('')
     const [price, setPrice] = useState('')
     const [quantity, setQuantity] = useState('1')
@@ -22,8 +25,10 @@ function CreateProductPage() {
     const [brandId, setBrandId] = useState<string>('')
     const [categoryId, setCategoryId] = useState<string>('')
     const [subcategoryId, setSubcategoryId] = useState<string>('')
-    const [image, setImage] = useState<File | null>(null)
-    
+    const [selectedImage, setSelectedImage] = useState<File | null>(null)
+    const [imagePreview, setImagePreview] = useState<string | null>(null)
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+
     const [brands, setBrands] = useState<IBrand[]>([])
     const [categories, setCategories] = useState<ICategory[]>([])
     const [subcategories, setSubcategories] = useState<ISubcategory[]>([])
@@ -51,7 +56,7 @@ function CreateProductPage() {
                 api.get('/brands/'),
                 api.get('/categories/')
             ])
-            
+
             setBrands(brandsRes.data)
             setCategories(categoriesRes.data)
             setLoadingData(false)
@@ -67,17 +72,17 @@ function CreateProductPage() {
             if (category) {
                 setSubcategories(category.subcategories || [])
             }
-            
+
             const paramsRes = await api.get<IParameter[]>('/parameters/')
             const categoryParams = paramsRes.data.filter(param => param.category_id == Number(categoryId))
             setParameters(categoryParams)
-            
+
             const initialValues: Record<number, string> = {}
             categoryParams.forEach(param => {
                 initialValues[param.id] = ''
             })
             setParamValues(initialValues)
-            
+
         } catch (error) {
             console.error('Ошибка загрузки подкатегорий:', error)
         }
@@ -86,18 +91,33 @@ function CreateProductPage() {
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (file) {
-            setImage(file)
+            setSelectedImage(file)
+            setImagePreview(URL.createObjectURL(file))
+        }
+    }
+
+    const handleImageSelect = (file: File) => {
+        setSelectedImage(file)
+        setImagePreview(URL.createObjectURL(file))
+        return true;
+    }
+
+    const removeImage = () => {
+        setSelectedImage(null);
+        setImagePreview(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
         }
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
-    // Проверка чтобы файл изображения был выбран
-    if (!image) {
+
+    if (!selectedImage) {
         alert('Пожалуйста, выберите файл изображения.');
         return;
     }
         e.preventDefault()
-        
+
         if (user?.user_type !== 'Manager') {
             alert('Только менеджер может создавать товары')
             return
@@ -111,7 +131,7 @@ function CreateProductPage() {
         setLoading(true)
         try {
             const formData = new FormData()
-            
+
             formData.append('name', name)
             formData.append('price', price)
             formData.append('quantity', quantity || "1")
@@ -119,11 +139,11 @@ function CreateProductPage() {
             if (brandId) formData.append('brand', brandId)
             formData.append('category', categoryId)
             if (subcategoryId) formData.append('subcategory', subcategoryId)
-            
-            if (image) {
-                formData.append('image', image)
+
+            if (selectedImage) {
+                formData.append('image', selectedImage)
             }
-            
+
             const parametersArray: {parameter: number, value: string}[] = []
             Object.entries(paramValues).forEach(([paramId, value]) => {
                 if (value && value.trim()) {
@@ -133,7 +153,7 @@ function CreateProductPage() {
                     })
                 }
             })
-            
+
             if (parametersArray.length > 0) {
                 formData.append('parameters', JSON.stringify(parametersArray))
             }
@@ -143,10 +163,10 @@ function CreateProductPage() {
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            
+
             alert('Товар успешно создан!')
             navigate('/catalog')
-            
+
         } catch (error: any) {
             console.error('Ошибка создания товара:', error)
             console.error('Детали ошибки:', error.response?.data)
@@ -263,11 +283,38 @@ function CreateProductPage() {
 
                 <div className="create-product-page__form-group">
                     <label>Изображение</label>
+                    <Dropzone
+                        fileInputRef={fileInputRef}
+                        onSelectFile={handleImageSelect}
+                        selectedFile={selectedImage}
+                    />
                     <input
+                        className='product-add-review__review-input'
                         type="file"
                         accept="image/*"
+                        ref={fileInputRef}
                         onChange={handleImageChange}
+                        disabled={loading}
                     />
+                    {imagePreview && (
+                        <Box className='product-add-review__image-container'
+                        >
+                            <img
+                                className='product-add-review__image'
+                                src={imagePreview}
+                                alt="Изображение"
+                            />
+                            <Btn
+                                className='product-add-review__delete-button'
+                                size="small"
+                                variant="contained"
+                                color="error"
+                                onClick={removeImage}
+                            >
+                                <XIcon />
+                            </Btn>
+                        </Box>
+                    )}
                 </div>
 
                 {parameters.length > 0 && (
