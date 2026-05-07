@@ -2,9 +2,13 @@
     padding: 20px;
     max-width: 80%;
     justify-self: center;
+    &__image-container {
+        justify-self: center;
+        align-self: center;
+    }
     &__image {
-        width: 100%;
-        max-width: 500px;
+        width: 400px;
+        height: 400px;
         object-fit: contain;
     }
     &__content {
@@ -137,14 +141,14 @@
         &__button-container {
             align-self: center;
         }
-        &__image-container {
-            display: flex;
-            justify-content: center;
-        }
     }
     @media (max-width: $tablet) {
         &__edit-content {
             width: 100%;
+        }
+        &__image {
+            width: 200px;
+            height: 200px;
         }
     }
 }
